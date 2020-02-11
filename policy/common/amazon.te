@@ -1,0 +1,165 @@
+###rx file type, mostly for library
+type amazon_file, file_type;
+domain_auto_trans(privileged_domain, amazon_file, amazon);
+auditallow unconfined_process amazon_file:file { execute execute_no_trans };
+
+###rw file type, for data and cache
+type amazon_data_file, file_type, private_data_file_type;
+
+###exec type, need domain transition
+type amazon_exec, file_type;
+domain_auto_trans(privileged_domain, amazon_exec, amazon);
+###domain amazon
+type amazon, domain_type;
+
+#-----------------------------------------------------------
+
+###access certificate dir, only read the certificate
+allow amazon certificate_file: dir { open getattr read search };
+
+###access cache dir
+allow amazon cache_data_file: dir { open getattr read search write add_name create execute rename setattr };
+file_type_auto_trans(amazon, cache_data_file, amazon_data_file);
+
+###access 3rd dir
+allow amazon third_file : dir      { open execute getattr read search };
+allow amazon third_file : lnk_file { getattr read };
+
+###access 3rd rw directory
+allow amazon third_rw_data_file : dir { open getattr read search write add_name create execute rename setattr };
+file_type_auto_trans(amazon, third_rw_data_file, amazon_data_file);
+
+###access 3rd lib file
+allow amazon third_lib_file : dir {getattr open read execute  search};
+allow amazon third_lib_file : file {getattr open read  execute};
+
+###access amazon own file
+allow amazon amazon_file : dir { open getattr execute read search };
+allow amazon amazon_file : file {open getattr execute execute_no_trans entrypoint read};
+
+###access amazon data file
+allow amazon amazon_data_file : dir { open getattr read search write add_name create execute rename setattr };
+allow amazon amazon_data_file : file {getattr open read append write lock};
+
+###access amazon exec file
+allow amazon amazon_exec : dir {open execute getattr read search};
+allow amazon amazon_exec : file{open read entrypoint getattr execute};
+
+#------------------------------------------------------------------------------
+
+allow amazon event_device:chr_file { read write };
+allow amazon fb_device:chr_file { read write ioctl };
+allow amazon binder_device:chr_file { read write ioctl };
+allow amazon mik_device:chr_file { read write ioctl };
+allow amazon miomap_device:chr_file { read write ioctl };
+allow amazon mma_device:chr_file { read write ioctl };
+allow amazon semutex_device:chr_file { read write ioctl };
+allow amazon basic_device:chr_file { read write getattr ioctl };
+allow amazon fusion_device:chr_file { read write ioctl };
+allow amazon mali_device:chr_file { read write getattr ioctl };
+allow amazon mtal_device:chr_file { read write };
+allow amazon tee_device:chr_file { read write ioctl };
+
+allow amazon mik_device:dir {read search getattr};
+allow amazon shm_device:dir {read search getattr};
+allow amazon device:dir {search getattr read};
+
+allow amazon application_file : dir {read search getattr};
+
+allow amazon basic_file:dir {read search getattr};
+
+allow amazon bin_exec:file { read execute getattr execute_no_trans };
+allow amazon bin_exec:dir  {read getattr search};
+allow amazon bin_file:dir  {read getattr search};
+allow amazon bin_exec:lnk_file {read getattr};
+allow amazon bin_file:dir {read search getattr};
+
+allow amazon debugfs:dir {read getattr search};
+
+allow amazon etc_conf_file:file { read getattr };
+allow amazon etc_conf_file:lnk_file {read getattr};
+
+allow amazon basic_lib_file:file { read getattr execute };
+allow amazon basic_lib_file:lnk_file read;
+
+allow amazon browser_file:dir {read search getattr};
+
+allow amazon config_file:file { read getattr };
+allow amazon config_file:dir  {read getattr search};
+allow amazon config_file:lnk_file { read getattr };
+
+allow amazon rootfs:dir {getattr read search};
+allow amazon rootfs:file {read getattr};
+allow amazon rootfs:lnk_file {read getattr};
+
+allow amazon amazon:fifo_file { write read getattr ioctl};
+allow amazon amazon:capability sys_nice;
+allow amazon amazon:dir { read getattr search };
+allow amazon amazon:file { read write getattr };
+allow amazon amazon:lnk_file {read getattr};
+allow amazon amazon:process {execmem fork setsched signal sigchld getsched };
+allow amazon amazon:netlink_route_socket { write read create nlmsg_read };
+allow amazon amazon:unix_dgram_socket { create ioctl connect};
+allow amazon amazon:unix_stream_socket { create connect };
+allow amazon amazon:netlink_kobject_uevent_socket { read bind create setopt };
+allow amazon amazon:tcp_socket { write accept getattr setopt read getopt create connect };
+allow amazon amazon:udp_socket { write accept bind getattr read connect create ioctl };
+
+allow amazon playready_file:dir {getattr read search};
+allow amazon playready_lib_file:file { read getattr execute };
+
+allow amazon sysfs:dir {search read getattr};
+allow amazon sysfs:file {read getattr};
+
+allow amazon system_file:file { read getattr };
+allow amazon system_file:dir  {read getattr search};
+
+allow amazon system_data_file:dir {read search getattr};
+allow amazon system_data_file:file { read getattr };
+
+allow amazon system_lib_file:dir {read search getattr};
+allow amazon system_lib_file:file { read execute getattr };
+allow amazon system_lib_file:lnk_file {read getattr};
+
+allow amazon third_rw_data_file:lnk_file {read getattr};
+allow amazon third_rw_data_file:dir      {read getattr search};
+
+allow amazon third_exec:dir {search read getattr};
+
+allow amazon tmp_file:fifo_file { read write };
+allow amazon tmp_file:dir {read getattr search};
+allow amazon tmp_file:file { read write getattr setattr };
+allow amazon fusion_data_file:file { read write getattr setattr };
+allow amazon tmp_file:lnk_file {read getattr};
+
+allow amazon {semi_root_process app_man tts dtv_svc}:binder { transfer call };
+allow amazon {semi_root_process privileged_domain}:fd use;
+allow amazon {semi_root_process app_man}:fifo_file { read write };
+allow amazon {semi_root_process app_man}:netlink_kobject_uevent_socket { read write };
+allow amazon {semi_root_process app_man}:system module_request;
+
+#socket from outer space
+allow amazon unconfined_type:association { recvfrom sendto };
+allow amazon unconfined_type:tcp_socket { name_bind name_connect node_bind };
+allow amazon unconfined_type:udp_socket { name_bind node_bind };
+
+
+allow amazon usr_data_file:file { read getattr };
+allow amazon usr_data_file:dir  { read getattr search};
+
+allow amazon utopia_data_file:dir {read getattr search};
+allow amazon utopia_data_file:file { read write ioctl };
+
+allow amazon widevine_file:dir {read getattr search };
+
+allow amazon unconfined_type:lnk_file { read getattr };
+
+allow amazon selinuxfs_file:filesystem {getattr};
+
+allow amazon tts_data_file:dir {read getattr search};
+allow amazon tts_data_file:file { read write getattr };
+
+allow amazon appcache_data_file:lnk_file {read getattr};
+allow amazon tmpfs:dir {read getattr search};
+
+allow amazon wpa_supplicant_file:dir { read getattr search};

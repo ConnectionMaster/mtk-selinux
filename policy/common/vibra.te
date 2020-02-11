@@ -1,0 +1,116 @@
+###rx file type, mostly for library
+type vibra_file, file_type;
+domain_auto_trans(privileged_domain, vibra_file, vibra);
+auditallow privileged_domain vibra_file:file { execute execute_no_trans };
+
+###rw file type, for data and cache
+type vibra_data_file, file_type;
+
+###exec type, need domain transition
+type vibra_exec, file_type;
+domain_auto_trans(privileged_domain, vibra_exec, vibra);
+
+###domain vibra
+type vibra, domain_type;
+
+#-----------------------------------------------------------
+
+###access vibra own file
+allow vibra vibra_file : dir { open getattr execute read search };
+allow vibra vibra_file : file {open getattr execute execute_no_trans entrypoint read};
+
+###access vibra data file
+allow vibra vibra_data_file : dir { open getattr read search write add_name create execute rename setattr };
+allow vibra vibra_data_file : file {getattr open read append write lock};
+
+###access vibra exec file
+allow vibra vibra_exec : dir {open execute getattr read search};
+allow vibra vibra_exec : file{open read entrypoint getattr execute};
+#-----------------------------------------------------------
+allow vibra basic_device   : chr_file {read write getattr ioctl execute};
+allow vibra mik_device     : chr_file {read write getattr ioctl};
+allow vibra semutex_device : chr_file {read write getattr ioctl execute};
+allow vibra miomap_device  : chr_file {read write getattr ioctl execute};
+allow vibra fb_device      : chr_file {read write getattr ioctl};
+allow vibra fusion_device  : chr_file {read write getattr ioctl};
+allow vibra mma_device     : chr_file {read write getattr ioctl};
+allow vibra event_device   : chr_file {read write getattr ioctl};
+allow vibra binder_device  : chr_file {read write getattr ioctl execute};
+allow vibra mali_device    : chr_file {read write getattr ioctl execute};
+
+allow vibra device:dir {getattr read search};
+
+allow vibra basic_file:dir {read getattr search};
+
+allow vibra cobalt_file:dir {read getattr search};
+
+allow vibra tmp_file       : fifo_file {read write};
+allow vibra tmp_file       : lnk_file  {read};
+allow vibra tmp_file       : file      {read write setattr execute};
+allow vibra tmp_file       : dir       {getattr write add_name create};
+file_type_auto_trans(vibra, tmp_file, vibra_data_file);
+
+###/proc files, stuff
+allow vibra vibra          : process              {execmem fork setsched getsched signal};
+allow vibra vibra          : dir                  {read search getattr};
+allow vibra vibra          : lnk_file             {read};
+allow vibra vibra          : tcp_socket           {create setopt connect write read getattr};
+allow vibra vibra          : capability           {sys_nice};
+allow vibra vibra          : fifo_file            {read write};
+allow vibra vibra          : file                 {getattr read};
+allow vibra vibra          : netlink_route_socket {create write nlmsg_read read};
+allow vibra vibra          : unix_dgram_socket    {create ioctl connect};
+
+allow vibra rootfs         : dir       {search read getattr};
+allow vibra rootfs         : {lnk_file file}  {read getattr};
+
+allow vibra sysfs          : file      {read};
+allow vibra sysfs          : dir       {read search getattr};
+
+allow vibra debugfs        : dir       {search read getattr};
+
+allow vibra etc_conf_file:lnk_file read;
+
+allow vibra system_lib_file : file     {read execute getattr};
+allow vibra system_lib_file : dir      {getattr read search};
+allow vibra system_lib_file : lnk_file {read getattr};
+
+allow vibra config_file     : file     {read getattr};
+allow vibra config_file     : dir      {read getattr search};
+
+allow vibra utopia_data_file : file    {read write ioctl};
+allow vibra utopia_data_file : dir     {read getattr search};
+
+#network stuff, associate port
+allow vibra unconfined_type : association {sendto recvfrom};
+allow vibra unconfined_type : tcp_socket  {name_connect};
+
+#give fd permission, since read write need other permission
+allow vibra {semi_root_process privileged_domain} : fd                            {use};
+allow vibra {semi_root_process app_man} : fifo_file                     {read write};
+allow vibra {semi_root_process app_man} : netlink_kobject_uevent_socket {read write};
+allow vibra {semi_root_process app_man dtv_svc tts} : binder                        {call transfer};
+allow vibra {semi_root_process app_man} : system                        {module_request};
+
+allow vibra third_file     : dir       {read getattr search};
+allow vibra third_file     : lnk_file  {read getattr};
+
+allow vibra third_lib_file : dir       {search read getattr};
+allow vibra third_lib_file : file      {read getattr execute};
+allow vibra third_lib_file : lnk_file  {read};
+
+allow vibra application_file : dir     {read getattr search};
+allow vibra application_file : lnk_file{read getattr};
+
+allow vibra third_rw_data_file : file      {read getattr};
+allow vibra third_rw_data_file : dir       {search read getattr};
+allow vibra third_rw_data_file : lnk_file  {read getattr};
+
+allow vibra usr_data_file      : file  {read getattr};
+allow vibra usr_data_file      : dir   {read search getattr};
+
+allow vibra system_data_file   : file  {read getattr};
+allow vibra system_data_file   : dir   {read getattr search};
+allow vibra system_file        : file  {read getattr};
+
+allow vibra selinuxfs_file:filesystem {getattr};

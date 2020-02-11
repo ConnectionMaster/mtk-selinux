@@ -1,0 +1,3 @@
+allow udhcpc bin_exec:file map;
+allow udhcpc system_lib_file:file map;
+allow udhcpc udhcpc_exec:file map;

@@ -1,0 +1,11 @@
+type pipe_inode, file_type;
+allow domain_type pipe_inode:filesystem *;
+allow file_type pipe_inode:filesystem *;
+
+type file_inode, file_type;
+allow domain_type file_inode:filesystem *;
+allow file_type file_inode:filesystem *;
+
+type socket_inode, file_type;
+allow domain_type socket_inode:filesystem *;
+allow file_type socket_inode:filesystem *;

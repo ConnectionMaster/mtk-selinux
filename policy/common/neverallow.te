@@ -1,0 +1,14 @@
+#since su domain transition rule is removed if REMOVE_SU flag is true, only allow semi_root_process to transist to su
+neverallow semi_root_process ~su : process transition;
+
+#never allow process in unconfined domain read the application data file
+neverallow {semi_root_process privileged_domain} private_data_file_type:file {read write};
+
+#never allow domain other than application manager and unconfined process to transit
+neverallow {{ domain_type - privileged_domain} - launcher_type} domain_type : process transition;
+neverallow dtv_svc {domain_type - dtv_svc_init_type} : process transition;
+neverallow cast_init {domain_type - cast_init_type} : process transition;
+neverallow browser_ctrl {domain_type - browser_ctrl_init_type } : process transition;
+
+#neverallow private_data_file_type is relabeled into another context
+neverallow domain_type private_data_file_type : file relabelfrom;

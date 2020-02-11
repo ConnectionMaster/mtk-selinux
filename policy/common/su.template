@@ -1,0 +1,16 @@
+####su part
+type su;
+# su is in permissive domain, which can do anything
+permissive su;
+# add permission for su, so we don't see logs though su has permission
+mtkAccessAllRules(su, file_type);
+mtkAccessAllRules(su, domain_type);
+mtkAccessAllRules(su, selinuxfs_file);
+mtkSetupTERules(su);
+allow su file_type   : security setenforce;
+allow su domain_type : security setenforce;
+allow su selinuxfs_file  : security setenforce;
+#only add this permission since, we want Inherit fd when process is executed and domain has been changed
+allow domain_type su : fd use;
+
+type su_exec;

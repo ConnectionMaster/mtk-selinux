@@ -1,0 +1,6 @@
+allow tts binder_device:chr_file map;
+allow tts miomap_device:chr_file map;
+allow tts semutex_device:chr_file map;
+allow tts system_lib_file:file map;
+allow tts basic_device:chr_file map;
+allow tts tts_exec:file map;

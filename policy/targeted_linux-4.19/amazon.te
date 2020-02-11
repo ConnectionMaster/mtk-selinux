@@ -1,0 +1,13 @@
+allow amazon amazon_file :file map;
+allow amazon amazon_exec :file map;
+allow amazon binder_device :chr_file map;
+allow amazon miomap_device :chr_file map;
+allow amazon semutex_device :chr_file map;
+allow amazon basic_device :chr_file map;
+allow amazon mali_device :chr_file map;
+allow amazon bin_exec :file map;
+allow amazon basic_lib_file :file map;
+allow amazon playready_lib_file :file map;
+allow amazon system_lib_file :file map;
+allow amazon tmp_file :file map;
+allow amazon fusion_data_file:file map;

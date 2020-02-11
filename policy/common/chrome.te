@@ -1,0 +1,114 @@
+###rx file type, mostly for library
+type chrome_file, file_type;
+domain_auto_trans(cast_init, chrome_file, chrome);
+
+###rw file type, for data and cache
+type chrome_data_file, file_type, private_data_file_type;
+
+###exec type, need domain transition
+type chrome_exec, file_type;
+domain_auto_trans(cast_init, chrome_exec, chrome);
+
+###domain chrome
+type chrome, domain_type, cast_init_type;
+mtkSetupTERules(chrome); # allow self all
+
+file_type_auto_trans(chrome, tmp_file, chrome_data_file);
+
+#-----------------------------------------------------------
+allow chrome rootfs:dir { read search getattr };
+allow chrome rootfs:file { read getattr execute execute_no_trans };
+allow chrome rootfs:lnk_file { read getattr };
+allow chrome rootfs:filesystem getattr;
+
+allow chrome sysfs:dir { read search getattr };
+allow chrome sysfs:file read;
+allow chrome sysfs:lnk_file { read getattr };
+allow chrome sysfs:filesystem getattr;
+
+allow chrome device:dir { read search getattr };
+allow chrome application_file:dir { read search getattr };
+allow chrome backup_data_file:dir { read search getattr };
+allow chrome cache_data_file:dir { read search getattr };
+allow chrome demo_data_file:dir { read search getattr };
+allow chrome mik_device:dir { read search getattr };
+allow chrome tmpfs:dir { read search getattr };
+allow chrome netflix_data_file:dir { read search getattr };
+allow chrome certificate_file:dir { read search getattr };
+allow chrome unconfined_process:dir { read search getattr };
+allow chrome unconfined_process:process sigchld;
+
+allow chrome factory_data_file:dir { read search getattr };
+allow chrome factory_data_file:file { read getattr };
+
+allow chrome system_file:dir { read search getattr };
+allow chrome system_file:file { read getattr };
+
+allow chrome third_exec:dir { read search getattr };
+allow chrome third_file:dir { read search getattr };
+
+allow chrome system_data_file:dir  { read search getattr };
+allow chrome system_lib_file:dir { read search getattr };
+allow chrome system_lib_file:file { read getattr execute };
+allow chrome system_lib_file:lnk_file read;
+
+allow chrome shm_device:dir { read search getattr write remove_name add_name };
+allow chrome shm_device:file { read write create unlink getattr };
+
+allow chrome unconfined_type:association { recvfrom sendto };
+allow chrome unconfined_type:tcp_socket { name_connect name_bind node_bind };
+allow chrome unconfined_type:udp_socket { name_bind node_bind };
+
+allow chrome dtv_svc:unix_stream_socket connectto;
+allow chrome cast_init:unix_stream_socket connectto;
+
+allow chrome etc_conf_file:file { read getattr };
+allow chrome etc_conf_file:lnk_file { read getattr };
+
+allow chrome tmp_file:dir remove_name;
+allow chrome tmp_file:file { read getattr write setattr };
+allow chrome tmp_file:sock_file write;
+
+allow chrome cast_init:fd use;
+allow chrome cast_init:unix_dgram_socket sendto;
+
+allow chrome chrome_exec:file execute_no_trans;
+allow chrome chrome_file:dir { read search getattr };
+allow chrome chrome_data_file:dir { open getattr read search write add_name create execute rename setattr remove_name };
+allow chrome chrome_data_file:file { getattr open read append write create setattr rename unlink };
+
+allow chrome socket_device:dir { read search getattr };
+allow chrome socket_device:sock_file write;
+
+allow chrome event_device:chr_file { read write getattr ioctl };
+allow chrome basic_device:chr_file { read getattr write ioctl };
+allow chrome mik_device:chr_file { read write ioctl };
+allow chrome semutex_device:chr_file { read write ioctl };
+allow chrome cb_device:chr_file { read write ioctl };
+allow chrome miomap_device:chr_file { read write ioctl };
+allow chrome mma_device:chr_file { read write };
+allow chrome mtal_device:chr_file { read write ioctl };
+allow chrome fb_device:chr_file { read write ioctl };
+allow chrome fusion_device:chr_file { read write ioctl };
+allow chrome mali_device:chr_file { read write getattr ioctl };
+allow chrome pts_device:chr_file { read write getattr };
+allow chrome cmapool_device:chr_file { read write ioctl };
+allow chrome tee_device:chr_file { read write ioctl };
+allow chrome binder_device:chr_file { read write ioctl };
+
+allow chrome semi_root_process:binder { transfer call };
+
+allow chrome pts_device:dir { read search getattr };
+allow chrome pts_device:filesystem getattr;
+
+allow chrome utopia_data_file:dir search;
+allow chrome utopia_data_file:file { read write ioctl };
+
+allow chrome file_inode:dir { read search getattr };
+allow chrome file_inode:file { read getattr };
+
+allow chrome wpa_supplicant_file:dir { search getattr };
+
+allow chrome fusion_data_file:file { read write setattr };
+
+allow chrome debugfs:dir search;

@@ -1,0 +1,122 @@
+###rx file type, mostly for library
+type wpa_supplicant_file, file_type;
+domain_auto_trans(privileged_domain, wpa_supplicant_file, wpa_supplicant);
+auditallow privileged_domain wpa_supplicant_file:file { execute execute_no_trans };
+
+###rw file type, for data and cache
+type wpa_supplicant_data_file, file_type;
+
+###exec type, need domain transition
+type wpa_supplicant_exec, file_type;
+domain_auto_trans( { privileged_domain dtv_svc }, wpa_supplicant_exec, wpa_supplicant);
+
+###domain wpa_supplicant
+type wpa_supplicant, domain_type, dtv_svc_init_type;
+
+#-----------------------------------------------------------
+
+###access 3rd dir
+allow wpa_supplicant third_file : dir { open execute getattr read search };
+allow wpa_supplicant third_file : lnk_file{ getattr read };
+
+###access 3rd lib file
+allow wpa_supplicant third_lib_file : dir {getattr open read execute  search};
+allow wpa_supplicant third_lib_file : file {getattr open read  execute};
+allow wpa_supplicant third_lib_file:lnk_file { read getattr };
+
+###access wpa_supplicant own file
+allow wpa_supplicant wpa_supplicant_file : dir { open getattr execute read search };
+allow wpa_supplicant wpa_supplicant_file : file {open getattr execute execute_no_trans entrypoint read};
+
+###access wpa_supplicant data file
+allow wpa_supplicant wpa_supplicant_data_file : dir { open getattr read search write add_name create execute rename setattr };
+allow wpa_supplicant wpa_supplicant_data_file : file {getattr open read append write lock};
+
+###access wpa_supplicant exec file
+allow wpa_supplicant wpa_supplicant_exec : dir {open execute getattr read search};
+allow wpa_supplicant wpa_supplicant_exec : file{open read entrypoint getattr execute};
+
+###access 3rd network exec, file
+allow wpa_supplicant third_network_file : dir { open execute getattr read search };
+allow wpa_supplicant third_network_file : file { getattr open read };
+
+allow wpa_supplicant third_network_exec : file { getattr open read execute execute_no_trans };
+#-----------------------------------------------------------------------------
+allow wpa_supplicant device : dir { read search getattr };
+allow wpa_supplicant basic_device : chr_file { read write getattr ioctl };
+allow wpa_supplicant cb_device:chr_file { read write getattr};
+allow wpa_supplicant event_device:chr_file { read write getattr };
+allow wpa_supplicant ashmem_device:chr_file { read write getattr };
+
+#need to mind this one
+allow wpa_supplicant device:blk_file { read write getattr}; #mmcblk0p7,16,21,22,26,27,28,32
+
+allow wpa_supplicant fb_device:chr_file { read write getattr};
+allow wpa_supplicant mik_device:chr_file { read write getattr};
+allow wpa_supplicant mik_device:dir { read search getattr};
+allow wpa_supplicant miomap_device:chr_file { read write getattr};
+allow wpa_supplicant mma_device:chr_file { read write getattr};
+allow wpa_supplicant mtal_device:chr_file { read write getattr};
+allow wpa_supplicant semutex_device:chr_file { read write getattr};
+allow wpa_supplicant tee_device:chr_file { read write getattr};
+allow wpa_supplicant eeprom_device:chr_file { read write getattr};
+allow wpa_supplicant shm_device:dir { read getattr search };
+
+allow wpa_supplicant application_file : dir {read search getattr};
+
+allow wpa_supplicant basic_file : dir { read search getattr };
+allow wpa_supplicant basic_lib_file : file { read getattr execute };
+
+allow wpa_supplicant etc_conf_file:file { read getattr };
+
+allow wpa_supplicant rootfs:dir {read search getattr};
+allow wpa_supplicant rootfs:lnk_file {read getattr};
+allow wpa_supplicant rootfs:file {read getattr};
+
+allow wpa_supplicant third_exec:dir {read search getattr};
+allow wpa_supplicant amazon_file : dir {read search getattr}; # prevent log spam
+allow wpa_supplicant playready_file:dir {read search getattr };# prevent log spam
+allow wpa_supplicant widevine_file:dir {read search getattr };# prevent log spam
+allow wpa_supplicant httpd_file:dir {read search getattr};# prevent log spam
+
+allow wpa_supplicant system_file : dir {read search getattr};
+allow wpa_supplicant system_file : file {read getattr};
+allow wpa_supplicant system_file : lnk_file {read getattr};
+
+allow wpa_supplicant system_lib_file: dir {read search getattr};
+allow wpa_supplicant system_lib_file:file { read execute getattr }; #ld
+allow wpa_supplicant system_lib_file:lnk_file { read getattr };
+
+#stuff under proc
+allow wpa_supplicant wpa_supplicant:capability { net_admin net_raw chown fsetid };
+allow wpa_supplicant wpa_supplicant:dir { read search getattr };
+allow wpa_supplicant wpa_supplicant:netlink_generic_socket *;
+allow wpa_supplicant wpa_supplicant:netlink_route_socket *;
+allow wpa_supplicant wpa_supplicant:packet_socket *;
+allow wpa_supplicant wpa_supplicant:udp_socket *;
+allow wpa_supplicant wpa_supplicant:unix_dgram_socket *;
+allow wpa_supplicant wpa_supplicant:unix_stream_socket *;
+
+#fd opened by either process may need this allow rule
+allow wpa_supplicant {semi_root_process privileged_domain dtv_svc}:fd use;
+allow wpa_supplicant domain_type:fifo_file { read write getattr};
+allow wpa_supplicant domain_type:netlink_kobject_uevent_socket { read write };
+allow wpa_supplicant domain_type:netlink_route_socket { read write };
+allow wpa_supplicant domain_type:unix_dgram_socket { read write sendto};
+allow wpa_supplicant domain_type:unix_stream_socket { read write };
+allow wpa_supplicant domain_type:tcp_socket { read write };
+allow wpa_supplicant domain_type:udp_socket { read write };
+allow wpa_supplicant domain_type:rawip_socket { read write };
+
+allow wpa_supplicant tmpfs:dir { create add_name setattr remove_name};
+allow wpa_supplicant tmpfs:sock_file { create setattr write};
+#since wpa_supplicant will create files and remove it under /var/tun
+file_type_auto_trans(wpa_supplicant,tmpfs, wpa_supplicant_data_file);
+
+allow wpa_supplicant tmp_file:fifo_file { read write };
+allow wpa_supplicant tmp_file:file { read write getattr };
+allow wpa_supplicant tmp_file:dir { read write search getattr create add_name remove_name };
+allow wpa_supplicant tmp_file:lnk_file { read getattr };
+file_type_auto_trans(wpa_supplicant, tmp_file, wpa_supplicant_data_file);
+
+allow wpa_supplicant utopia_data_file:file { read write getattr};

@@ -1,0 +1,6 @@
+allow dialserver basic_device:chr_file map;
+allow dialserver binder_device:chr_file map;
+allow dialserver dialserver_exec:file map;
+allow dialserver miomap_device:chr_file map;
+allow dialserver semutex_device:chr_file map;
+allow dialserver system_lib_file:file map;

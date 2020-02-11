@@ -1,0 +1,131 @@
+###rx file type, mostly for library
+type browser_file, file_type;
+domain_auto_trans(privileged_domain, browser_file, browser);
+auditallow privileged_domain browser_file:file { execute execute_no_trans };
+
+###rw file type, for data and cache
+type browser_data_file, file_type;
+
+###exec type, need domain transition
+type browser_exec, file_type;
+domain_auto_trans(privileged_domain, browser_exec, browser);
+
+###domain browser
+type browser, domain_type;
+
+#-----------------------------------------------------------
+
+###access 3rd dir
+allow browser third_file: dir { open execute getattr read search };
+allow browser third_file : lnk_file { getattr read };
+
+###access browser own file
+allow browser browser_file : dir { open getattr execute read search };
+allow browser browser_file : file {open getattr read};
+
+###access browser data file
+allow browser browser_data_file : dir { open getattr read search write add_name create execute rename setattr };
+allow browser browser_data_file : file {getattr open read append write lock};
+
+###access browser exec file
+allow browser browser_exec : dir {open execute getattr read search};
+allow browser browser_exec : file{open read entrypoint getattr execute execute_no_trans};
+
+#-----------------------------------------------------------
+allow browser basic_device:chr_file { read write getattr ioctl };
+allow browser shm_device:dir { write remove_name add_name getattr };
+allow browser shm_device:file { read write create unlink getattr };
+allow browser binder_device:chr_file { read write getattr ioctl };
+allow browser event_device:chr_file { read write getattr };
+allow browser fb_device:chr_file { read write getattr ioctl };
+allow browser fusion_device:chr_file { read write getattr ioctl };
+allow browser mali_device:chr_file { read write getattr getattr ioctl };
+allow browser mik_device:chr_file { read write getattr ioctl };
+allow browser miomap_device:chr_file { read write getattr ioctl };
+allow browser mma_device:chr_file { read write getattr };
+allow browser mtal_device:chr_file { read write getattr ioctl };
+allow browser semutex_device:chr_file { read write getattr ioctl };
+allow browser vndbinder_device:chr_file { read getattr };
+
+allow browser application_file : dir {read search getattr};
+
+allow browser basic_file:dir {read getattr search};
+allow browser basic_file:file {getattr read};
+###allow browser basic_file:dir { read write getattr add_name remove_name };???
+###allow browser basic_file:file { rename write getattr read create unlink };???
+
+allow browser basic_lib_file:file { read getattr execute };
+allow browser basic_lib_file:lnk_file read;
+
+allow browser config_file:file { read getattr };
+
+allow browser debugfs:dir search;
+
+allow browser etc_conf_file:file {read getattr};
+allow browser etc_conf_file:lnk_file {read getattr};
+
+allow browser browser:capability sys_nice;
+allow browser browser:dir { read getattr search };
+allow browser browser:fifo_file { write read getattr };
+allow browser browser:file { read write getattr };
+allow browser browser:lnk_file {read getattr};
+allow browser browser:netlink_kobject_uevent_socket { read bind create setopt };
+allow browser browser:netlink_route_socket { write bind create read nlmsg_read };
+allow browser browser:process { fork setsched };
+allow browser browser:tcp_socket { create ioctl };
+allow browser browser:udp_socket { create ioctl };
+allow browser browser:unix_stream_socket { connectto setopt read bind create accept write connect shutdown getopt listen };
+
+allow browser bin_exec:file { read execute getattr execute_no_trans };
+allow browser bin_exec:lnk_file read;
+
+allow browser playready_file:dir {search read getattr};
+allow browser playready_lib_file:file { read getattr execute };
+
+allow browser sysfs:dir { read search };
+allow browser sysfs:file read;
+allow browser sysfs:lnk_file read;
+
+allow browser system_data_file:dir { write create add_name getattr };
+allow browser system_data_file:file { write create read getattr };
+
+allow browser system_file:file { read getattr };
+
+allow browser system_lib_file:dir { read getattr search };
+allow browser system_lib_file:file { read execute getattr };
+allow browser system_lib_file:lnk_file read;
+
+allow browser third_lib_file:dir getattr;
+allow browser third_lib_file:file { read getattr execute };
+allow browser third_lib_file:lnk_file read;
+
+allow browser third_rw_data_file:dir read;
+allow browser third_rw_data_file:lnk_file read;
+
+allow browser tmp_file:dir { write search read add_name };
+allow browser tmp_file:fifo_file { read write };
+allow browser tmp_file:file { read write getattr setattr };
+allow browser tmp_file:lnk_file read;
+allow browser tmp_file:sock_file { write create setattr };
+
+allow browser {semi_root_process app_man dtv_svc tts}:binder { transfer call };
+allow browser {semi_root_process privileged_domain}:fd use;
+allow browser {semi_root_process app_man}:fifo_file { read write };
+allow browser {semi_root_process app_man}:netlink_kobject_uevent_socket { read write };
+allow browser {semi_root_process app_man}:system module_request;
+allow browser {semi_root_process app_man}:unix_stream_socket connectto;
+
+allow browser unconfined_type:file { read getattr execute };
+
+allow browser usr_data_file:dir search;
+allow browser usr_data_file:file { read getattr };
+
+allow browser utopia_data_file:dir search;
+allow browser utopia_data_file:file { read write ioctl };
+
+allow browser rootfs:dir { read getattr };
+allow browser rootfs:lnk_file { read getattr };
+
+allow browser widevine_file:dir getattr;
+
+allow browser selinuxfs_file:filesystem {getattr};

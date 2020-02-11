@@ -1,0 +1,129 @@
+###rx file type, mostly for library
+type udhcpc_file, file_type;
+domain_auto_trans(privileged_domain, udhcpc_file, udhcpc);
+auditallow privileged_domain udhcpc_file:file { execute execute_no_trans };
+
+###rw file type, for data and cache
+type udhcpc_data_file, file_type;
+
+###exec type, need domain transition
+type udhcpc_exec, file_type;
+domain_auto_trans( {privileged_domain dtv_svc }, udhcpc_exec, udhcpc);
+
+###domain udhcpc
+type udhcpc, domain_type, dtv_svc_init_type;
+
+#-----------------------------------------------------------
+
+###access udhcpc own file
+allow udhcpc udhcpc_file : dir { open getattr execute read search };
+allow udhcpc udhcpc_file : file {open getattr execute execute_no_trans entrypoint read};
+
+###access udhcpc data file
+allow udhcpc udhcpc_data_file : dir { open getattr read search write add_name create execute rename setattr };
+allow udhcpc udhcpc_data_file : file {getattr open read append write lock}; #data/dhcp_server (need to chown !!!)
+
+###access udhcpc exec file
+allow udhcpc udhcpc_exec : dir {open execute getattr read search};
+allow udhcpc udhcpc_exec : file{ioctl open read entrypoint getattr execute execute_no_trans};
+
+#-----------------------------------------------------------------------------
+allow udhcpc device:dir {read getattr search};
+allow udhcpc basic_device:chr_file { read write getattr ioctl };
+allow udhcpc cb_device:chr_file { read write getattr};
+allow udhcpc rtc_device:chr_file {read ioctl getattr};
+allow udhcpc device:blk_file { read write getattr}; # /dev/mmcblk0p16
+allow udhcpc eeprom_device:chr_file { read write getattr};
+allow udhcpc fb_device:chr_file { read write getattr};
+allow udhcpc mik_device:chr_file { read write getattr};
+allow udhcpc mik_device:dir {read write getattr};
+allow udhcpc miomap_device:chr_file { read write getattr};
+allow udhcpc event_device:chr_file { read write getattr};
+allow udhcpc mma_device:chr_file { read write getattr};
+allow udhcpc mtal_device:chr_file { read write getattr};
+allow udhcpc semutex_device:chr_file { read write getattr};
+allow udhcpc tee_device:chr_file { read write getattr};
+allow udhcpc shm_device:dir { read getattr search };
+
+allow udhcpc amazon_file:dir {read search getattr};
+
+#these should be removed on the RO only website
+allow udhcpc basic_file:dir { write remove_name getattr add_name read search};
+allow udhcpc basic_file:file { write create unlink getattr read };
+file_type_auto_trans(udhcpc, basic_file, udhcpc_data_file)
+
+allow udhcpc bin_exec:file { read execute execute_no_trans getattr ioctl};
+allow udhcpc bin_exec:lnk_file {read getattr};
+allow udhcpc bin_exec:dir {read search getattr};
+allow udhcpc bin_file:dir {read search getattr};
+
+allow udhcpc etc_conf_file:file { read getattr };
+allow udhcpc etc_conf_file:lnk_file {read getattr};
+allow udhcpc etc_conf_data_file:file {read getattr write};
+
+allow udhcpc playready_file:dir {read search getattr};
+
+allow udhcpc rootfs:dir { read getattr search};
+allow udhcpc rootfs:lnk_file {read getattr};
+
+allow udhcpc self:capability { net_admin net_raw sys_time sys_ptrace dac_override};
+allow udhcpc self:dir { read search getattr };
+allow udhcpc self:fifo_file { read write getattr ioctl };
+allow udhcpc self:file { read getattr };
+allow udhcpc self:lnk_file { read getattr };
+allow udhcpc self:packet_socket { write bind create read };
+allow udhcpc self:process {signal sigchld fork};
+allow udhcpc self:rawip_socket { create ioctl };
+allow udhcpc self:udp_socket { write getattr setopt read create ioctl connect };
+allow udhcpc self:unix_dgram_socket { create read write };
+allow udhcpc self:unix_stream_socket { create connect };
+
+allow udhcpc sysfs:dir {search read getattr};
+allow udhcpc sysfs:file {read getattr};
+
+allow udhcpc system_file:file { read getattr };
+allow udhcpc system_file:dir {read getattr search};
+
+allow udhcpc system_lib_file:dir { read search getattr};
+allow udhcpc system_lib_file:file { read execute getattr };
+allow udhcpc system_lib_file:lnk_file {read getattr };
+
+allow udhcpc system_data_file:dir {read search getattr};
+
+#ps stat under proc
+allow udhcpc domain_type:dir {read getattr search };
+allow udhcpc domain_type:file {read getattr};
+allow udhcpc domain_type:lnk_file {read getattr};
+#allow operation on all type of domain socket
+allow udhcpc domain_type:netlink_kobject_uevent_socket { read write };
+allow udhcpc domain_type:netlink_route_socket { read write };
+allow udhcpc domain_type:rawip_socket { read write };
+allow udhcpc domain_type:tcp_socket { read write };
+allow udhcpc domain_type:udp_socket { read write };
+allow udhcpc domain_type:unix_stream_socket { read write };
+allow udhcpc domain_type:unix_dgram_socket { read write };
+allow udhcpc domain_type:fifo_file { read write getattr };
+allow udhcpc unconfined_type:association { recvfrom sendto };
+
+allow udhcpc third_exec:file { read getattr execute execute_no_trans };
+allow udhcpc third_exec:dir { read getattr search };
+allow udhcpc third_file:dir {read search getattr};
+allow udhcpc third_file:lnk_file {read getattr};
+allow udhcpc third_lib_file:dir {read search getattr};
+
+allow udhcpc tmp_file:dir { write search getattr create add_name };
+allow udhcpc tmp_file:file { read write getattr append lock}; #/tmp/resolv.conf
+allow udhcpc tmp_file:fifo_file { read write getattr};
+allow udhcpc tmp_file:lnk_file { read getattr};
+file_type_auto_trans(udhcpc, tmp_file, udhcpc_data_file);
+
+#fd opened by either process may need this allow rule
+allow udhcpc {semi_root_process privileged_domain dtv_svc}:fd use;
+
+allow udhcpc utopia_data_file:file { read write getattr};
+
+allow udhcpc widevine_file:dir { search getattr read};
+
+allow udhcpc tmpfs:dir {read search getattr};
+
+allow udhcpc usr_data_file : dir {read search getattr};

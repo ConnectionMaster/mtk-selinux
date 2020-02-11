@@ -1,0 +1,82 @@
+###rx file type, mostly for library
+type tee_supplicant_file, file_type;
+domain_auto_trans(privileged_domain, tee_supplicant_file, tee_supplicant);
+auditallow privileged_domain tee_supplicant_file:file { execute execute_no_trans };
+
+###rw file type, for data and cache
+type tee_supplicant_data_file, file_type;
+file_type_auto_trans(domain_type, tee_supplicant_data_file, tee_supplicant_data_file);
+
+###exec type, need domain transition
+type tee_supplicant_exec, file_type;
+domain_auto_trans(privileged_domain, tee_supplicant_exec, tee_supplicant);
+
+###domain tee_supplicant
+type tee_supplicant, domain_type;
+
+#-----------------------------------------------------------
+
+###access 3rd_rw directory
+allow tee_supplicant third_rw_data_file : dir { open getattr read search write add_name create execute rename setattr };
+file_type_auto_trans(tee_supplicant, third_rw_data_file, tee_supplicant_data_file);
+
+###access /Customer directory TODO, this should be remove
+allow tee_supplicant customer_data_file : dir { open getattr execute read search remove_name};
+file_type_auto_trans(tee_supplicant, customer_data_file, tee_supplicant_data_file);
+
+###access /cache file
+allow tee_supplicant cache_data_file : dir { open getattr read search write add_name create execute rename setattr };
+file_type_auto_trans(tee_supplicant, cache_data_file, tee_supplicant_data_file);
+
+###access /appcache file TODO remove this, TTS still put in here, no write action, so OK
+allow tee_supplicant appcache_data_file : dir { open getattr read search write add_name create execute rename setattr };
+file_type_auto_trans(tee_supplicant, appcache_data_file, tee_supplicant_data_file);
+
+###access tee_supplicant own file
+allow tee_supplicant tee_supplicant_file : dir { open getattr execute read search };
+allow tee_supplicant tee_supplicant_file : file {open getattr read};
+allow tee_supplicant tee_supplicant_file : lnk_file {getattr read};
+
+###access tee_supplicant data file
+allow tee_supplicant tee_supplicant_data_file : dir { open getattr read search write add_name create execute rename setattr };
+allow tee_supplicant tee_supplicant_data_file : file {getattr open read create append write lock};
+
+###access tee_supplicant exec file
+allow tee_supplicant tee_supplicant_exec : dir {open execute getattr read search};
+allow tee_supplicant tee_supplicant_exec : file{ open read entrypoint getattr execute};
+
+
+#-----------------------------------------------------------
+
+allow tee_supplicant basic_device:chr_file { read write getattr ioctl }; #/dev/console
+allow tee_supplicant tee_device:chr_file { read write getattr ioctl }; #/dev/teepriv0
+allow tee_supplicant tee_blk_device:blk_file { read write getattr ioctl };#/dev/mmcblk0 /dev/mmcblk0rpmb 4.9
+allow tee_supplicant tee_blk_device:chr_file { read write getattr ioctl };#/dev/mmcblk0 /dev/mmcblk0rpmb 4.19
+
+allow tee_supplicant application_file : dir {read search getattr};
+
+allow tee_supplicant device:dir { read search getattr };
+
+allow tee_supplicant certificate_file:dir {read getattr search};
+
+allow tee_supplicant basic_file :dir {read search getattr};
+
+allow tee_supplicant config_file:dir { read search getattr };
+allow tee_supplicant config_file:lnk_file { read getattr };
+allow tee_supplicant rootfs:dir { read search getattr };
+
+allow tee_supplicant tee_supplicant:capability { sys_rawio };
+allow tee_supplicant tee_supplicant:process fork;
+
+allow tee_supplicant sysfs:dir { read search getattr };
+allow tee_supplicant sysfs:file { read getattr };
+allow tee_supplicant sysfs:lnk_file { read getattr };
+
+allow tee_supplicant system_lib_file:dir { read search getattr };
+allow tee_supplicant system_lib_file:file { read execute getattr };
+allow tee_supplicant system_lib_file:lnk_file { read getattr };
+
+#we allow binder fd pipe socket originate from unconfined proccess
+allow tee_supplicant {semi_root_process privileged_domain}:fd use;
+
+allow tee_supplicant unconfined_type:lnk_file { read getattr };

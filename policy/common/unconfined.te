@@ -1,0 +1,17 @@
+type unconfined_type, file_type, semi_root_file;
+mtkSetupTERules(unconfined_type);
+
+
+type unconfined_process, domain_type, privileged_domain, launcher_type;
+mtkAccessAllRules(unconfined_process, { file_type - private_data_file_type });
+mtkAccessAllRules(unconfined_process, private_data_file_type, no_file_rw);
+mtkAccessAllRules(unconfined_process, domain_type);
+
+domain_auto_trans(privileged_domain, semi_root_file, semi_root_process);
+
+allow unconfined_process su_exec : file ~{relabelfrom};
+allow unconfined_process su_exec : lnk_file ~{relabelfrom};
+allow unconfined_process selinuxfs_file : file ~{ioctl create setattr lock relabelfrom relabelto append unlink rename execute execmod execute_no_trans entrypoint};
+allow unconfined_process selinuxfs_file : dir  ~{ioctl write create setattr lock relabelfrom relabelto append unlink rename execute quotaon execmod add_name remove_name reparent rmdir};
+allow unconfined_process selinuxfs_file : security  ~{setenforce};
+allow unconfined_process selinuxfs_file : filesystem  ~{relabelfrom relabelto};

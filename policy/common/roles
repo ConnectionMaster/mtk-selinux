@@ -1,0 +1,2 @@
+role object_r;
+role object_r types { file_type domain_type};

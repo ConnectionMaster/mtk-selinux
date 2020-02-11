@@ -1,0 +1,93 @@
+###rx file type, mostly for library
+type tts_file, file_type;
+domain_auto_trans(privileged_domain, tts_file, tts);
+auditallow privileged_domain tts_file:file { execute execute_no_trans };
+
+###rw file type, for data and cache
+type tts_data_file, file_type;
+
+###exec type, need domain transition
+type tts_exec, file_type;
+domain_auto_trans(privileged_domain, tts_exec, tts);
+
+###domain tts
+type tts, domain_type;
+#-----------------------------------------------------------
+###access application dir
+allow tts application_file     : dir { open execute getattr read search };
+allow tts application_file     : lnk_file { read getattr };
+
+###access tts own file
+allow tts tts_file : dir { open getattr execute read search };
+allow tts tts_file : file {open getattr execute execute_no_trans entrypoint read};
+
+###access tts data file
+allow tts tts_data_file : dir { open getattr read search write add_name create execute rename setattr };
+allow tts tts_data_file : file {getattr open read append write lock};
+
+###access tts exec file
+allow tts tts_exec : dir {open execute getattr read search};
+allow tts tts_exec : file{open read entrypoint getattr execute};
+#-----------------------------------------------------------
+allow tts basic_device  : chr_file { read write ioctl getattr }; #/dev/console, /dev/null
+allow tts binder_device : chr_file { read write ioctl getattr }; #/dev/binder
+allow tts event_device : chr_file  { read write getattr }; #/dev/event*
+allow tts fb_device : chr_file { read write getattr };
+allow tts mik_device : chr_file { read write getattr ioctl };
+allow tts mik_device : dir {read getattr search};
+allow tts miomap_device : chr_file { read write ioctl getattr };
+allow tts mma_device : chr_file { read write getattr };
+allow tts semutex_device:chr_file { read write ioctl getattr };
+allow tts device:dir {search getattr read};
+
+allow tts cache_data_file:dir {getattr search read};
+
+
+allow tts basic_file : dir { getattr search };
+
+allow tts bin_exec:dir {read search getattr};
+allow tts bin_exec : lnk_file { getattr read };
+allow tts bin_exec : file     { read execute getattr execute_no_trans }; #execute_no_trans so the shell script run by TTS is in domain TTS
+
+allow tts etc_conf_file : file {read getattr}; #/etc/nsswitch.conf
+
+allow tts rootfs : dir {read search getattr};
+allow tts rootfs : file {read getattr};
+
+allow tts tts:capability sys_nice;
+allow tts tts:process { fork setsched getsched signal };
+allow tts tts:unix_stream_socket { create connect };
+allow tts tts:unix_dgram_socket { create ioctl connect};
+
+allow tts debugfs:dir {read search getattr};
+
+allow tts selinuxfs_file:filesystem {getattr};
+
+allow tts sysfs:dir { read search getattr };
+allow tts sysfs:file { read getattr }; # cpu , online under /sys
+allow tts system_data_file : file {read getattr}; #/vendor/etc/utopia.conf
+
+allow tts system_file:file { read getattr }; #/proc/meminfo /proc/sys/vm/overcommit_memory
+allow tts system_file:dir  { read search getattr };
+
+allow tts tmpfs : dir { read search getattr};
+
+allow tts bin_file : dir {read search getattr};
+
+allow tts system_lib_file:dir {read search getattr};
+allow tts system_lib_file:file { read execute getattr }; #ld*.so (linker)
+allow tts system_lib_file:lnk_file { read getattr };
+
+allow tts tmp_file:fifo_file { read write }; #/dev/shm/shm_tmp/fifo_am_read
+
+#unconfined process, we want to inherit the fd and biner stuff from the parent process
+allow tts {semi_root_process app_man tts dtv_svc}:binder { transfer call };
+allow tts {semi_root_process privileged_domain}:fd use;
+allow tts {semi_root_process app_man}:fifo_file { read write };
+allow tts {semi_root_process app_man}:netlink_kobject_uevent_socket { read write };
+
+allow tts utopia_data_file:dir {read search getattr};
+allow tts utopia_data_file:file { read write ioctl getattr}; #/proc/utopia_mdb/agent
+allow tts utopia_file:dir { search getattr }; #/vendor/lib/utopia/mi_ipc_client
+
+allow tts tts :process sigchld;

@@ -1,0 +1,13 @@
+allow cobalt cobalt_exec : file map;
+allow cobalt basic_device : chr_file map;
+allow cobalt semutex_device : chr_file map;
+allow cobalt miomap_device : chr_file map;
+allow cobalt binder_device : chr_file map;
+allow cobalt mali_device : chr_file map;
+allow cobalt snd_device : chr_file map;
+allow cobalt tmp_file : file map;
+allow cobalt system_lib_file : file map;
+allow cobalt widevine_file : file map;
+allow cobalt basic_lib_file: file map;
+allow cobalt third_lib_file: file map;
+allow cobalt fusion_data_file:file map;

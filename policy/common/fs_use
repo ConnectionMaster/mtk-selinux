@@ -1,0 +1,36 @@
+fs_use_xattr ext2 user_u:object_r:file_inode;
+fs_use_xattr ext3 user_u:object_r:file_inode;
+fs_use_xattr ext4 user_u:object_r:file_inode;
+fs_use_xattr jfs user_u:object_r:file_inode;
+fs_use_xattr xfs user_u:object_r:file_inode;
+fs_use_xattr squashfs user_u:object_r:file_inode;
+fs_use_xattr reiserfs user_u:object_r:file_inode;
+fs_use_xattr jffs2 user_u:object_r:file_inode;
+fs_use_xattr gfs2 user_u:object_r:file_inode;
+fs_use_xattr lustre user_u:object_r:file_inode;
+
+fs_use_task eventpollfs user_u:object_r:file_inode;
+fs_use_task pipefs user_u:object_r:pipe_inode;
+fs_use_task sockfs user_u:object_r:socket_inode;
+
+fs_use_trans mqueue user_u:object_r:file_inode;
+fs_use_trans devpts user_u:object_r:pts_device;
+fs_use_trans hugetlbfs user_u:object_r:file_inode;
+fs_use_trans tmpfs user_u:object_r:file_inode;
+fs_use_trans shm user_u:object_r:file_inode;
+fs_use_trans devtmpfs user_u:object_r:file_inode;
+
+genfscon proc /utopia user_u:object_r:utopia_data_file
+genfscon proc /utopia_mdb user_u:object_r:utopia_data_file
+genfscon proc /cpuinfo    user_u:object_r:system_file
+genfscon proc /meminfo    user_u:object_r:system_file
+genfscon proc /net        user_u:object_r:system_file
+genfscon proc /uptime     user_u:object_r:system_file
+genfscon proc /tty     user_u:object_r:system_file
+genfscon proc /tz_mstar   user_u:object_r:tee_supplicant_file
+genfscon proc /tz2_mstar  user_u:object_r:tee_supplicant_file
+genfscon proc /tz_mstar/ramlog_setup   user_u:object_r:tee_supplicant_data_file
+genfscon proc /tz2_mstar/ramlog_setup  user_u:object_r:tee_supplicant_data_file
+
+genfscon selinuxfs / user_u:object_r:selinuxfs_file
+

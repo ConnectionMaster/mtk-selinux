@@ -1,0 +1,93 @@
+type rootfs, file_type, semi_root_file;
+
+type sysfs, file_type;
+
+type tmpfs, file_type;
+
+type debugfs, file_type;
+
+###/etc
+type etc_conf_file, file_type;
+type etc_conf_data_file, file_type;
+type etc_exec_file, file_type;
+
+###/data
+type system_data_file, file_type;
+type factory_data_file, file_type;
+
+###/lib
+type system_lib_file, file_type;
+
+###/tmp
+type tmp_file, file_type;
+
+###/basic
+type basic_file, file_type, semi_root_file;
+type basic_lib_file, file_type;
+type basic_script_file, file_type;
+type basic_bin_file, file_type, semi_root_file;
+type basic_bin_exec, file_type;
+
+###/bin
+type bin_file, file_type;
+type bin_exec, file_type;
+type login_exec, file_type, semi_root_file;
+
+###/appcache (Filesystem is a dummy now, remove when it's removed from project)
+type appcache_data_file, file_type;
+
+###/cache
+type cache_data_file, file_type;
+
+###/certificate
+type certificate_file, file_type;
+
+###/3rd
+type third_file, file_type, semi_root_file;
+
+type third_exec, file_type, semi_root_file;
+
+type third_lib_file, file_type;
+
+###/3rd_rw
+type third_rw_data_file, file_type;
+
+###/application
+type application_file, file_type, semi_root_file;
+
+###/Customer
+type customer_data_file, file_type;
+
+###/config
+type config_file, file_type;
+
+###/dev/shm/tmp/fusion* or /tmp/fusion*
+type fusion_data_file, file_type;
+
+###/proc/utopia
+type utopia_data_file, file_type;
+
+###/usr
+type usr_data_file, file_type;
+
+###/proc
+type system_file, file_type;
+
+###/upgrade
+type upgrade_data_file, file_type;
+
+###/demo
+type demo_data_file, file_type;
+
+###/backup
+type backup_data_file, file_type;
+
+###/sys/fs/selinux, special filetype, do not have this attribute
+type selinuxfs_file;
+
+###/vendor/lib/utopia/mi_ipc_lient
+type utopia_file, file_type;
+
+###/3rd/wpa_supplicant
+type third_network_exec, file_type; #read execute only file
+type third_network_file, file_type; #Read only file

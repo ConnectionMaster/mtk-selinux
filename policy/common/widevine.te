@@ -1,0 +1,6 @@
+type widevine_file, file_type;
+
+type widevine_lib_file, file_type;
+
+type widevine_data_file, file_type;
+file_type_auto_trans(domain_type, widevine_data_file, widevine_data_file);

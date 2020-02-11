@@ -1,0 +1,9 @@
+attribute file_type;
+attribute domain_type;
+attribute private_data_file_type;
+attribute semi_root_file;
+attribute privileged_domain;
+attribute dtv_svc_init_type;
+attribute cast_init_type;
+attribute launcher_type;
+attribute browser_ctrl_init_type;

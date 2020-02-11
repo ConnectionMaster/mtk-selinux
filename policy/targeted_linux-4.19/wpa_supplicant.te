@@ -1,0 +1,4 @@
+allow wpa_supplicant basic_lib_file:file map;
+allow wpa_supplicant wpa_supplicant_exec:file map;
+allow wpa_supplicant system_lib_file:file map;
+allow wpa_supplicant third_lib_file:file map;

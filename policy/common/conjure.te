@@ -1,0 +1,113 @@
+###rx file type, mostly for library
+type conjure_file, file_type;
+domain_auto_trans(cast_init, conjure_file, conjure);
+
+###rw file type, for data and cache
+type conjure_data_file, file_type, private_data_file_type;
+
+###exec type, need domain transition
+type conjure_exec, file_type;
+domain_auto_trans(cast_init, conjure_exec, conjure);
+
+###domain conjure
+type conjure, domain_type, cast_init_type;
+mtkSetupTERules(conjure); # allow self all
+
+file_type_auto_trans(conjure, tmp_file, conjure_data_file);
+file_type_auto_trans(conjure, system_data_file, conjure_data_file);
+
+#-----------------------------------------------------------
+allow conjure rootfs:dir { read search getattr };
+allow conjure rootfs:file { read getattr execute execute_no_trans };
+allow conjure rootfs:lnk_file { read getattr };
+
+allow conjure sysfs:dir { read search getattr };
+allow conjure sysfs:file read;
+allow conjure sysfs:lnk_file { read getattr };
+allow conjure sysfs:filesystem getattr;
+
+allow conjure device:dir { read search getattr };
+allow conjure application_file:dir { read search getattr };
+allow conjure backup_data_file:dir { read search getattr };
+allow conjure cache_data_file:dir { read search getattr };
+allow conjure demo_data_file:dir { read search getattr };
+allow conjure mik_device:dir { read search getattr };
+allow conjure tmpfs:dir { read search getattr };
+allow conjure netflix_data_file:dir { read search getattr };
+allow conjure unconfined_process:dir { read search getattr };
+allow conjure unconfined_process:process sigchld;
+
+allow conjure system_file:file { read getattr };
+
+allow conjure third_file:dir { read search getattr };
+
+allow conjure system_data_file:dir  { read search getattr };
+allow conjure system_lib_file:dir { read search getattr };
+allow conjure system_lib_file:file { read getattr execute };
+allow conjure system_lib_file:lnk_file read;
+
+allow conjure shm_device:dir { read search getattr write remove_name add_name };
+allow conjure shm_device:file { read write create unlink getattr };
+
+allow conjure unconfined_type:association { recvfrom sendto };
+allow conjure unconfined_type:tcp_socket { name_connect name_bind node_bind };
+allow conjure unconfined_type:udp_socket { name_bind node_bind };
+
+allow conjure dtv_svc:unix_stream_socket connectto;
+
+allow conjure etc_conf_file:file { read getattr };
+allow conjure etc_conf_file:lnk_file { read getattr };
+
+allow conjure tmp_file:dir remove_name;
+allow conjure tmp_file:file { read getattr write setattr append };
+allow conjure tmp_file:sock_file write;
+
+allow conjure cast_init:fd use;
+allow conjure cast_init:unix_dgram_socket sendto;
+
+allow conjure chrome_file:dir { read search getattr };
+allow conjure chrome_file:file { read  getattr };
+allow conjure chrome_file:lnk_file read;
+allow conjure chrome_data_file:dir { open getattr read search write add_name create execute rename setattr remove_name };
+allow conjure chrome_data_file:file { getattr open read append write create setattr rename unlink };
+allow conjure chrome_data_file:lnk_file read;
+
+allow conjure conjure_exec:file { ioctl execute_no_trans };
+allow conjure conjure_exec:lnk_file { read getattr };
+allow conjure conjure_file:dir { read search getattr };
+allow conjure conjure_file:lnk_file { read getattr };
+allow conjure conjure_data_file:dir { write remove_name add_name };
+allow conjure conjure_data_file:file { read write create unlink rename };
+
+allow conjure socket_device:dir { read search getattr };
+allow conjure socket_device:sock_file write;
+
+allow conjure event_device:chr_file { read write getattr ioctl };
+allow conjure basic_device:chr_file { read getattr write ioctl };
+allow conjure mik_device:chr_file { read write ioctl };
+allow conjure semutex_device:chr_file { read write ioctl };
+allow conjure cb_device:chr_file { read write ioctl };
+allow conjure miomap_device:chr_file { read write ioctl };
+allow conjure mma_device:chr_file { read write };
+allow conjure mtal_device:chr_file { read write ioctl };
+allow conjure fb_device:chr_file { read write ioctl };
+allow conjure fusion_device:chr_file { read write ioctl };
+allow conjure mali_device:chr_file { read write getattr ioctl };
+allow conjure pts_device:chr_file { read write getattr };
+allow conjure tee_device:chr_file { read write ioctl };
+allow conjure binder_device:chr_file { read write ioctl };
+
+allow conjure semi_root_process:binder { transfer call };
+
+allow conjure utopia_data_file:dir search;
+allow conjure utopia_data_file:file { read write ioctl };
+
+allow conjure httpd_data_file:dir { read search getattr };
+allow conjure httpd_data_file:file { read getattr };
+
+allow conjure file_inode:dir { read search getattr };
+allow conjure file_inode:file { read getattr };
+
+allow conjure fusion_data_file:file { read write setattr };
+
+allow conjure debugfs:dir search;

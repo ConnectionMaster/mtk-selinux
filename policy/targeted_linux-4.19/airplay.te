@@ -1,0 +1,9 @@
+allow airplay airplay_exec:file map;
+allow airplay basic_lib_file:file map;
+allow airplay system_lib_file:file map;
+allow airplay tmp_file:file map;
+allow airplay basic_device : chr_file map;
+allow airplay binder_device:chr_file map;
+allow airplay miomap_device:chr_file map;
+allow airplay semutex_device:chr_file map;
+allow airplay airplay_data_file:file map;

@@ -1,0 +1,6 @@
+type playready_file, file_type;
+
+type playready_lib_file, file_type;
+
+type playready_data_file, file_type;
+file_type_auto_trans(domain_type, playready_data_file, playready_data_file);

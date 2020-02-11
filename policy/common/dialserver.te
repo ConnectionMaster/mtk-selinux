@@ -1,0 +1,114 @@
+###rx file type, mostly for library
+type dialserver_file, file_type;
+
+###rw file type, for data and cache
+type dialserver_data_file, file_type;
+
+###exec type, need domain transition
+type dialserver_exec, file_type;
+domain_auto_trans(privileged_domain, dialserver_exec, dialserver);
+
+###domain dialserver
+type dialserver, domain_type;
+
+#-----------------------------------------------------------
+
+###access 3rd dir
+allow dialserver third_file: dir { open execute getattr read search };
+allow dialserver third_file : lnk_file { getattr read };
+
+###access 3rd rw directory
+allow dialserver third_rw_data_file : dir { open getattr read search write add_name create execute rename setattr };
+file_type_auto_trans(dialserver, third_rw_data_file, dialserver_data_file);
+
+###access app dir
+allow dialserver application_file: dir { open execute getattr read search };
+allow dialserver application_file: lnk_file { getattr read };
+
+###access dialserver own file
+allow dialserver dialserver_file : dir { open getattr execute read search };
+allow dialserver dialserver_file : file {open getattr read};
+
+###access dialserver data file
+allow dialserver dialserver_data_file : dir { open getattr read search write add_name create execute rename setattr };
+allow dialserver dialserver_data_file : file {getattr open read append write lock};
+
+###access dialserver exec file
+allow dialserver dialserver_exec : dir {open execute getattr read search};
+allow dialserver dialserver_exec : file{open read entrypoint getattr execute};
+
+#-----------------------------------------------------------
+allow dialserver basic_device     : chr_file { read write getattr ioctl };
+allow dialserver binder_device    : chr_file { read write getattr ioctl };
+allow dialserver event_device     : chr_file { read write getattr };
+allow dialserver fb_device        : chr_file { read write getattr };
+allow dialserver mik_device       : chr_file { read write getattr ioctl };
+allow dialserver miomap_device    : chr_file { read write getattr ioctl };
+allow dialserver mma_device       : chr_file { read write getattr };
+allow dialserver vndbinder_device : chr_file { read getattr };
+allow dialserver semutex_device   : chr_file { read write getattr ioctl };
+allow dialserver device:dir {read getattr search};
+allow dialserver mik_device       : dir { read getattr search };
+
+allow dialserver amazon_file:dir { search read getattr };
+
+allow dialserver basic_file:dir {read search getattr};
+
+allow dialserver basic_lib_file:file { read getattr execute };
+allow dialserver basic_lib_file:lnk_file { read getattr };
+
+allow dialserver browser_file:dir { search read getattr };
+
+allow dialserver config_file:file { read getattr };
+allow dialserver config_file:dir  { read getattr search};
+allow dialserver config_file:lnk_file { read getattr };
+
+allow dialserver cache_data_file:dir { read search getattr };
+
+allow dialserver rootfs:dir {getattr read search};
+allow dialserver rootfs:file {read getattr}; #overcommit_memory under proc
+allow dialserver rootfs:lnk_file { read getattr };
+
+allow dialserver debugfs:dir {read getattr search};
+
+allow dialserver sysfs:dir {read search getattr};
+allow dialserver sysfs:file read;
+
+allow dialserver dialserver : capability net_admin;
+allow dialserver dialserver : process    { fork setsched signal};
+allow dialserver dialserver : tcp_socket { getattr setopt bind create accept listen read write ioctl shutdown };
+allow dialserver dialserver : udp_socket { write ioctl setopt read bind create };
+allow dialserver dialserver : unix_dgram_socket { create };
+
+allow dialserver system_data_file:file { read getattr };
+allow dialserver system_lib_file:dir {read search getattr};
+allow dialserver system_lib_file:file { read execute getattr };
+allow dialserver system_lib_file:lnk_file { read getattr };
+
+allow dialserver third_exec:dir { search read getattr };
+allow dialserver third_lib_file:dir { search read getattr};
+
+allow dialserver tmp_file:fifo_file { read write getattr }; #DTVSERVICE under tmp
+
+allow dialserver {semi_root_process app_man dtv_svc tts}:binder { transfer call };
+allow dialserver {semi_root_process privileged_domain}:fd use;
+allow dialserver {semi_root_process app_man}:fifo_file { read write getattr };
+allow dialserver {semi_root_process app_man}:netlink_kobject_uevent_socket { read write };
+allow dialserver {semi_root_process app_man}:system module_request;
+
+allow dialserver unconfined_type:association { recvfrom sendto };
+allow dialserver unconfined_type:tcp_socket node_bind;
+allow dialserver unconfined_type:udp_socket { name_bind node_bind };
+
+allow dialserver utopia_data_file:dir {read search getattr};
+allow dialserver utopia_data_file:file { read write ioctl };
+
+allow dialserver playready_file:dir {read search getattr};
+
+allow dialserver widevine_file:dir {read search getattr};
+
+allow dialserver netflix_file : dir {read search getattr};
+allow dialserver netflix_file : file { read execute getattr };
+allow dialserver netflix_file : lnk_file { read getattr };
+
+allow dialserver cobalt_file :dir {read search getattr};

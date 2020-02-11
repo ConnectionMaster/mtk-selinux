@@ -1,0 +1,333 @@
+####root directory
+/                                           user_u:object_r:rootfs
+/(cast_root/)?(.*)                          user_u:object_r:rootfs
+/(cast_root/|cast_root/system/)?etc(/.*)?   user_u:object_r:rootfs
+/sys(/.*)?                                  user_u:object_r:sysfs
+/(cast_root/|cast_root/system/)?usr(/.*)?   user_u:object_r:rootfs
+/opt                                        user_u:object_r:tmpfs
+/(cast_root/)?var(/.*)?                     user_u:object_r:tmpfs
+
+####etc
+/(cast_root/system/)?etc/resolv.conf                    user_u:object_r:etc_conf_file
+/(cast_root/system/)?etc/localtime                      user_u:object_r:etc_conf_file
+/(cast_root/system/)?etc/nsswitch.conf                  user_u:object_r:etc_conf_file
+/(cast_root/system/)?etc/passwd                         user_u:object_r:etc_conf_file
+/(cast_root/system/)?etc/hosts                          user_u:object_r:etc_conf_file
+/(cast_root/system/)?etc/host.conf                      user_u:object_r:etc_conf_file
+/(cast_root/system/)?etc/group                          user_u:object_r:etc_conf_file
+/(cast_root/system/)?etc/adjtime                        user_u:object_r:etc_conf_data_file
+/(cast_root/system/)?etc/init.d(/.*)?                   user_u:object_r:etc_exec_file
+/(cast_root/system/)?etc/rc.d(/.*)?                     user_u:object_r:etc_exec_file
+/(cast_root/system/)?etc/scripts(/.*)?                  user_u:object_r:etc_exec_file
+/(cast_root/system/)?etc/ssl/certs/ca-certificates.crt  user_u:object_r:etc_conf_file
+
+####dev
+/(cast_root/)?dev(/.*)?                         user_u:object_r:device
+/(cast_root/)?dev/urandom                       user_u:object_r:basic_device
+/(cast_root/)?dev/null                          user_u:object_r:basic_device
+/(cast_root/)?dev/console                       user_u:object_r:basic_device
+/(cast_root/)?dev/system                        user_u:object_r:basic_device
+/(cast_root/)?dev/tty                           user_u:object_r:basic_device
+/(cast_root/)?dev/ttyS[0-9]*                    user_u:object_r:basic_device
+/(cast_root/)?dev/random                        user_u:object_r:basic_device
+/(cast_root/)?dev/malloc                        user_u:object_r:basic_device
+/(cast_root/)?dev/pmsg0                         user_u:object_r:basic_device
+/(cast_root/)?dev/.*/urandom                    user_u:object_r:basic_device
+/(cast_root/)?dev/mik(/.*)?                     user_u:object_r:mik_device
+/(cast_root/)?dev/snd(/.*)?                     user_u:object_r:snd_device
+/(cast_root/)?dev/opteearmtz00                  user_u:object_r:optee_device
+/(cast_root/)?dev/tee.*                         user_u:object_r:tee_device
+/(cast_root/)?dev/gflip                         user_u:object_r:gflip_device
+/(cast_root/)?dev/mtal                          user_u:object_r:mtal_device
+/(cast_root/)?dev/eeprom.*                      user_u:object_r:eeprom_device
+/(cast_root/)?dev/cmapool                       user_u:object_r:cmapool_device
+/(cast_root/)?dev/fb.*                          user_u:object_r:fb_device
+/(cast_root/)?dev/fbm.*                         user_u:object_r:fbm_device
+/(cast_root/)?dev/fusion.*                      user_u:object_r:fusion_device
+/(cast_root/)?dev/miomap                        user_u:object_r:miomap_device
+/(cast_root/)?dev/msmalibox                     user_u:object_r:msmalibox_device
+/(cast_root/)?dev/mma                           user_u:object_r:mma_device
+/(cast_root/)?dev/mali.*                        user_u:object_r:mali_device
+/(cast_root/)?dev/cb                            user_u:object_r:cb_device
+/(cast_root/)?dev/feeder                        user_u:object_r:feeder_device
+/(cast_root/)?dev/scaler                        user_u:object_r:scaler_device
+/(cast_root/)?dev/semutex                       user_u:object_r:semutex_device
+/(cast_root/)?dev/binder                        user_u:object_r:binder_device
+/(cast_root/)?dev/vndbinder                     user_u:object_r:vndbinder_device
+/(cast_root/)?dev/input/event.*                 user_u:object_r:event_device
+/(cast_root/)?dev/shm(/.*)?                     user_u:object_r:shm_device
+/(cast_root/)?dev/shm/shm_tmp(/.*)?             user_u:object_r:tmp_file
+/(cast_root/)?dev/shm/shm_tmp/fusion.*          user_u:object_r:fusion_data_file
+/(cast_root/)?dev/shm/shm_tmp/rest_debug.log    user_u:object_r:httpd_data_file
+/(cast_root/)?dev/mmcblk0                       user_u:object_r:tee_blk_device
+/(cast_root/)?dev/mmcblk0rpmb                   user_u:object_r:tee_blk_device
+/(cast_root/)?dev/rtc.*                         user_u:object_r:rtc_device
+/(cast_root/)?dev/ashmem                        user_u:object_r:ashmem_device
+/(cast_root/)?dev/cli                           user_u:object_r:cli_device
+/cast_root/dev/socket(/.*)?                     user_u:object_r:socket_device
+
+####data
+/data(/.*)?                        user_u:object_r:system_data_file
+/data/netflix(/.*)?                user_u:object_r:netflix_data_file
+/data/YTTV(/.*)?                   user_u:object_r:cobalt_data_file
+/data/amazon(/.*)?                 user_u:object_r:amazon_data_file
+/data/wpf_browser(/.*)?            user_u:object_r:browser_data_file
+/data/webui(/.*)?                  user_u:object_r:vibra_data_file
+/data/vudu(/.*)?                   user_u:object_r:vudu_data_file
+/data/dhcp_server                  user_u:object_r:udhcpc_data_file
+/data/uli(/.*)?                    user_u:object_r:uli_data_file
+/data/app/airplay                       user_u:object_r:airplay_file
+/data/app/.*/airplay(/.*)?              user_u:object_r:airplay_file
+/data/app/.*/airplay/airplayutil        user_u:object_r:airplay_exec
+/data/app/.*/airplay/airplaydemo        user_u:object_r:airplay_exec
+/data/app/.*/airplay/post-install\.sh   user_u:object_r:airplay_exec
+/data/app/homekit                       user_u:object_r:homekit_file
+/data/app/.*/homekit(/.*)?              user_u:object_r:homekit_file
+/data/app/.*/homekit/HAPAS_Tv           user_u:object_r:homekit_exec
+/data/app/.*/homekit/post-install\.sh   user_u:object_r:homekit_exec
+/(cast_root/)?data/chrome(/.*)?    user_u:object_r:chrome_data_file
+/(cast_root/)?data/chromium(/.*)?  user_u:object_r:conjure_data_file
+/(cast_root/)?data/share(/.*)?     user_u:object_r:chrome_data_file
+
+####3rd
+/3rd(/.*)?                                     user_u:object_r:third_file
+/3rd/amazon(/.*)?                              user_u:object_r:amazon_file
+/3rd/amazon/bin(/.*)?                          user_u:object_r:amazon_exec
+/3rd/bin(/.*)?                                 user_u:object_r:third_exec
+/3rd/bin/wpa_supplicant(/.*)?                  user_u:object_r:wpa_supplicant_file
+/3rd/bin/wpa_supplicant/.*\.sh                 user_u:object_r:wpa_supplicant_exec
+/3rd/bin/wpa_supplicant/common                 user_u:object_r:wpa_supplicant_file
+/3rd/bin/wpa_supplicant/common/.*              user_u:object_r:wpa_supplicant_exec
+/3rd/mtk_util(/.*)?                            user_u:object_r:third_exec
+/3rd/dsmcc(/.*)?                               user_u:object_r:third_lib_file
+/3rd/lib(/.*)?                                 user_u:object_r:third_lib_file
+/3rd/mpeg_dash(/.*)?                           user_u:object_r:third_lib_file
+/3rd/mss(/.*)?                                 user_u:object_r:third_lib_file
+/3rd/cobalt(/.*)?                              user_u:object_r:cobalt_file
+/3rd/cobalt/apps(/.*)?                         user_u:object_r:cobalt_exec
+#/3rd/wpf_browser(/.*)?                         user_u:object_r:browser_file
+/3rd/wpf_browser/.*\.so(\..*)?                 user_u:object_r:browser_lib_file
+#/3rd/wpf_browser/bin(/.*)?                     user_u:object_r:browser_exec
+#/3rd/wpf_browser/browser/hbbtv_content_shell   user_u:object_r:browser_exec
+#/3rd/wpf_browser/browser/wpf_browser           user_u:object_r:browser_exec
+/3rd/widevine_eme(/.*)?                        user_u:object_r:widevine_file
+/3rd/widevine_eme/.*\.so(\..*)?                user_u:object_r:widevine_lib_file
+/3rd/lighttpd(/.*)?                            user_u:object_r:httpd_file
+/3rd/lighttpd/bin/.*                           user_u:object_r:httpd_exec
+/3rd/lighttpd/sbin/.*                          user_u:object_r:httpd_exec
+/3rd/lighttpd/1.4.35/sbin/.*                   user_u:object_r:httpd_exec
+/3rd/dialserver(/.*)?                          user_u:object_r:dialserver_file
+/3rd/dialserver/dialserver                     user_u:object_r:dialserver_exec
+/3rd/vudu(/.*)?                                user_u:object_r:vudu_file
+/3rd/vudu/vudu_deactivate                      user_u:object_r:vudu_exec
+/3rd/vudu/vuduapp                              user_u:object_r:vudu_exec
+/3rd/appweb/cast_server/cache/ssdp_server      user_u:object_r:ssdp_server_exec
+/3rd/airplay(/.*)?                             user_u:object_r:airplay_file
+/3rd/airplay/airplayutil                       user_u:object_r:airplay_exec
+/3rd/airplay/airplaydemo                       user_u:object_r:airplay_exec
+/3rd/airplay/post-install\.sh                  user_u:object_r:airplay_exec
+/3rd/homekit(/.*)?                             user_u:object_r:homekit_file
+/3rd/homekit/HAPAS_Tv                          user_u:object_r:homekit_exec
+/3rd/homekit/post-install\.sh                  user_u:object_r:homekit_exec
+
+
+####3rd_rw
+/3rd_rw                                           user_u:object_r:third_rw_data_file
+#/3rd_rw/amazon(/.*)?                              user_u:object_r:amazon_data_file
+#/3rd_rw/ignition_data(/.*)?                       user_u:object_r:amazon_data_file
+#/3rd_rw/dialserver(/.*)?                          user_u:object_r:dialserver_data_file
+#/3rd_rw/widevine_eme(/.*)?                        user_u:object_r:widevine_data_file
+#/3rd_rw/widevine(/.*)?                            user_u:object_r:widevine_data_file
+#/3rd_rw/wpf_browser(/.*)?                         user_u:object_r:browser_data_file
+#/3rd_rw/web_server(/.*)?                          user_u:object_r:httpd_data_file
+#/3rd_rw/lighttpd(/.*)?                            user_u:object_r:httpd_data_file
+#/3rd_rw/rest_server(/.*)?                         user_u:object_r:httpd_data_file
+#/3rd_rw/sc-data(/.*)?                             user_u:object_r:httpd_data_file
+#/3rd_rw/nfxdiskcache(/.*)?                        user_u:object_r:netflix_data_file
+#/3rd_rw/playready(/.*)?                           user_u:object_r:playready_data_file
+#/3rd_rw/playreadypk(/.*)?                         user_u:object_r:playready_data_file
+
+####fw_upgrade
+/fw_upgrade                        user_u:object_r:third_rw_data_file
+
+####Certificate
+/certificate(/.*)?                 user_u:object_r:certificate_file
+/certificate/amazon(/.*)?          user_u:object_r:amazon_file
+/certificate/netflix*(/.*)?        user_u:object_r:netflix_data_file
+/certificate/tee(/.*)?             user_u:object_r:tee_supplicant_data_file
+/certificate/PersistentPath(/.*)?  user_u:object_r:uli_data_file
+/certificate/TemporaryPath(/.*)?   user_u:object_r:uli_data_file
+/certificate/drmp(/.*)?            user_u:object_r:uli_data_file
+/certificate/cast_cert(/.*)?       user_u:object_r:factory_data_file
+
+####Customer
+/Customer(/.*)?                    user_u:object_r:customer_data_file
+/Customer/KeyBox.bin               user_u:object_r:widevine_file
+/Customer/drmStore.hds             user_u:object_r:vudu_data_file
+
+####appcache
+/appcache(/.*)?                    user_u:object_r:appcache_data_file
+
+####application
+/application(s)?(/.*)?                         user_u:object_r:application_file
+/application(s)?/Netflix(/.*)?                 user_u:object_r:netflix_file
+/application(s)?/Netflix/bin(/.*)?             user_u:object_r:netflix_exec
+/application(s)?/Netflix/lib(/.*)?             user_u:object_r:netflix_file
+#/application(s)?/dial(/.*)?                   user_u:object_r:dialserver_file
+#/application(s)?/dial/dialserver              user_u:object_r:dialserver_exec
+/application(s)?/cobalt(/.*)?                  user_u:object_r:cobalt_file
+/application(s)?/cobalt/cobalt                 user_u:object_r:cobalt_exec
+/application(s)?/cobalt/reset_cobalt_storage   user_u:object_r:cobalt_exec
+/application(s)?/tee-supplicant                user_u:object_r:tee_supplicant_exec
+/application(s)?/vibra_lite(/.*)?              user_u:object_r:vibra_file
+/application(s)?/vibra_lite/vibra_lite         user_u:object_r:vibra_exec
+/application(s)?/TTS(/.*)?                     user_u:object_r:tts_file
+/application(s)?/TTS/TTSPlayer                 user_u:object_r:tts_exec
+/application(s)?/apm/appmgr                    user_u:object_r:app_man_exec
+/application(s)?/apm/svcmgr                    user_u:object_r:app_man_exec
+/application(s)?/scpl(/.*)?                    user_u:object_r:httpd_file
+/application(s)?/scpl/bin(/.*)?                user_u:object_r:httpd_exec
+/application(s)?/scpl/*\.sh                    user_u:object_r:httpd_exec
+
+####basic
+/basic(/.*)?                                   user_u:object_r:basic_file
+/basic/.*\.so(\..*)?                           user_u:object_r:basic_lib_file
+/basic/.*\.ko                                  user_u:object_r:basic_lib_file
+/basic/app_man                                 user_u:object_r:app_man_exec
+/basic/autorun\.sh                             user_u:object_r:basic_script_file
+/basic/bin(/.*)?                               user_u:object_r:basic_bin_file
+/basic/bin/mtk_launcher                        user_u:object_r:basic_bin_exec
+/basic/dtv_svc                                 user_u:object_r:dtv_svc_exec
+/basic/bin/mtk_uli                             user_u:object_r:uli_exec
+/basic/uli(/.*)?                               user_u:object_r:uli_file
+/basic/browser_ctrl                            user_u:object_r:browser_ctrl_exec
+
+
+####bin
+/bin                                           user_u:object_r:bin_file
+/bin/(.*)?                                     user_u:object_r:bin_exec
+/bin/su                                        user_u:object_r:su_exec
+/bin/login                                     user_u:object_r:login_exec
+
+####sbin
+/sbin                                          user_u:object_r:bin_file
+/sbin/(.*)?                                    user_u:object_r:bin_exec
+
+####openbox
+/openbox(/.*)?    -d                           user_u:object_r:bin_file
+/openbox(/.*)?    --                           user_u:object_r:bin_exec
+/openbox/bin/su                                user_u:object_r:su_exec
+/openbox/bin/udhcpc                            user_u:object_r:udhcpc_exec
+/openbox/bin/login                             user_u:object_r:login_exec
+
+####cache
+/cache(/.*)?                                   user_u:object_r:cache_data_file
+/cache/amazon(/.*)?                            user_u:object_r:amazon_data_file
+/cache/Netflix_env(/.*)?                       user_u:object_r:netflix_data_file
+/cache/dialserver(/.*)?                        user_u:object_r:dialserver_data_file
+/cache/netflix(/.*)?                           user_u:object_r:netflix_data_file
+/cache/drm/playready(/.*)?                     user_u:object_r:playready_data_file
+/cache/vudu(/.*)?                              user_u:object_r:vudu_data_file
+/cache/TTS(/.*)?                               user_u:object_r:tts_data_file
+/cache/web_server(/.*)?                        user_u:object_r:httpd_data_file
+/cache/lighttpd(/.*)?                          user_u:object_r:httpd_data_file
+/cache/rest_server(/.*)?                       user_u:object_r:httpd_data_file
+/cache/sc-data(/.*)?                           user_u:object_r:httpd_data_file
+/cache/apps(/.*)?                              user_u:object_r:httpd_data_file
+/cache/uli(/.*)?                               user_u:object_r:uli_data_file
+/cache/amazon_iot(/.*)?                        user_u:object_r:uli_data_file
+/cache/airplay(/.*)?                           user_u:object_r:airplay_data_file
+
+####config
+/config(/.*)?                                  user_u:object_r:config_file
+/config/widevine(/.*)?                         user_u:object_r:widevine_file
+/config/playready(/.*)?                        user_u:object_r:playready_file
+/config/optee(/.*)?                         user_u:object_r:tee_supplicant_file
+
+####lib
+/(cast_root/|cast_root/system/)?lib(/.*)?               user_u:object_r:system_lib_file
+/(cast_root/|cast_root/system/)?lib/.*\.so(\..*)?       user_u:object_r:system_lib_file
+/(cast_root/|cast_root/system/)?oem_cast_shlib(/.*)?    user_u:object_r:system_lib_file
+/lib/optee_armtz(/.*)?                                  user_u:object_r:tee_supplicant_file
+
+####tmp, this is a soft link of /dev/shm/shm_tmp
+/(cast_root/)?tmp(/.*)?                       user_u:object_r:tmp_file
+/(cast_root/)?tmp/fusion.*                    user_u:object_r:fusion_data_file
+/(cast_root/)?tmp/cobalt(/.*)?                user_u:object_r:cobalt_data_file
+/(cast_root/)?tmp/rest_debug.log              user_u:object_r:httpd_data_file
+/(cast_root/)?tmp/socket(/.*)?                user_u:object_r:chrome_data_file
+
+####vendor
+/vendor(/.*)?                                  user_u:object_r:rootfs
+/vendor/lib                                    user_u:object_r:system_lib_file
+/vendor/lib/.*\.so(\..*)?                      user_u:object_r:system_lib_file
+/vendor/lib/WVCENC(/.*)?                       user_u:object_r:widevine_file
+/vendor/lib/playready(/.*)?                    user_u:object_r:playready_file
+/vendor/lib/playready/.*\.so(\..*)?            user_u:object_r:playready_lib_file
+/vendor/lib/directfb(/.*)?           -d        user_u:object_r:system_lib_file
+/vendor/lib/utopia                             user_u:object_r:system_lib_file
+/vendor/lib/utopia/.*\.so(\..*)?               user_u:object_r:system_lib_file
+/vendor/lib/optee_armtz(/.*)?                  user_u:object_r:tee_supplicant_file
+/vendor/etc/utopia.conf                        user_u:object_r:system_data_file
+
+####usr
+/usr/share(/.*)?                               user_u:object_r:usr_data_file
+/usr/share/udhcpc                              user_u:object_r:udhcpc_file
+/usr/share/udhcpc/default\.script              user_u:object_r:udhcpc_exec
+
+###upgrade
+/upgrade(/.*)?                                 user_u:object_r:upgrade_data_file
+
+####demo
+/demo(/.*)?                                    user_u:object_r:demo_data_file
+/demo/sc(/.*)?                                 user_u:object_r:httpd_data_file
+
+####chrome
+/cast_root/(system/)?chrome(/.*)?              user_u:object_r:chrome_file
+/cast_root/system/chrome/lib(/.*)?             user_u:object_r:system_lib_file
+/cast_root/init                                user_u:object_r:cast_init_exec
+/cast_root/system/chrome/cast_cli              user_u:object_r:cast_init_exec
+/cast_root/system/chrome/cast_shell            user_u:object_r:chrome_exec
+/cast_root/system/chrome/chrome-sandbox        user_u:object_r:chrome_exec
+/cast_root/system/chrome/crash_uploader        user_u:object_r:chrome_exec
+/cast_root/system/chrome/dumpstate             user_u:object_r:chrome_exec
+/cast_root/system/chrome/process_manager       user_u:object_r:cast_init_exec
+/cast_root/system/chrome/update_engine         user_u:object_r:chrome_exec
+/cast_root/system/etc/service/conjure          user_u:object_r:conjure_exec
+
+####conjure
+/application/chromium(/.*)?                    user_u:object_r:conjure_file
+/application/chromium/_chromium_shell          user_u:object_r:conjure_exec
+/application/chromium/chrome-sandbox           user_u:object_r:conjure_exec
+/application/chromium/chromium_ctrl_svc        user_u:object_r:conjure_exec
+/application/chromium/chromium_shell           user_u:object_r:conjure_exec
+/application/chromium/conjure                  user_u:object_r:conjure_exec
+/application/chromium/dumpstate                user_u:object_r:conjure_exec
+/application/chromium/fling                    user_u:object_r:conjure_exec
+/application/chromium/*\.sh                    user_u:object_r:conjure_exec
+
+####backup
+/backup(/.*)?                                  user_u:object_r:backup_data_file
+/backup/airplay                       user_u:object_r:airplay_file
+/backup/.*/airplay(/.*)?              user_u:object_r:airplay_file
+/backup/.*/airplay/airplayutil        user_u:object_r:airplay_exec
+/backup/.*/airplay/airplaydemo        user_u:object_r:airplay_exec
+/backup/.*/airplay/post-install\.sh   user_u:object_r:airplay_exec
+/backup/homekit                       user_u:object_r:homekit_file
+/backup/.*/homekit(/.*)?              user_u:object_r:homekit_file
+/backup/.*/homekit/HAPAS_Tv           user_u:object_r:homekit_exec
+/backup/.*/homekit/post-install\.sh   user_u:object_r:homekit_exec
+
+####cast_world app
+/(data/app|backup)/(chromium|conjure_(a|b))(/.*)?                   user_u:object_r:conjure_file
+/(data/app|backup)/(chromium|conjure_(a|b))/_chromium_shell         user_u:object_r:conjure_exec
+/(data/app|backup)/(chromium|conjure_(a|b))/chrome-sandbox          user_u:object_r:conjure_exec
+/(data/app|backup)/(chromium|conjure_(a|b))/chromium_ctrl_svc       user_u:object_r:conjure_exec
+/(data/app|backup)/(chromium|conjure_(a|b))/chromium_shell          user_u:object_r:conjure_exec
+/(data/app|backup)/(chromium|conjure_(a|b))/conjure                 user_u:object_r:conjure_exec
+/(data/app|backup)/(chromium|conjure_(a|b))/dumpstate               user_u:object_r:conjure_exec
+/(data/app|backup)/(chromium|conjure_(a|b))/fling                   user_u:object_r:conjure_exec
+/(data/app|backup)/(chromium|conjure_(a|b))/*\.sh                   user_u:object_r:conjure_exec
+/(data/app|backup)/scpl(/.*)?                                       user_u:object_r:httpd_file
+/(data/app|backup)/scpl/bin(/.*)?                                   user_u:object_r:httpd_exec
+/(data/app|backup)/scpl/*\.sh                                       user_u:object_r:httpd_exec

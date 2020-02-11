@@ -1,0 +1,2 @@
+type ssdp_server_exec, file_type;
+domain_auto_trans( {privileged_domain dtv_svc }, ssdp_server_exec, semi_root_process);

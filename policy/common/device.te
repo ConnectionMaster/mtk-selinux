@@ -1,0 +1,61 @@
+type device, file_type;
+
+type basic_device, file_type;
+
+type mik_device, file_type;
+
+type snd_device, file_type;
+
+type optee_device, file_type;
+
+type gflip_device, file_type;
+
+type mtal_device, file_type;
+
+type cmapool_device, file_type;
+
+type fb_device, file_type;
+
+type fbm_device, file_type;
+
+type fusion_device, file_type;
+
+type miomap_device, file_type;
+
+type msmalibox_device, file_type;
+
+type cb_device, file_type;
+
+type feeder_device, file_type;
+
+type scaler_device, file_type;
+
+type semutex_device, file_type;
+
+type mma_device, file_type;
+
+type event_device, file_type;
+
+type binder_device, file_type;
+
+type mali_device , file_type;
+
+type tee_device , file_type;
+
+type vndbinder_device, file_type;
+
+type shm_device, file_type;
+
+type tee_blk_device, file_type;
+
+type eeprom_device, file_type;
+
+type rtc_device, file_type;
+
+type ashmem_device, file_type;
+
+type cli_device, file_type;
+
+type socket_device, file_type;
+
+type pts_device, file_type;

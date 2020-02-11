@@ -1,0 +1,174 @@
+###rx file type, mostly for library
+type netflix_file, file_type;
+domain_auto_trans(privileged_domain, netflix_file, netflix);
+auditallow privileged_domain netflix_file:file { execute execute_no_trans };
+
+###rw file type, for data and cache
+type netflix_data_file, file_type, private_data_file_type;
+
+###exec type, need domain transition
+type netflix_exec, file_type;
+domain_auto_trans(privileged_domain, netflix_exec, netflix);
+
+###domain netflix
+type netflix, domain_type;
+#-----------------------------------------------------------
+
+###access 3rd_rw directory
+allow netflix third_rw_data_file : dir { open getattr read search write add_name create execute rename setattr };
+file_type_auto_trans(netflix, third_rw_data_file, netflix_data_file);
+
+###access /Customer directory TODO, this should be remove
+allow netflix customer_data_file : dir { open getattr execute read search remove_name};
+file_type_auto_trans(netflix, customer_data_file, netflix_data_file);
+
+###access /cache file
+allow netflix cache_data_file : dir { open getattr read search write add_name create execute rename setattr };
+file_type_auto_trans(netflix, cache_data_file, netflix_data_file);
+
+###access /appcache file TODO remove this, TTS still put in here, no write action, so OK
+allow netflix appcache_data_file : dir { open getattr read search write add_name create execute rename setattr };
+file_type_auto_trans(netflix, appcache_data_file, netflix_data_file);
+
+###access netflix own file
+allow netflix netflix_file : dir { open getattr execute read search };
+allow netflix netflix_file : file {open getattr read};
+allow netflix netflix_file : lnk_file {getattr read};
+
+###access netflix data file
+allow netflix netflix_data_file : dir { open getattr read search write add_name create execute rename setattr };
+allow netflix netflix_data_file : file {getattr open read append write lock};
+
+###access netflix exec file
+allow netflix netflix_exec : dir {open execute getattr read search};
+allow netflix netflix_exec : file{ open read entrypoint getattr execute};
+
+
+#-----------------------------------------------------------
+
+allow netflix appcache_data_file:lnk_file {read getattr};
+
+allow netflix application_file:dir {read getattr search};
+allow netflix application_file:file {read getattr};
+allow netflix application_file:lnk_file {read getattr};
+
+allow netflix basic_device:chr_file { read write getattr ioctl };
+allow netflix binder_device:chr_file { read write ioctl };
+allow netflix event_device:chr_file { read write };
+allow netflix fb_device:chr_file { read write ioctl };
+allow netflix fusion_device:chr_file { read write ioctl };
+allow netflix mali_device:chr_file { read write getattr ioctl };
+allow netflix cmapool_device:chr_file { read write };
+allow netflix mik_device:chr_file { read write ioctl };
+allow netflix miomap_device:chr_file { read write ioctl };
+allow netflix mma_device:chr_file { read write ioctl };
+allow netflix semutex_device:chr_file { read write ioctl };
+allow netflix snd_device:chr_file { read write ioctl };
+allow netflix tee_device:chr_file { read write ioctl };
+allow netflix vndbinder_device:chr_file {read getattr};
+allow netflix shm_device :dir {read search getattr};
+allow netflix snd_device:dir { read search getattr };
+allow netflix mik_device:dir { read search getattr };
+
+allow netflix device    :dir {read search getattr};
+
+allow netflix basic_file:dir { getattr search read};
+allow netflix basic_lib_file:file { read getattr execute };
+
+allow netflix bin_exec:file { read execute getattr execute_no_trans };
+allow netflix bin_exec:lnk_file read;
+allow netflix bin_exec:dir {read getattr search};
+allow netflix bin_file:dir {read getattr search};
+
+allow netflix config_file:dir {read getattr search};
+allow netflix config_file:file {read getattr};
+allow netflix config_file:lnk_file { read getattr };
+
+allow netflix certificate_file:dir {read getattr search};
+
+allow netflix debugfs:dir {read getattr search};
+
+#doing some management on gennetflix crash report sh, should remove
+allow netflix netflix_exec:file { write ioctl unlink setattr };
+
+allow netflix playready_data_file:dir { write getattr add_name read search };
+allow netflix playready_data_file:file { read write create getattr lock };
+allow netflix playready_file:dir {read search getattr };
+allow netflix playready_lib_file:file { read getattr execute };
+
+allow netflix rootfs:lnk_file read;
+allow netflix rootfs:dir {search getattr read};
+
+allow netflix tmpfs:dir {read getattr search};
+
+allow netflix etc_conf_file:file {read getattr};
+allow netflix etc_conf_file:lnk_file {read getattr};
+
+allow netflix netflix:capability sys_nice;
+allow netflix netflix:dir { read search getattr};
+allow netflix netflix:fifo_file { write read };
+allow netflix netflix:file { read getattr };
+allow netflix netflix:lnk_file read;
+allow netflix netflix:netlink_route_socket { write getattr read bind create nlmsg_read };
+allow netflix netflix:process { execstack execmem fork getsched setsched signal sigchld sigkill };
+allow netflix netflix:tcp_socket { setopt accept read bind create write getattr connect getopt listen };
+allow netflix netflix:udp_socket { setopt accept read bind create write ioctl connect shutdown };
+allow netflix netflix:unix_dgram_socket { create connect };
+allow netflix netflix:unix_stream_socket { create connect };
+
+allow netflix sysfs:dir { read search getattr};
+allow netflix sysfs:file { read getattr };
+allow netflix sysfs:lnk_file read;
+
+#for /tmp, only occur before restorecon
+allow netflix file_inode:dir {open getattr search};
+
+allow netflix system_data_file:file { read getattr };
+allow netflix system_data_file:lnk_file { read getattr };
+allow netflix system_data_file:dir  { read getattr search};
+allow netflix system_file:file { read getattr };
+allow netflix system_file:dir  { read getattr search};
+allow netflix system_lib_file:dir { read getattr search};
+allow netflix system_lib_file:file { read execute getattr };
+allow netflix system_lib_file:lnk_file read;
+
+allow netflix third_exec:dir { read search getattr};
+allow netflix third_lib_file:dir { search getattr read};
+allow netflix third_rw_data_file:lnk_file read;
+allow netflix third_rw_data_file:dir      {read getattr search};
+allow netflix third_file : dir {search getattr read};
+allow netflix third_file : lnk_file { getattr read };
+
+allow netflix tmp_file:dir  { read getattr search};
+allow netflix tmp_file:fifo_file { read write };
+allow netflix tmp_file:file { read write getattr setattr };
+allow netflix fusion_data_file:file { read write getattr setattr };
+allow netflix tmp_file:lnk_file read;
+
+#/proc stuff
+allow netflix rootfs:file { getattr read };  #proc ngroups_max
+
+allow netflix {semi_root_process app_man dtv_svc tts}:binder { transfer call };
+allow netflix {semi_root_process privileged_domain}:fd use;
+allow netflix {semi_root_process app_man}:fifo_file { read write };
+allow netflix {semi_root_process app_man}:netlink_kobject_uevent_socket { read write };
+allow netflix {semi_root_process app_man}:system module_request;
+
+#socket from outer space
+allow netflix unconfined_type:association { recvfrom sendto };
+allow netflix unconfined_type:lnk_file read;
+allow netflix unconfined_type:tcp_socket { name_bind name_connect node_bind };
+allow netflix unconfined_type:udp_socket { name_bind node_bind };
+
+allow netflix usr_data_file:file { read getattr };
+allow netflix usr_data_file:dir { read getattr search};
+
+allow netflix utopia_data_file:dir { read getattr search};
+allow netflix utopia_data_file:file { read write ioctl };
+
+allow netflix selinuxfs_file:filesystem {getattr};
+
+allow netflix tts_data_file:dir {read getattr search};
+allow netflix tts_data_file:file { read write getattr };
+
+allow netflix unconfined_type:lnk_file { read getattr };

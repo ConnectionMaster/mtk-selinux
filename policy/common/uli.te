@@ -1,0 +1,123 @@
+###rx file type, mostly for library
+type uli_file, file_type;
+domain_auto_trans(privileged_domain, uli_file, uli);
+auditallow unconfined_process uli_file:file { execute execute_no_trans };
+
+###rw file type, for data and cache
+type uli_data_file, file_type;
+
+###exec type, need domain transition
+type uli_exec, file_type;
+domain_auto_trans(privileged_domain, uli_exec, uli);
+###domain uli
+type uli, domain_type;
+
+#-----------------------------------------------------------
+
+###access uli own file
+allow uli uli_file : dir { open getattr execute read search };
+allow uli uli_file : file {open getattr read};
+allow uli uli_file : lnk_file {getattr read};
+
+###access uli data file
+allow uli uli_data_file : dir { open getattr read search write add_name create execute rename setattr };
+allow uli uli_data_file : file {getattr open read append write lock};
+
+allow uli factory_data_file : dir { open getattr read search write add_name create execute rename setattr };
+allow uli factory_data_file : file {getattr open read append write lock create };
+
+###access uli exec file
+allow uli uli_exec : dir {open execute getattr read search};
+allow uli uli_exec : file{ open read entrypoint getattr execute};
+
+#-----------------------------------------------------------
+allow uli device    :dir      {read search getattr};
+allow uli tee_device:chr_file { read write ioctl getattr };
+allow uli basic_device:chr_file { read getattr ioctl};
+
+allow uli file_inode:dir  {search read getattr write add_name create setattr};
+allow uli file_inode:file {open read write getattr setattr create};
+
+###access certificate dir, read write certificate folder, should change to write into /certificate/uli
+allow uli certificate_file : dir { open getattr read search write add_name create execute rename setattr };
+allow uli certificate_file : file {getattr open read append write lock};
+file_type_auto_trans(uli, certificate_file, uli_data_file);
+
+####write ESNID data file
+allow uli netflix_data_file : dir { open getattr read search write add_name create execute rename setattr };
+allow uli netflix_data_file : file {getattr open read append write lock create setattr};
+
+####write airplay prov key inside cache airplay
+allow uli airplay_data_file : dir { open getattr read search write add_name create execute rename setattr };
+allow uli airplay_data_file : file {getattr open read append write lock create setattr};
+
+allow uli tee_supplicant_data_file : dir { open getattr read search write add_name create execute rename setattr };
+allow uli tee_supplicant_data_file : file {getattr open read append write lock create};
+
+###access cache dir
+allow uli cache_data_file: dir { open getattr read search };
+
+#####access basic lib file
+allow uli basic_file     : dir  {read getattr search};
+allow uli basic_lib_file : file {read getattr execute};  ####libqda.so need execute ??, need to compile with noexecstack instead
+
+####vendor lib is merged into applciation on customer platform####
+allow uli application_file : dir      {read getattr search};
+allow uli application_file : lnk_file {read getattr};
+
+allow uli system_lib_file : dir           {read search getattr};
+allow uli system_lib_file : lnk_file      {read getattr};
+allow uli system_lib_file : file          {read getattr execute};
+
+allow uli system_file:dir  { read getattr search };
+allow uli system_file:file { read getattr };
+
+allow uli system_data_file:dir {read getattr search};
+
+allow uli rootfs : dir                    {read search getattr};
+allow uli rootfs : lnk_file               {read getattr};
+
+allow uli basic_device:chr_file {write};
+
+allow uli rootfs:file { read getattr }; #/proc/cmdline
+
+allow uli self:netlink_route_socket { write getattr read bind create nlmsg_read };
+allow uli self:process { fork sigchld };
+allow uli self:fifo_file {write read getattr };
+allow uli domain_type:unix_stream_socket{create connect};
+allow uli domain_type:tcp_socket { create setopt connect name_connect write getopt getattr read};
+allow uli domain_type:udp_socket { create setopt connect write getopt getattr read ioctl};
+allow uli domain_type:msgq { create getattr unix_read unix_write read write associate };
+allow uli domain_type:msg *;
+
+allow uli unconfined_process:fd use; # fork by unconfined, use the fd inheritted
+allow uli semi_root_process:fd use; # fork by unconfined, use the fd inheritted
+
+allow uli unconfined_type:association {sendto recvfrom};
+allow uli unconfined_type:tcp_socket name_connect;
+
+allow uli bin_exec : lnk_file { read getattr};
+allow uli bin_file : lnk_file { read getattr};
+
+allow uli bin_exec : file     { read getattr execute execute_no_trans};
+allow uli bin_exec : dir      { read getattr search};
+allow uli bin_file : dir      { read getattr search};
+
+allow uli etc_conf_file:lnk_file {read getattr};
+allow uli etc_conf_file:file     {read getattr};
+
+allow uli sysfs : dir {read search getattr};
+allow uli sysfs : file{read getattr};
+
+allow uli tmpfs:dir {read search getattr};
+allow uli tmp_file: lnk_file {read getattr};
+allow uli tmp_file: dir {read search getattr};
+allow uli tmp_file:file {read getattr};
+
+allow uli shm_device:dir {read search getattr};
+
+allow uli third_rw_data_file:dir {read getattr search};
+allow uli third_rw_data_file:lnk_file {read getattr};
+
+allow uli upgrade_data_file : dir { open getattr read search write add_name create execute rename setattr remove_name rmdir };
+allow uli upgrade_data_file : file {getattr open read append write lock create setattr unlink };

@@ -1,0 +1,152 @@
+###rx file type, mostly for library
+type cobalt_file, file_type;
+domain_auto_trans(privileged_domain, cobalt_file, cobalt);
+auditallow privileged_domain cobalt_file:file { execute execute_no_trans };
+
+###rw file type, for data and cache
+type cobalt_data_file, file_type, private_data_file_type;
+
+###exec type, need domain transition
+type cobalt_exec, file_type;
+domain_auto_trans(privileged_domain, cobalt_exec, cobalt);
+
+###domain cobalt
+type cobalt, domain_type;
+#-----------------------------------------------------------
+
+###access 3rd dir
+allow cobalt third_file: dir      { open execute getattr read search };
+allow cobalt third_file: lnk_file { getattr read };
+
+###access app dir
+allow cobalt application_file: dir      { open execute getattr read search };
+allow cobalt application_file: file     { open getattr read };
+allow cobalt application_file: lnk_file { getattr read };
+
+###access cobalt own file
+allow cobalt cobalt_file : dir { open getattr execute read search };
+allow cobalt cobalt_file : file {open getattr read};
+
+###access cobalt data file
+allow cobalt cobalt_data_file : dir {add_name open getattr read search write add_name create execute rename setattr remove_name};
+allow cobalt cobalt_data_file : file {getattr open read append write lock unlink rename create};
+
+###access cobalt exec file
+allow cobalt cobalt_exec : dir {open execute getattr read search};
+allow cobalt cobalt_exec : file{open read entrypoint getattr execute};
+
+#-----------------------------------------------------------
+
+allow cobalt basic_device       : chr_file           {read write ioctl getattr execute};
+allow cobalt mik_device         : chr_file           {read write ioctl getattr};
+allow cobalt semutex_device     : chr_file           {read write ioctl getattr execute};
+allow cobalt miomap_device      : chr_file           {read write ioctl getattr execute};
+allow cobalt mma_device         : chr_file           {read write ioctl getattr};
+allow cobalt event_device       : chr_file           {read write ioctl getattr};
+allow cobalt fb_device          : chr_file           {read write ioctl getattr};
+allow cobalt binder_device      : chr_file           {read write ioctl getattr execute};
+allow cobalt fusion_device      : chr_file           {read write ioctl getattr};
+allow cobalt mali_device        : chr_file           {read write ioctl getattr execute};
+allow cobalt snd_device         : chr_file           {read write ioctl getattr execute};
+allow cobalt tee_device         : chr_file           {read write ioctl getattr};
+allow cobalt vndbinder_device   : chr_file           {read getattr};
+allow cobalt snd_device         : dir                {read getattr search};
+
+allow cobalt device             : dir                {read getattr search};
+allow cobalt snd_device         : dir                {read getattr search};
+allow cobalt mik_device         : dir                {read getattr search};
+allow cobalt shm_device         : dir                {read getattr search};
+
+
+allow cobalt appcache_data_file : lnk_file           {read};
+allow cobalt appcache_data_file : dir                {read getattr search};
+
+allow cobalt rootfs             : lnk_file           {read};
+allow cobalt rootfs             : dir                {getattr read search};
+allow cobalt rootfs             : file               {getattr read};
+
+allow cobalt sysfs              : dir                {read search getattr};
+allow cobalt sysfs              : file               {read getattr};
+
+allow cobalt debugfs            : dir                {read search getattr};
+
+allow cobalt utopia_data_file   : file               {read write ioctl getattr};
+allow cobalt utopia_data_file   : dir                {read search getattr};
+
+allow cobalt tmp_file           : fifo_file          {read write};
+allow cobalt tmp_file           : lnk_file           {read};
+allow cobalt tmp_file           : dir                {read write getattr add_name create search};
+allow cobalt tmp_file           : file               {read write setattr execute create getattr};
+allow cobalt fusion_data_file   : file               {read write setattr getattr};
+file_type_auto_trans(cobalt, tmp_file, cobalt_data_file);
+
+allow cobalt cobalt             : process              {execmem fork setsched signal};
+allow cobalt cobalt             : capability           {sys_nice};
+
+###files directories under /proc
+allow cobalt cobalt             : dir                  {read search getattr};
+allow cobalt cobalt             : lnk_file             {read};
+allow cobalt cobalt             : file                 {read getattr};
+
+allow cobalt cobalt             : netlink_route_socket {create read write nlmsg_read bind getattr};
+allow cobalt cobalt             : unix_dgram_socket    {create ioctl connect};
+allow cobalt cobalt             : unix_stream_socket   {create connect getattr};
+allow cobalt cobalt             : udp_socket           {create accept connect read write getattr};
+allow cobalt cobalt             : tcp_socket           {create accept setopt connect read getattr write};
+allow cobalt cobalt             : fifo_file            {read write};
+
+#we allow binder fd pipe socket originate from unconfined proccess
+allow cobalt {semi_root_process privileged_domain}                       : fd                             {use};
+allow cobalt {semi_root_process app_man}                                 : fifo_file                      {read write};
+allow cobalt {semi_root_process app_man}                                 : netlink_kobject_uevent_socket  {read write};
+allow cobalt {semi_root_process app_man dtv_svc tts}                     : binder                         {call transfer};
+allow cobalt {semi_root_process app_man}              : system                         {module_request};
+
+allow cobalt system_lib_file    : file                           {read execute getattr};
+allow cobalt system_lib_file    : lnk_file                       {read};
+allow cobalt system_lib_file    : dir                            {read getattr search};
+
+allow cobalt system_file        : file                 {read getattr};
+allow cobalt system_file        : dir                  {read getattr search};
+
+allow cobalt system_data_file   : dir                  {read getattr search};
+allow cobalt system_data_file   : file                 {read getattr};
+
+allow cobalt application_file   : lnk_file                       {read};
+
+allow cobalt third_rw_data_file : lnk_file                       {read};
+allow cobalt third_rw_data_file : dir                            {read getattr search};
+
+allow cobalt third_lib_file     : dir                            {read getattr search};
+allow cobalt third_lib_file     : file                           {read getattr execute};
+
+allow cobalt usr_data_file      : file                           {read getattr};
+allow cobalt usr_data_file      : dir                            {read getattr search};
+
+allow cobalt config_file        : file                           {read getattr};
+allow cobalt config_file        : dir                            {read getattr search};
+allow cobalt config_file        : lnk_file                       { read getattr };
+
+allow cobalt basic_file         : dir                            {read getattr search};
+allow cobalt basic_lib_file     : file                           {read getattr execute};
+allow cobalt basic_lib_file     : lnk_file                       {read getattr};
+
+allow cobalt widevine_file      : dir                            {read getattr search};
+allow cobalt widevine_file      : file                           {read execute getattr};
+
+allow cobalt etc_conf_file:file { read getattr };
+allow cobalt etc_conf_file:lnk_file { read getattr };
+
+#tcp socket outside of the system
+allow cobalt unconfined_type    : association                    {sendto recvfrom};
+allow cobalt unconfined_type    : tcp_socket                     {name_connect};
+
+allow cobalt selinuxfs_file:filesystem {getattr};
+
+allow cobalt tts_data_file:dir {read getattr search};
+allow cobalt tts_data_file:file { read write getattr };
+
+allow cobalt cache_data_file:dir {read getattr search};
+allow cobalt tmpfs:dir {read getattr search};
+
+allow cobalt unconfined_type:lnk_file { read getattr };

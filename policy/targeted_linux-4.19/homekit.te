@@ -1,0 +1,6 @@
+allow homekit basic_lib_file:file map;
+allow homekit bin_exec:file map;
+allow homekit homekit_exec:file map;
+allow homekit system_lib_file:file map;
+allow homekit tmpfs:file map;
+allow homekit homekit_data_file:file map;

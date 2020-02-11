@@ -1,0 +1,4 @@
+genfscon proc /     user_u:object_r:rootfs
+genfscon proc /sys  user_u:object_r:system_file
+genfscon debugfs /  user_u:object_r:debugfs
+genfscon sysfs /    user_u:object_r:sysfs

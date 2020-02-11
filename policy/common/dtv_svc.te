@@ -1,0 +1,12 @@
+type dtv_svc_exec, file_type;
+
+type dtv_svc_file, file_type;
+
+type dtv_svc, domain_type, launcher_type;
+mtkAccessPartialRules(dtv_svc, { file_type - private_data_file_type });
+mtkAccessPartialRules(dtv_svc, private_data_file_type, no_file_rw);
+mtkAccessPartialRules(dtv_svc, domain_type);
+
+domain_auto_trans(privileged_domain, dtv_svc_exec, dtv_svc);
+
+allow dtv_svc netflix_data_file:file { read getattr };

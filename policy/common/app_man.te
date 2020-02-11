@@ -1,0 +1,10 @@
+type app_man_exec, file_type;
+
+type app_man_file, file_type;
+
+type app_man, domain_type, privileged_domain, launcher_type;
+mtkAccessAllRules(app_man, { file_type - private_data_file_type });
+mtkAccessAllRules(app_man, private_data_file_type, no_file_rw);
+mtkAccessAllRules(app_man, domain_type);
+
+domain_auto_trans(privileged_domain, app_man_exec, app_man);

@@ -1,0 +1,11 @@
+allow vudu third_lib_file : file map;
+allow vudu vudu_data_file : file map;
+allow vudu vudu_exec : file map;
+allow vudu basic_device : chr_file map;
+allow vudu binder_device : chr_file map;
+allow vudu miomap_device : chr_file map;
+allow vudu semutex_device : chr_file map;
+allow vudu basic_lib_file : file map;
+allow vudu playready_lib_file : file map;
+allow vudu system_lib_file : file map;
+allow vudu tmp_file : file map;

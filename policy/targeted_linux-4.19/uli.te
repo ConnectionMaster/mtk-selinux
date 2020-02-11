@@ -1,0 +1,5 @@
+allow uli bin_exec:file map;
+allow uli uli_file:file map;
+allow uli basic_lib_file:file map;
+allow uli system_lib_file:file map;
+allow uli uli_exec:file map;

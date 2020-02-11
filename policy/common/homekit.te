@@ -1,0 +1,115 @@
+###rx file type, mostly for library
+type homekit_file, file_type;
+domain_auto_trans(privileged_domain, homekit_file, homekit);
+auditallow unconfined_process homekit_file:file { execute execute_no_trans };
+
+###rw file type, for data and cache
+type homekit_data_file, file_type, private_data_file_type;
+
+###exec type, need domain transition
+type homekit_exec, file_type;
+domain_auto_trans(browser_ctrl, homekit_exec, homekit);
+###domain homekit
+type homekit, domain_type, browser_ctrl_init_type;
+mtkSetupTERules(homekit);
+
+#==========================================================================================
+
+###access homekit own file
+allow homekit homekit_file : dir { open getattr execute read search };
+allow homekit homekit_file : file {open getattr execute execute_no_trans entrypoint read};
+allow homekit homekit_file : lnk_file {read getattr};
+
+###access homekit data file
+allow homekit homekit_data_file : dir { open getattr read search write add_name create execute rename setattr };
+allow homekit homekit_data_file : file {getattr open read append write lock execute}; #homekit will map the memory and execute code on the memory, execute permission needed
+allow homekit homekit_data_file : lnk_file {read getattr};
+
+###access homekit exec file
+allow homekit homekit_exec : dir {open execute getattr read search};
+allow homekit homekit_exec : file{open read entrypoint getattr execute};
+allow homekit homekit_exec : lnk_file { read getattr };
+
+#==========================================================================================
+allow homekit device:dir { read search getattr }; #/dev
+allow homekit basic_device:chr_file { read write ioctl getattr }; #/dev/null, /dev/console, /dev/urandom
+allow homekit event_device:chr_file { read write getattr }; #/dev/event
+allow homekit fb_device:chr_file { read write getattr }; #/dev/fb
+allow homekit mik_device:chr_file { read write getattr };  #/dev/mik
+allow homekit mik_device:dir { read search getattr };  #/dev/mik
+allow homekit miomap_device:chr_file { read write getattr }; #/dev/miomap
+allow homekit mma_device:chr_file { read write getattr }; #/dev/mma
+allow homekit semutex_device:chr_file { read write getattr }; #/dev/semutex
+allow homekit shm_device:dir { read search getattr }; #/dev/shm/
+allow homekit tee_device:chr_file { read write ioctl getattr }; #/dev/tee
+
+allow homekit airplay:unix_stream_socket connectto;
+
+allow homekit airplay_data_file:dir { read search getattr }; #/cache/airplay/...
+allow homekit airplay_data_file:file { read write getattr }; #/cache/airplay/...
+allow homekit airplay_data_file:sock_file write;
+
+allow homekit app_man:fd use;
+allow homekit app_man:fifo_file { read write getattr }; #/tmp/fifo_am_write
+allow homekit app_man:netlink_kobject_uevent_socket { read write };
+
+allow homekit application_file:dir { read search getattr };
+
+allow homekit basic_file:dir { read search getattr };
+allow homekit basic_lib_file:file { read getattr execute };
+allow homekit basic_lib_file:lnk_file { read getattr };
+
+allow homekit bin_exec:dir { read search getattr };
+allow homekit bin_exec:file { read execute getattr execute_no_trans };
+allow homekit bin_exec:lnk_file { read getattr };
+
+allow homekit browser_ctrl:fd use;
+allow homekit browser_ctrl:fifo_file { write read getattr }; #/var/run/mdnsd
+allow homekit browser_ctrl:unix_stream_socket { read write connectto };
+
+allow homekit cache_data_file:dir { read search getattr };
+allow homekit cache_data_file:lnk_file { read getattr };
+
+allow homekit config_file:dir { read search getattr };
+
+allow homekit etc_conf_file:file { read getattr };
+allow homekit etc_conf_file:lnk_file { read getattr };
+
+allow homekit httpd_data_file:file { read getattr }; #/dev/shm/shm_tmp/hk.dat
+
+allow homekit rootfs:dir { read search getattr };
+
+allow homekit system_data_file:dir { read search getattr };
+allow homekit system_data_file:lnk_file { read getattr };
+
+allow homekit system_file:file { read getattr };#/proc/meminfo
+
+allow homekit system_lib_file:dir { read search getattr };
+allow homekit system_lib_file:file { read execute getattr };
+allow homekit system_lib_file:lnk_file { read getattr };
+
+allow homekit third_file:dir { read search getattr };
+allow homekit third_lib_file:dir { read search getattr };
+allow homekit third_exec:dir { read search getattr };
+
+allow homekit third_rw_data_file:lnk_file { read getattr };
+
+allow homekit tmp_file:dir { read write getattr search add_name };
+allow homekit tmp_file:fifo_file { read write };
+allow homekit tmp_file:file { read write getattr create };
+allow homekit tmp_file:lnk_file { read getattr };
+allow homekit tmp_file:sock_file { read write create };
+file_type_auto_trans(homekit, tmp_file, homekit_data_file);
+
+allow homekit tmpfs:dir { read write getattr search add_name };
+allow homekit tmpfs:file { write getattr execute setattr read create };
+allow homekit tmpfs:sock_file { write getattr };
+file_type_auto_trans(homekit, tmpfs, homekit_data_file);
+
+allow homekit unconfined_process:fd use;
+
+#socket from outer space
+allow homekit unconfined_type:association { recvfrom sendto };
+allow homekit unconfined_type:tcp_socket { name_connect node_bind };
+
+allow homekit utopia_data_file:file { read write getattr }; #/utopia uid

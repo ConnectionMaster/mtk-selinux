@@ -1,0 +1,8 @@
+type browser_ctrl_exec, file_type;
+
+type browser_ctrl, domain_type, launcher_type;
+mtkAccessPartialRules(browser_ctrl, { file_type - private_data_file_type });
+mtkAccessPartialRules(browser_ctrl, private_data_file_type, no_file_rw);
+mtkAccessPartialRules(browser_ctrl, domain_type);
+
+domain_auto_trans(privileged_domain, browser_ctrl_exec, browser_ctrl);

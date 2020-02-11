@@ -1,0 +1,2 @@
+allow tee_supplicant system_lib_file:file map;
+allow tee_supplicant tee_supplicant_exec:file map;

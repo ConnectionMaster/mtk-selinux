@@ -1,0 +1,160 @@
+###rx file type, mostly for library
+type vudu_file, file_type;
+domain_auto_trans(privileged_domain, vudu_file, vudu);
+auditallow privileged_domain vudu_file:file { execute execute_no_trans };
+
+###rw file type, for data and cache
+type vudu_data_file, file_type, private_data_file_type;
+
+###exec type, need domain transition
+type vudu_exec, file_type;
+domain_auto_trans(privileged_domain, vudu_exec, vudu);
+
+###domain vudu
+type vudu, domain_type;
+
+#-----------------------------------------------------------
+
+###access cache dir
+allow vudu cache_data_file: dir { open getattr read search write add_name create execute rename setattr };
+file_type_auto_trans(vudu, cache_data_file, vudu_data_file);
+
+###access 3rd dir
+allow vudu third_file : dir { open execute getattr read search };
+allow vudu third_file : lnk_file { getattr read };
+
+###access 3rd lib file
+allow vudu third_lib_file : dir {getattr open read execute  search};
+allow vudu third_lib_file : file {getattr open read  execute};
+
+###access vudu own file
+allow vudu vudu_file : dir { open getattr execute read search };
+allow vudu vudu_file : file {open getattr execute execute_no_trans entrypoint read};
+
+###access vudu data file
+allow vudu vudu_data_file : dir { open getattr read search write add_name create execute rename setattr };
+allow vudu vudu_data_file : file {getattr open read append write lock};
+
+###access vudu exec file
+allow vudu vudu_exec : dir {open execute getattr read search};
+allow vudu vudu_exec : file{open read entrypoint getattr execute};
+
+#------------------------------------------------------------------------------
+
+allow vudu basic_device:chr_file { read write getattr ioctl };
+allow vudu binder_device:chr_file { read write getattr ioctl };
+allow vudu cb_device:chr_file { read write ioctl };
+allow vudu event_device:chr_file { read write };
+allow vudu fb_device:chr_file { read write ioctl};
+allow vudu shm_device:dir { read getattr search };
+allow vudu fusion_device:chr_file { read write ioctl };
+allow vudu mik_device:chr_file { read write ioctl };
+allow vudu miomap_device:chr_file { read write ioctl };
+allow vudu mma_device:chr_file { read write ioctl };
+allow vudu mtal_device:chr_file { read write };
+allow vudu semutex_device:chr_file { read write ioctl };
+allow vudu tee_device:chr_file { read write ioctl };
+allow vudu snd_device:dir {read getattr search};
+allow vudu snd_device:chr_file {read write ioctl getattr};
+
+allow vudu device:dir {read getattr search};
+allow vudu shm_device :dir {read getattr search};
+allow vudu mik_device : dir {read getattr search};
+
+#TTS Stuff
+allow vudu appcache_data_file:lnk_file read;
+allow vudu appcache_data_file:dir {read getattr search};
+
+allow vudu application_file:file { read getattr };
+allow vudu application_file:dir {read getattr search};
+
+allow vudu basic_file:dir {read getattr search};
+allow vudu basic_lib_file:file { read getattr execute };
+allow vudu basic_lib_file:lnk_file read;
+
+allow vudu config_file:file { read getattr };
+allow vudu config_file:dir {read getattr search};
+allow vudu config_file:lnk_file { read getattr };
+
+### VUDU is writing stuff into customer  ???? TODO : should ask if appropriate to remove
+allow vudu customer_data_file:dir { write add_name read search getattr};
+file_type_auto_trans(vudu, customer_data_file, vudu_data_file);
+
+allow vudu debugfs:dir {read getattr search};
+
+allow vudu etc_conf_file:file { read getattr };
+allow vudu etc_conf_file:lnk_file read;
+
+allow vudu playready_lib_file:file { read getattr execute };
+allow vudu playready_file:dir { read getattr search };
+
+allow vudu rootfs:file { read getattr };
+allow vudu rootfs:lnk_file { read getattr };
+allow vudu rootfs:dir {read getattr search};
+
+##stuff under /proc
+allow vudu vudu:capability { sys_nice ipc_lock};
+allow vudu vudu:dir { search read getattr };
+allow vudu vudu:fifo_file { write read };
+allow vudu vudu:file { read getattr };
+allow vudu vudu:netlink_kobject_uevent_socket { read bind create setopt };
+allow vudu vudu:process { fork setsched getsched signal };
+allow vudu vudu:tcp_socket { write accept getattr setopt read getopt create connect };
+allow vudu vudu:udp_socket { write accept read create ioctl connect };
+allow vudu vudu:unix_dgram_socket { create connect };
+allow vudu vudu:unix_stream_socket { write read create connect };
+
+allow vudu sysfs:dir { search read getattr };
+allow vudu sysfs:file { read getattr };
+
+allow vudu system_data_file:file { read getattr };
+allow vudu system_data_file:dir  { read getattr search };
+
+allow vudu system_file:file { read getattr };
+allow vudu system_file:dir {read getattr search};
+
+allow vudu system_lib_file:dir { read getattr search };
+allow vudu system_lib_file:file { read execute getattr };
+allow vudu system_lib_file:lnk_file { read getattr };
+
+allow vudu third_lib_file:lnk_file { read getattr };
+
+allow vudu tmp_file:dir {read getattr search};
+allow vudu tmp_file:fifo_file { read write };
+allow vudu tmp_file:file { read write getattr setattr };
+allow vudu fusion_data_file:file { read write getattr setattr };
+allow vudu tmp_file:lnk_file {read getattr};
+allow vudu tmp_file:sock_file write;
+
+
+#### pipe socket from other proccess
+allow vudu {semi_root_process app_man dtv_svc tts}:binder { transfer call };
+allow vudu {semi_root_process app_man}:dir {read getattr search};
+allow vudu {semi_root_process privileged_domain}:fd use;
+allow vudu {semi_root_process app_man}:fifo_file { read write };
+allow vudu {semi_root_process app_man}:file read;
+allow vudu {semi_root_process app_man}:netlink_kobject_uevent_socket { read write };
+allow vudu {semi_root_process app_man}:system module_request;
+allow vudu {semi_root_process app_man}:unix_stream_socket connectto;
+
+####socket from outer space
+allow vudu unconfined_type:association { recvfrom sendto };
+allow vudu unconfined_type:tcp_socket name_connect;
+
+allow vudu utopia_data_file:dir {search getattr read};
+allow vudu utopia_data_file:file { read write ioctl getattr};
+
+allow vudu bin_exec:file { read execute getattr execute_no_trans };
+allow vudu bin_exec:dir  {read getattr search};
+allow vudu bin_file:dir  {read getattr search};
+allow vudu bin_exec:lnk_file {read getattr};
+
+allow vudu selinuxfs_file:filesystem {getattr};
+
+allow vudu tts_data_file:dir {read getattr search};
+allow vudu tts_data_file:file { read write getattr };
+
+allow vudu usr_data_file:dir {read getattr search};
+allow vudu usr_data_file:file {read getattr};
+
+allow vudu unconfined_type:lnk_file { read getattr };
