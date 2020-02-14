@@ -331,3 +331,5 @@
 /(data/app|backup)/scpl(/.*)?                                       user_u:object_r:httpd_file
 /(data/app|backup)/scpl/bin(/.*)?                                   user_u:object_r:httpd_exec
 /(data/app|backup)/scpl/*\.sh                                       user_u:object_r:httpd_exec
+
+/data/app/storage/scpl(/.*)?                                        user_u:object_r:httpd_data_file
