@@ -25,6 +25,7 @@ allow httpd airplay_file:file {open getattr execute execute_no_trans entrypoint 
 allow httpd airplay_file:lnk_file {read getattr};
 
 allow httpd amazon_file:dir { search getattr read};
+allow httpd amazon_file:file {open getattr execute execute_no_trans entrypoint read};
 
 allow httpd appcache_data_file:lnk_file getattr;
 
@@ -58,7 +59,7 @@ allow httpd demo_data_file:dir {read getattr search};
 allow httpd device:dir { read search getattr };
 
 allow httpd domain_type:msg *;
-allow httpd domain_type:msgq { create getattr unix_read unix_write read write associate };
+allow httpd domain_type:msgq { create getattr unix_read unix_write read write associate enqueue };
 
 allow httpd etc_conf_file:file {read getattr };
 allow httpd etc_conf_file:lnk_file { read getattr };
