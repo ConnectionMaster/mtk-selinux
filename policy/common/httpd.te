@@ -1,149 +1,144 @@
-###domain httpd
-type httpd, domain_type;
-###rw file type, for data and cache
-type httpd_data_file, file_type;
-###exec type, need domain transition
-type httpd_exec, file_type;
 ###rx file type, mostly for library
 type httpd_file, file_type;
-
-domain_auto_trans(privileged_domain, httpd_exec, httpd);
 domain_auto_trans(privileged_domain, httpd_file, httpd);
-
 auditallow privileged_domain httpd_file:file { execute execute_no_trans };
+
+###rw file type, for data and cache
+type httpd_data_file, file_type;
+
+###exec type, need domain transition
+type httpd_exec, file_type;
+domain_auto_trans(privileged_domain, httpd_exec, httpd);
+
+###domain httpd
+type httpd, domain_type;
 
 file_type_auto_trans(httpd, tmp_file, httpd_data_file);
 
 #-----------------------------------------------------------
 
-allow httpd airplay_data_file:dir { read search getattr }; #/cache/airplay/...
-allow httpd airplay_data_file:file { read write getattr }; #/cache/airplay/...
-allow httpd airplay_data_file:lnk_file {read getattr};
+###access 3rd dir
+allow httpd third_file:dir { open execute getattr read search };
 
-allow httpd airplay_file:dir { open getattr execute read search };
-allow httpd airplay_file:file {open getattr execute execute_no_trans entrypoint read};
-allow httpd airplay_file:lnk_file {read getattr};
+###access 3rd lib file
+allow httpd third_lib_file:dir {getattr open read execute  search};
+allow httpd third_lib_file:file {getattr open read  execute};
+allow httpd third_lib_file:lnk_file { read getattr };
 
-allow httpd amazon_file:dir { search getattr read};
-allow httpd amazon_file:file {open getattr execute execute_no_trans entrypoint read};
-
-allow httpd appcache_data_file:lnk_file getattr;
-
-allow httpd application_file:dir {read search getattr};
-allow httpd application_file:lnk_file getattr;
-
-allow httpd backup_data_file:dir {read getattr search};
-
-allow httpd basic_device:chr_file { read write getattr ioctl append };
-allow httpd basic_file:dir {read search getattr};
-allow httpd basic_lib_file:file { read getattr execute };
-allow httpd basic_lib_file:lnk_file { read getattr };
-
-allow httpd bin_exec:dir  { read getattr search };
-allow httpd bin_exec:file { read execute getattr execute_no_trans };
-allow httpd bin_exec:lnk_file { read getattr };
-allow httpd bin_file:dir { read search getattr };
-
-allow httpd cache_data_file:dir { getattr search read };
-
-allow httpd certificate_file:dir getattr;
-
-allow httpd cli_device:chr_file { read write getattr ioctl };
-
-allow httpd config_file:dir getattr;
-
-allow httpd customer_data_file:dir getattr;
-
-allow httpd demo_data_file:dir {read getattr search};
-
-allow httpd device:dir { read search getattr };
-
-allow httpd domain_type:msg *;
-allow httpd domain_type:msgq { create getattr unix_read unix_write read write associate enqueue };
-
-allow httpd etc_conf_file:file {read getattr };
-allow httpd etc_conf_file:lnk_file { read getattr };
-
-allow httpd file_inode:dir { open getattr search write add_name };
-allow httpd file_inode:file { read getattr write create};
+###access httpd own file
+allow httpd httpd_file:dir { open getattr execute read search };
+allow httpd httpd_file:file {open getattr execute execute_no_trans entrypoint read ioctl};
+allow httpd httpd_file:lnk_file {read getattr open execute};
 
 ###access httpd data file
 #we allow httpd_data_file to have execute permission since the process will create tmp_file under /tmp and execute it
 allow httpd httpd_data_file:dir { open getattr read search write add_name create execute rename setattr };
 allow httpd httpd_data_file:file { getattr open read append write lock setattr execute };
 allow httpd httpd_data_file:lnk_file { getattr open read write read };
+
 ###access httpd exec file
 allow httpd httpd_exec:dir {open execute getattr read search};
 allow httpd httpd_exec:file{open read entrypoint getattr execute ioctl execute_no_trans};
-###access httpd own file
-allow httpd httpd_file:dir { open getattr execute read search };
-allow httpd httpd_file:file {open getattr execute execute_no_trans entrypoint read ioctl};
-allow httpd httpd_file:lnk_file {read getattr open execute};
 
-allow httpd playready_file:dir { search getattr read};
+#-----------------------------------------------------------------------------
+allow httpd device:dir { read search getattr };
+allow httpd basic_device:chr_file { read write getattr ioctl append };
 
-allow httpd pts_device:chr_file { read write };
+allow httpd { semi_root_process privileged_domain }:fd use;
 
-allow httpd python_exec:file { read execute entrypoint getattr };
-allow httpd python_exec:lnk_file { read getattr read };
-allow httpd python_file:dir { getattr search read };
-allow httpd python_file:file { read getattr execute ioctl };
+allow httpd airplay_data_file:file { read getattr }; #/cache/airplay/...
+
+allow httpd application_file:dir {read search getattr};
+
+allow httpd basic_file:dir {read search getattr};
+allow httpd basic_lib_file:file { read getattr execute };
+allow httpd basic_lib_file:lnk_file { read getattr };
+
+allow httpd etc_conf_file:lnk_file { read getattr };
+allow httpd etc_conf_file:file {read getattr };
+
+allow httpd self:process { fork signal sigchld };
+allow httpd self:tcp_socket { setopt read bind create accept write getattr connect shutdown getopt listen };
 
 allow httpd rootfs:dir {search getattr read};
 allow httpd rootfs:lnk_file { read getattr };
 
-allow httpd self:capability dac_override;
-allow httpd self:dir { read getattr search };
-allow httpd self:fifo_file { read getattr write };
-allow httpd self:file { read getattr };
-allow httpd self:netlink_route_socket { write bind create getattr read nlmsg_read };
-allow httpd self:process { fork signal sigchld };
-allow httpd self:tcp_socket { setopt read bind create accept write getattr connect shutdown getopt listen };
-allow httpd self:udp_socket { write read create connect getattr };
-allow httpd self:unix_stream_socket { create connect connectto write getattr shutdown read accept setopt bind ioctl listen };
-
-allow httpd shm_device:dir {read search getattr write add_name};
-allow httpd shm_device:file { read getattr };
-
-allow httpd sysfs:dir { read getattr search };
-allow httpd sysfs:file { read getattr };
-
-allow httpd system_data_file:dir { read search getattr };
-allow httpd system_data_file:file { read getattr ioctl execute execute_no_trans };
-allow httpd system_file:dir  { read getattr search };
-allow httpd system_file:file { read getattr };
 allow httpd system_lib_file:dir {read search getattr};
 allow httpd system_lib_file:file { read execute getattr };
 allow httpd system_lib_file:lnk_file {read getattr};
 
-###access 3rd dir
-allow httpd third_exec:dir {read search getattr};
-allow httpd third_file:dir { open execute getattr read search };
 allow httpd third_file:file { read getattr execute };
 allow httpd third_file:lnk_file { read getattr };
-###access 3rd lib file
-allow httpd third_lib_file:dir {getattr open read execute  search};
-allow httpd third_lib_file:file {getattr open read  execute};
-allow httpd third_lib_file:lnk_file { read getattr };
-allow httpd third_rw_data_file:dir {read getattr search};
-allow httpd third_rw_data_file:lnk_file {read getattr};
 
 allow httpd tmp_file:dir { read getattr search write add_name remove_name };
 allow httpd tmp_file:file { read getattr write create execute unlink ioctl setattr append };
 allow httpd tmp_file:lnk_file { read getattr };
 allow httpd tmp_file:sock_file { write unlink };
-allow httpd tmpfs:dir { read search getattr };
-#lw 
-allow httpd uli_data_file:dir { open getattr read search write add_name create execute rename setattr };
-allow httpd uli_data_file:file {getattr open read append write lock};
-
 
 #socket from outer world
 allow httpd unconfined_type:association { recvfrom sendto };
 allow httpd unconfined_type:tcp_socket { name_bind name_connect node_bind };
 
+allow httpd third_rw_data_file:dir {read getattr search};
+allow httpd third_rw_data_file:lnk_file {read getattr};
+
+allow httpd python_exec:file { read execute entrypoint getattr };
+allow httpd python_exec:lnk_file { read getattr read };
+allow httpd python_file:dir { getattr search read };
+allow httpd python_file:file { read getattr execute ioctl };
+allow httpd system_file:dir  { read getattr search };
+allow httpd system_file:file { read getattr };
+allow httpd cache_data_file:dir { getattr search read };
+allow httpd sysfs:dir { read getattr search };
+allow httpd sysfs:file { read getattr };
+#lw allow httpd self:capability dac_override;
+allow httpd self:netlink_route_socket { write bind create getattr read nlmsg_read };
+allow httpd self:udp_socket { write read create connect getattr };
+allow httpd self:dir { read getattr search };
+allow httpd self:file { read getattr };
+allow httpd self:fifo_file { read getattr write };
+
+allow httpd self:unix_stream_socket { create connect connectto write getattr shutdown read accept setopt bind ioctl listen };
+allow httpd bin_exec:file { read execute getattr execute_no_trans };
+allow httpd bin_exec:dir  { read getattr search };
+allow httpd bin_exec:lnk_file { read getattr };
+allow httpd bin_file:dir { read search getattr };
+allow httpd system_data_file:dir { read search getattr };
+allow httpd system_data_file:file { read getattr ioctl };
+allow httpd file_inode:dir { open getattr search write add_name };
+allow httpd file_inode:file { read getattr write create};
+
+allow httpd amazon_file:dir { search getattr read};
+allow httpd amazon_file:file {open getattr execute execute_no_trans entrypoint read};
+allow httpd playready_file:dir { search getattr read};
+allow httpd third_exec:dir {read search getattr};
+allow httpd tmpfs:dir { read search getattr };
 allow httpd widevine_file:dir { read search getattr };
-
 allow httpd wpa_supplicant_file:dir { read search getattr};
+allow httpd cli_device:chr_file { read write getattr ioctl };
+allow httpd demo_data_file:dir {read getattr search};
+allow httpd backup_data_file:dir {read getattr search};
 
-allow httpd { semi_root_process privileged_domain }:fd use;
+allow httpd customer_data_file:dir getattr;
+
+allow httpd application_file:lnk_file getattr;
+
+allow httpd certificate_file:dir getattr;
+
+allow httpd config_file:dir getattr;
+
+allow httpd airplay_data_file:dir { read search getattr }; #/cache/airplay/...
+allow httpd airplay_data_file:lnk_file {read getattr};
+allow httpd airplay_file:dir { open getattr execute read search };
+allow httpd airplay_file:file {open getattr execute execute_no_trans entrypoint read};
+allow httpd airplay_file:lnk_file {read getattr};
+
+allow httpd appcache_data_file:lnk_file getattr;
+
+allow httpd domain_type:msg *;
+allow httpd domain_type:msgq { create getattr unix_read unix_write read write associate enqueue };
+
+allow httpd pts_device:chr_file { read write };
+
+allow httpd uli_data_file:dir { open getattr read search add_name create execute rename setattr };
+allow httpd uli_data_file:file {getattr open read append lock};

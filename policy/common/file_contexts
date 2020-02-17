@@ -188,6 +188,7 @@
 /application(s)?/scpl(/.*)?                    user_u:object_r:httpd_file
 /application(s)?/scpl/bin(/.*)?                user_u:object_r:httpd_exec
 /application(s)?/scpl/*\.sh                    user_u:object_r:httpd_exec
+/application(s)?/scfs(/.*)?                    user_u:object_r:httpd_file
 
 ####basic
 /basic(/.*)?                                   user_u:object_r:basic_file
@@ -332,4 +333,5 @@
 /(data/app|backup)/scpl/bin(/.*)?                                   user_u:object_r:httpd_exec
 /(data/app|backup)/scpl/*\.sh                                       user_u:object_r:httpd_exec
 
+/data/app/scfs(/.*)?                                                user_u:object_r:httpd_file
 /data/app/storage/scpl(/.*)?                                        user_u:object_r:httpd_data_file
