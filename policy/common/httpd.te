@@ -49,6 +49,8 @@ allow httpd { semi_root_process privileged_domain }:fd use;
 allow httpd airplay_data_file:file { read getattr }; #/cache/airplay/...
 
 allow httpd application_file:dir {read search getattr};
+allow httpd application_file:file { read getattr execute };
+
 
 allow httpd basic_file:dir {read search getattr};
 allow httpd basic_lib_file:file { read getattr execute };
@@ -74,6 +76,10 @@ allow httpd tmp_file:dir { read getattr search write add_name remove_name };
 allow httpd tmp_file:file { read getattr write create execute unlink ioctl setattr append };
 allow httpd tmp_file:lnk_file { read getattr };
 allow httpd tmp_file:sock_file { write unlink };
+
+#lw Added this because audit2allow said to. Without this line,
+#lw /application/scpl/init_scpl.sh cannot create /tmp/scpl_root.
+allow httpd shm_device:dir search;
 
 #socket from outer world
 allow httpd unconfined_type:association { recvfrom sendto };
