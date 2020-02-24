@@ -49,8 +49,7 @@ allow httpd { semi_root_process privileged_domain }:fd use;
 allow httpd airplay_data_file:file { read getattr }; #/cache/airplay/...
 
 allow httpd application_file:dir {read search getattr};
-#allow httpd application_file:file { read getattr execute }; #lw MTK doesn't like execute
-allow httpd application_file:file { read getattr }; #lw 
+allow httpd application_file:file { read getattr };
 
 
 allow httpd basic_file:dir {read search getattr};
@@ -70,8 +69,7 @@ allow httpd system_lib_file:dir {read search getattr};
 allow httpd system_lib_file:file { read execute getattr };
 allow httpd system_lib_file:lnk_file {read getattr};
 
-#allow httpd third_file:file { read getattr execute }; #lw MTK doesn't like execute
-allow httpd third_file:file { read getattr }; #lw 
+allow httpd third_file:file { read getattr };
 allow httpd third_file:lnk_file { read getattr };
 
 allow httpd tmp_file:dir { read getattr search write add_name remove_name };
@@ -99,7 +97,6 @@ allow httpd system_file:file { read getattr };
 allow httpd cache_data_file:dir { getattr search read };
 allow httpd sysfs:dir { read getattr search };
 allow httpd sysfs:file { read getattr };
-#lw allow httpd self:capability dac_override;
 allow httpd self:netlink_route_socket { write bind create getattr read nlmsg_read };
 allow httpd self:udp_socket { write read create connect getattr };
 allow httpd self:dir { read getattr search };
@@ -112,14 +109,12 @@ allow httpd bin_exec:dir  { read getattr search };
 allow httpd bin_exec:lnk_file { read getattr };
 allow httpd bin_file:dir { read search getattr };
 allow httpd system_data_file:dir { read search getattr };
-#allow httpd system_data_file:file { read getattr ioctl }; #lw MTK doesn't like ioctl
-allow httpd system_data_file:file { read getattr }; #lw 
+allow httpd system_data_file:file { read getattr };
 allow httpd file_inode:dir { open getattr search write add_name };
 allow httpd file_inode:file { read getattr write create};
 
 allow httpd amazon_file:dir { search getattr read};
-#allow httpd amazon_file:file {open getattr execute execute_no_trans entrypoint read}; #lw MTK doesn't like execute*
-allow httpd amazon_file:file {open getattr entrypoint read}; #lw 
+allow httpd amazon_file:file {open getattr entrypoint read};
 allow httpd playready_file:dir { search getattr read};
 allow httpd third_exec:dir {read search getattr};
 allow httpd tmpfs:dir { read search getattr };
@@ -140,8 +135,7 @@ allow httpd config_file:dir getattr;
 allow httpd airplay_data_file:dir { read search getattr }; #/cache/airplay/...
 allow httpd airplay_data_file:lnk_file {read getattr};
 allow httpd airplay_file:dir { open getattr execute read search };
-#allow httpd airplay_file:file {open getattr execute execute_no_trans entrypoint read}; #lw MTK doesn't like execute*
-allow httpd airplay_file:file {open getattr entrypoint read}; #lw 
+allow httpd airplay_file:file {open getattr entrypoint read};
 allow httpd airplay_file:lnk_file {read getattr};
 
 allow httpd appcache_data_file:lnk_file getattr;
@@ -151,6 +145,25 @@ allow httpd domain_type:msgq { create getattr unix_read unix_write read write as
 
 allow httpd pts_device:chr_file { read write };
 
-#allow httpd uli_data_file:dir { open getattr read search add_name create execute rename setattr }; #lw MTK doesn't like execute
-allow httpd uli_data_file:dir { open getattr read search add_name create rename setattr }; #lw 
+allow httpd uli_data_file:dir { open getattr read search add_name create rename setattr };
 allow httpd uli_data_file:file {getattr open read append lock};
+
+#lw bluetooth
+allow httpd certificate_file:dir search;
+allow httpd system_data_file:lnk_file read;
+
+allow httpd bluetooth_data_file:dir { open getattr read search add_name create rename setattr };
+allow httpd bluetooth_data_file:file { getattr open read append lock };
+allow httpd bluetooth_file:dir { getattr search };
+allow httpd bluetooth_file:file { getattr open read lock };
+allow httpd bluetooth_exec:dir { getattr search };
+allow httpd bluetooth_exec:file{ open read entrypoint getattr execute ioctl };
+
+#lw vzsdk
+allow httpd vzsdk_exec:dir { getattr search };
+allow httpd vzsdk_exec:file{ open read entrypoint getattr execute ioctl };
+
+#lw for /var/run/dbus/system_bus_socket
+allow httpd tmpfs:sock_file { read write getattr };
+allow httpd unconfined_process:unix_stream_socket connectto;
+

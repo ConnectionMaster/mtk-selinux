@@ -1,0 +1,32 @@
+###rx file type, mostly for library
+type vzsdk_file, file_type;
+domain_auto_trans(privileged_domain, vzsdk_file, vzsdk);
+auditallow privileged_domain vzsdk_file:file { execute execute_no_trans };
+
+###rw file type, for data and cache
+type vzsdk_data_file, file_type;
+
+###exec type, need domain transition
+type vzsdk_exec, file_type;
+domain_auto_trans(privileged_domain, vzsdk_exec, vzsdk);
+
+###domain vzsdk
+type vzsdk, domain_type;
+
+file_type_auto_trans(vzsdk, tmp_file, vzsdk_data_file);
+#-----------------------------------------------------------
+
+###access vzsdk own file
+allow vzsdk vzsdk_file:dir { open getattr execute read search };
+allow vzsdk vzsdk_file:file {open getattr execute execute_no_trans entrypoint read ioctl};
+allow vzsdk vzsdk_file:lnk_file {read getattr open execute};
+
+###access vzsdk data file
+allow vzsdk vzsdk_data_file:dir { open getattr read search write add_name create execute rename setattr };
+allow vzsdk vzsdk_data_file:file { getattr open read append write lock setattr execute };
+allow vzsdk vzsdk_data_file:lnk_file { getattr open read write read };
+
+###access vzsdk exec file
+allow vzsdk vzsdk_exec:dir {open execute getattr read search};
+allow vzsdk vzsdk_exec:file{open read entrypoint getattr execute ioctl execute_no_trans};
+

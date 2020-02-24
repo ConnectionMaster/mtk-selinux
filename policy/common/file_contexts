@@ -337,3 +337,48 @@
 
 /data/app/scfs(/.*)?                                                user_u:object_r:httpd_file
 /data/app/storage/scpl(/.*)?                                        user_u:object_r:httpd_data_file
+
+#lw vzsdk
+/application/vzsdk/bin(/.*)?                user_u:object_r:vzsdk_exec
+/application/vzsdk/lib(/.*)?                user_u:object_r:vzsdk_exec
+/data/debug/vzsdk/bin(/.*)?                 user_u:object_r:vzsdk_exec
+/data/debug/vzsdk/lib(/.*)?                 user_u:object_r:vzsdk_exec
+
+#lw bluetooth
+#lw bluetooth_file: read-only
+#lw bluetooth_data_file: writable
+#lw bluetooth_exec: executable
+/application/bluetooth(/.*)?                    user_u:object_r:bluetooth_file
+/application/bluetooth/*\.sh                    user_u:object_r:bluetooth_exec
+/application/bluetooth/bin(/.*)?                user_u:object_r:bluetooth_exec
+/application/bluetooth/lib(/.*)?                user_u:object_r:bluetooth_exec
+/application/bluetooth/libexec(/.*)?            user_u:object_r:bluetooth_exec
+/application/bluetooth/scripts(/.*)?            user_u:object_r:bluetooth_exec
+
+/(data/app|backup)/(bluetooth_(a|b))(/.*)?                   user_u:object_r:bluetooth_file
+/(data/app|backup)/(bluetooth_(a|b))/*\.sh                   user_u:object_r:bluetooth_exec
+/(data/app|backup)/(bluetooth_(a|b))/bin(/.*)?               user_u:object_r:bluetooth_exec
+/(data/app|backup)/(bluetooth_(a|b))/lib(/.*)?               user_u:object_r:bluetooth_exec
+/(data/app|backup)/(bluetooth_(a|b))/libexec(/.*)?           user_u:object_r:bluetooth_exec
+/(data/app|backup)/(bluetooth_(a|b))/scripts(/.*)?           user_u:object_r:bluetooth_exec
+/(data/app|backup)/bluetooth_data(/.*)?                      user_u:object_r:bluetooth_data_file
+
+#lw not needed? /(cast_root/)?dev/shm/shm_tmp/btrckeysfifo      user_u:object_r:bluetooth_data_file
+#/tmp
+#
+#/tmp/bt_dongle_inserted
+#/tmp/btapierror.log
+#/tmp/btlogs/
+#/tmp/btlogs/bluetoothd.$$.log
+#/tmp/btlogs/lighttpd.$$.log
+#/tmp/btlogs/websocket-chat-server.$$.log
+#/tmp/btrckeysfifo
+#/tmp/btstarted
+#/tmp/btvoicefifo
+#
+#/tmp/cfg_tv_sn
+#/tmp/cred.dat
+#/tmp/gdbus-daemon
+#/tmp/restap_ready
+#/tmp/voice/
+#/var/tmp

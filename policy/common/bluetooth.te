@@ -1,0 +1,75 @@
+###rx file type, mostly for library
+type bluetooth_file, file_type;
+
+###rw file type, for data and cache
+type bluetooth_data_file, file_type, private_data_file_type;
+
+###exec type, need domain transition
+type bluetooth_exec, file_type;
+
+###domain bluetooth
+type bluetooth, domain_type;
+
+file_type_auto_trans(bluetooth, tmp_file, bluetooth_data_file);
+file_type_auto_trans(bluetooth, system_data_file, bluetooth_data_file);
+
+#-----------------------------------------------------------
+allow bluetooth application_file:dir { read search getattr };
+
+allow bluetooth backup_data_file:dir { read search getattr };
+
+allow bluetooth basic_device:chr_file { read getattr write ioctl };
+
+allow bluetooth bluetooth_data_file:dir { write remove_name add_name };
+allow bluetooth bluetooth_data_file:file { read write create unlink rename };
+allow bluetooth bluetooth_exec:file { ioctl execute_no_trans };
+allow bluetooth bluetooth_exec:lnk_file { read getattr };
+allow bluetooth bluetooth_file:dir { read search getattr };
+allow bluetooth bluetooth_file:lnk_file { read getattr };
+
+allow bluetooth cache_data_file:dir { read search getattr };
+
+allow bluetooth device:dir { read search getattr };
+
+allow bluetooth etc_conf_file:file { read getattr };
+allow bluetooth etc_conf_file:lnk_file { read getattr };
+
+allow bluetooth event_device:chr_file { read write getattr ioctl };
+
+allow bluetooth file_inode:dir { read search getattr };
+allow bluetooth file_inode:file { read getattr };
+
+allow bluetooth httpd_data_file:dir { read search getattr };
+allow bluetooth httpd_data_file:file { read getattr };
+
+allow bluetooth miomap_device:chr_file { read write ioctl };
+
+allow bluetooth rootfs:dir { read search getattr };
+allow bluetooth rootfs:file { read getattr execute execute_no_trans };
+allow bluetooth rootfs:lnk_file { read getattr };
+
+allow bluetooth semi_root_process:binder { transfer call };
+
+allow bluetooth semutex_device:chr_file { read write ioctl };
+
+allow bluetooth shm_device:dir { read search getattr write remove_name add_name };
+allow bluetooth shm_device:file { read write create unlink getattr };
+
+allow bluetooth sysfs:dir { read search getattr };
+allow bluetooth sysfs:file read;
+allow bluetooth sysfs:filesystem getattr;
+allow bluetooth sysfs:lnk_file { read getattr };
+
+allow bluetooth system_data_file:dir  { read search getattr };
+allow bluetooth system_lib_file:dir { read search getattr };
+allow bluetooth system_lib_file:file { read getattr execute };
+allow bluetooth system_lib_file:lnk_file read;
+
+allow bluetooth third_file:dir { read search getattr };
+
+allow bluetooth tmp_file:dir remove_name;
+allow bluetooth tmp_file:file { read getattr write setattr append };
+allow bluetooth tmp_file:sock_file write;
+
+allow bluetooth tmpfs:dir { read search getattr };
+
