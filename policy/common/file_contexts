@@ -159,6 +159,7 @@
 /certificate/TemporaryPath(/.*)?   user_u:object_r:uli_data_file
 /certificate/drmp(/.*)?            user_u:object_r:uli_data_file
 /certificate/cast_cert(/.*)?       user_u:object_r:factory_data_file
+/certificate/amazon_iot(/.*)?      user_u:object_r:httpd_data_file
 
 ####Customer
 /Customer(/.*)?                    user_u:object_r:customer_data_file
@@ -237,7 +238,7 @@
 /cache/sc-data(/.*)?                           user_u:object_r:httpd_data_file
 /cache/apps(/.*)?                              user_u:object_r:httpd_data_file
 /cache/uli(/.*)?                               user_u:object_r:uli_data_file
-/cache/amazon_iot(/.*)?                        user_u:object_r:uli_data_file
+/cache/amazon_iot(/.*)?                        user_u:object_r:httpd_data_file
 /cache/airplay(/.*)?                           user_u:object_r:airplay_data_file
 
 ####config
@@ -283,6 +284,7 @@
 ####demo
 /demo(/.*)?                                    user_u:object_r:demo_data_file
 /demo/sc(/.*)?                                 user_u:object_r:httpd_data_file
+/demo/retail_demo(/.*)?                        user_u:object_r:uli_data_file
 
 ####chrome
 /cast_root/(system/)?chrome(/.*)?              user_u:object_r:chrome_file
@@ -337,6 +339,13 @@
 
 /data/app/scfs(/.*)?                                                user_u:object_r:httpd_file
 /data/app/storage/scpl(/.*)?                                        user_u:object_r:httpd_data_file
+####3rd_rw folder
+/data/3rd_rw                                           user_u:object_r:third_rw_data_file
+/data/3rd_rw/web_server(/.*)?                          user_u:object_r:httpd_data_file
+/data/3rd_rw/lighttpd(/.*)?                            user_u:object_r:httpd_data_file
+/data/3rd_rw/rest_server(/.*)?                         user_u:object_r:httpd_data_file
+/data/3rd_rw/sc-data(/.*)?                             user_u:object_r:httpd_data_file
+/data/3rd_rw/apps(/.*)?                                user_u:object_r:httpd_data_file
 
 #lw vzsdk
 /application/vzsdk/bin(/.*)?                user_u:object_r:vzsdk_exec

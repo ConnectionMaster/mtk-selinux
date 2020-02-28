@@ -7,3 +7,4 @@ attribute dtv_svc_init_type;
 attribute cast_init_type;
 attribute launcher_type;
 attribute browser_ctrl_init_type;
+attribute external_storage_file_type;

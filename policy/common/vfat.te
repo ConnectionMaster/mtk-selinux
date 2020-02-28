@@ -1,0 +1,6 @@
+type vfat_data_file, file_type, external_storage_file_type;
+allow domain_type external_storage_file_type : file create_file_perms;
+allow domain_type external_storage_file_type : dir create_dir_perms;
+allow domain_type external_storage_file_type : lnk_file {read getattr};
+allow external_storage_file_type external_storage_file_type:filesystem *;
+allow domain_type external_storage_file_type:filesystem getattr;

@@ -33,4 +33,4 @@ genfscon proc /tz_mstar/ramlog_setup   user_u:object_r:tee_supplicant_data_file
 genfscon proc /tz2_mstar/ramlog_setup  user_u:object_r:tee_supplicant_data_file
 
 genfscon selinuxfs / user_u:object_r:selinuxfs_file
-
+genfscon vfat / user_u:object_r:vfat_data_file

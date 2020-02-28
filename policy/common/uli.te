@@ -54,8 +54,16 @@ allow uli airplay_data_file : file {getattr open read append write lock create s
 allow uli tee_supplicant_data_file : dir { open getattr read search write add_name create execute rename setattr };
 allow uli tee_supplicant_data_file : file {getattr open read append write lock create};
 
+####write amazon_iot data file
+allow uli httpd_data_file : dir { open getattr read search write add_name create execute rename setattr };
+allow uli httpd_data_file : file {getattr open read append write lock create setattr};
+
 ###access cache dir
 allow uli cache_data_file: dir { open getattr read search };
+
+##access demo dir
+allow uli demo_data_file: dir { read search getattr };
+file_type_auto_trans(uli, demo_data_file, uli_data_file);
 
 #####access basic lib file
 allow uli basic_file     : dir  {read getattr search};
