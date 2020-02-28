@@ -14,3 +14,10 @@ allow su selinuxfs_file  : security setenforce;
 allow domain_type su : fd use;
 
 type su_exec;
+
+#lw for bluetooth
+allow su self:capability { sys_module setuid setgid dac_override };
+allow su su_exec:file execute_no_trans;
+allow su su_exec:lnk_file read;
+allow su self:capability { net_admin sys_resource net_bind_service };
+
