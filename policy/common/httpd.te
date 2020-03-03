@@ -46,6 +46,7 @@ allow httpd basic_device:chr_file { read write getattr ioctl append };
 allow httpd shm_device : dir {read search getattr};
 
 allow httpd { semi_root_process privileged_domain }:fd use;
+allow httpd semi_root_process:unix_stream_socket connectto;
 
 allow httpd airplay_data_file:file { read getattr }; #/dev/shm/shm_tmp/index2.html
 allow httpd shm_device:file { read getattr };
@@ -130,7 +131,7 @@ allow httpd backup_data_file:dir {read getattr search};
 
 allow httpd customer_data_file:dir getattr;
 
-allow httpd application_file:lnk_file getattr;
+allow httpd application_file:lnk_file { getattr read };
 
 allow httpd certificate_file:dir getattr;
 
@@ -163,18 +164,14 @@ allow httpd bluetooth_file:file { getattr open read lock };
 allow httpd bluetooth_exec:dir { getattr search };
 allow httpd bluetooth_exec:file{ open read entrypoint getattr execute ioctl };
 allow httpd bluetooth_exec:lnk_file read;
+allow httpd bluetooth:unix_stream_socket connectto;
 
-#lw vzsdk
 allow httpd vzsdk_exec:dir { getattr search };
 allow httpd vzsdk_exec:file{ open read entrypoint getattr execute ioctl };
 
-#lw for /var/run/dbus/system_bus_socket
 allow httpd tmpfs:sock_file { read write getattr };
+
 allow httpd unconfined_process:unix_stream_socket connectto;
 
-allow httpd bluetooth:unix_stream_socket connectto;
-#lw allow httpd su:unix_stream_socket connectto;
 
-#lw for /application/vzsdk/lib/_platform_api.so
-#lw allow httpd application_file:file execute;
 

@@ -111,3 +111,8 @@ allow conjure file_inode:file { read getattr };
 allow conjure fusion_data_file:file { read write setattr };
 
 allow conjure debugfs:dir search;
+
+#lw --------------------
+allow conjure system_file:dir search;
+allow conjure device:chr_file getattr;
+
