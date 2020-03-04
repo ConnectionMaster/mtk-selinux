@@ -42,6 +42,7 @@ allow conjure system_file:file { read getattr };
 allow conjure third_file:dir { read search getattr };
 
 allow conjure system_data_file:dir  { read search getattr };
+allow conjure system_data_file:lnk_file read;
 allow conjure system_lib_file:dir { read search getattr };
 allow conjure system_lib_file:file { read getattr execute };
 allow conjure system_lib_file:lnk_file read;
@@ -67,7 +68,7 @@ allow conjure cast_init:unix_dgram_socket sendto;
 
 allow conjure chrome_file:dir { read search getattr };
 allow conjure chrome_file:file { read  getattr };
-allow conjure chrome_file:lnk_file read;
+allow conjure chrome_file:lnk_file { read getattr };
 allow conjure chrome_data_file:dir { open getattr read search write add_name create execute rename setattr remove_name };
 allow conjure chrome_data_file:file { getattr open read append write create setattr rename unlink };
 allow conjure chrome_data_file:lnk_file read;
@@ -75,6 +76,7 @@ allow conjure chrome_data_file:lnk_file read;
 allow conjure conjure_exec:file { ioctl execute_no_trans };
 allow conjure conjure_exec:lnk_file { read getattr };
 allow conjure conjure_file:dir { read search getattr };
+allow conjure conjure_file:file ioctl;
 allow conjure conjure_file:lnk_file { read getattr };
 allow conjure conjure_data_file:dir { write remove_name add_name };
 allow conjure conjure_data_file:file { read write create unlink rename };
@@ -83,7 +85,7 @@ allow conjure socket_device:dir { read search getattr };
 allow conjure socket_device:sock_file write;
 
 allow conjure event_device:chr_file { read write getattr ioctl };
-allow conjure basic_device:chr_file { read getattr write ioctl };
+allow conjure basic_device:chr_file { read getattr write ioctl append };
 allow conjure mik_device:chr_file { read write ioctl };
 allow conjure semutex_device:chr_file { read write ioctl };
 allow conjure cb_device:chr_file { read write ioctl };
@@ -115,4 +117,7 @@ allow conjure debugfs:dir search;
 #lw --------------------
 allow conjure system_file:dir search;
 allow conjure device:chr_file getattr;
+
+allow conjure bin_exec:file { read execute };
+
 
