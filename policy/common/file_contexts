@@ -65,6 +65,9 @@
 /(cast_root/)?dev/ashmem                        user_u:object_r:ashmem_device
 /(cast_root/)?dev/cli                           user_u:object_r:cli_device
 /cast_root/dev/socket(/.*)?                     user_u:object_r:socket_device
+#lw for bluetooth
+/(cast_root/)?dev/uhid                          user_u:object_r:bluetooth_device
+/(cast_root/)?dev/hidraw.*                      user_u:object_r:bluetooth_device
 
 ####data
 /data(/.*)?                        user_u:object_r:system_data_file
@@ -88,6 +91,7 @@
 /(cast_root/)?data/chrome(/.*)?    user_u:object_r:chrome_data_file
 /(cast_root/)?data/chromium(/.*)?  user_u:object_r:conjure_data_file
 /(cast_root/)?data/share(/.*)?     user_u:object_r:chrome_data_file
+/(cast_root/)?data/bluetooth_data(/.*)? user_u:object_r:bluetooth_data_file
 
 ####3rd
 /3rd(/.*)?                                     user_u:object_r:third_file
@@ -188,7 +192,7 @@
 /application(s)?/apm/svcmgr                    user_u:object_r:app_man_exec
 /application(s)?/scpl(/.*)?                    user_u:object_r:httpd_file
 /application(s)?/scpl/bin(/.*)?                user_u:object_r:httpd_exec
-/application(s)?/scpl/*\.sh                    user_u:object_r:httpd_exec
+/application(s)?/scpl/.*\.sh                   user_u:object_r:httpd_exec
 /application(s)?/scpl/lighttpd/*\.fcgi         user_u:object_r:httpd_exec
 /application(s)?/scfs(/.*)?                    user_u:object_r:httpd_file
 
@@ -308,7 +312,7 @@
 /application/chromium/conjure                  user_u:object_r:conjure_exec
 /application/chromium/dumpstate                user_u:object_r:conjure_exec
 /application/chromium/fling                    user_u:object_r:conjure_exec
-/application/chromium/*\.sh                    user_u:object_r:conjure_exec
+/application/chromium/.*\.sh                   user_u:object_r:conjure_exec
 
 ####backup
 /backup(/.*)?                                  user_u:object_r:backup_data_file
@@ -331,63 +335,34 @@
 /(data/app|backup)/(chromium|conjure_(a|b))/conjure                 user_u:object_r:conjure_exec
 /(data/app|backup)/(chromium|conjure_(a|b))/dumpstate               user_u:object_r:conjure_exec
 /(data/app|backup)/(chromium|conjure_(a|b))/fling                   user_u:object_r:conjure_exec
-/(data/app|backup)/(chromium|conjure_(a|b))/*\.sh                   user_u:object_r:conjure_exec
+/(data/app|backup)/(chromium|conjure_(a|b))/.*\.sh                  user_u:object_r:conjure_exec
 /(data/app|backup)/scpl(/.*)?                                       user_u:object_r:httpd_file
 /(data/app|backup)/scpl/bin(/.*)?                                   user_u:object_r:httpd_exec
-/(data/app|backup)/scpl/*\.sh                                       user_u:object_r:httpd_exec
+/(data/app|backup)/scpl/.*\.sh                                      user_u:object_r:httpd_exec
 /(data/app|backup)/scpl/lighttpd/*\.fcgi                            user_u:object_r:httpd_exec
 
 /data/app/scfs(/.*)?                                                user_u:object_r:httpd_file
 /data/app/storage/scpl(/.*)?                                        user_u:object_r:httpd_data_file
-####3rd_rw folder
-/data/3rd_rw                                           user_u:object_r:third_rw_data_file
-/data/3rd_rw/web_server(/.*)?                          user_u:object_r:httpd_data_file
-/data/3rd_rw/lighttpd(/.*)?                            user_u:object_r:httpd_data_file
-/data/3rd_rw/rest_server(/.*)?                         user_u:object_r:httpd_data_file
-/data/3rd_rw/sc-data(/.*)?                             user_u:object_r:httpd_data_file
-/data/3rd_rw/apps(/.*)?                                user_u:object_r:httpd_data_file
 
-#lw vzsdk
+# vzsdk
 /application/vzsdk/bin(/.*)?                user_u:object_r:vzsdk_exec
-/application/vzsdk/lib(/.*)?                user_u:object_r:vzsdk_exec
+/application/vzsdk/lib(/.*)?                user_u:object_r:vzsdk_file
 /data/debug/vzsdk/bin(/.*)?                 user_u:object_r:vzsdk_exec
-/data/debug/vzsdk/lib(/.*)?                 user_u:object_r:vzsdk_exec
+/data/debug/vzsdk/lib(/.*)?                 user_u:object_r:vzsdk_file
 
-#lw bluetooth
-#lw bluetooth_file: read-only
-#lw bluetooth_data_file: writable
-#lw bluetooth_exec: executable
+# bluetooth
 /application/bluetooth(/.*)?                    user_u:object_r:bluetooth_file
-/application/bluetooth/*\.sh                    user_u:object_r:bluetooth_exec
+/application/bluetooth/.*\.sh                   user_u:object_r:bluetooth_exec
 /application/bluetooth/bin(/.*)?                user_u:object_r:bluetooth_exec
-/application/bluetooth/lib(/.*)?                user_u:object_r:bluetooth_exec
+/application/bluetooth/lib(/.*)?                user_u:object_r:bluetooth_file
 /application/bluetooth/libexec(/.*)?            user_u:object_r:bluetooth_exec
 /application/bluetooth/scripts(/.*)?            user_u:object_r:bluetooth_exec
 
+/(data/app|backup)/bluetooth(/.*)?                           user_u:object_r:bluetooth_file
 /(data/app|backup)/(bluetooth_(a|b))(/.*)?                   user_u:object_r:bluetooth_file
-/(data/app|backup)/(bluetooth_(a|b))/*\.sh                   user_u:object_r:bluetooth_exec
+/(data/app|backup)/(bluetooth_(a|b))/.*\.sh                  user_u:object_r:bluetooth_exec
 /(data/app|backup)/(bluetooth_(a|b))/bin(/.*)?               user_u:object_r:bluetooth_exec
-/(data/app|backup)/(bluetooth_(a|b))/lib(/.*)?               user_u:object_r:bluetooth_exec
+/(data/app|backup)/(bluetooth_(a|b))/lib(/.*)?               user_u:object_r:bluetooth_file
 /(data/app|backup)/(bluetooth_(a|b))/libexec(/.*)?           user_u:object_r:bluetooth_exec
 /(data/app|backup)/(bluetooth_(a|b))/scripts(/.*)?           user_u:object_r:bluetooth_exec
-/(data/app|backup)/bluetooth_data(/.*)?                      user_u:object_r:bluetooth_data_file
 
-#lw not needed? /(cast_root/)?dev/shm/shm_tmp/btrckeysfifo      user_u:object_r:bluetooth_data_file
-#/tmp
-#
-#/tmp/bt_dongle_inserted
-#/tmp/btapierror.log
-#/tmp/btlogs/
-#/tmp/btlogs/bluetoothd.$$.log
-#/tmp/btlogs/lighttpd.$$.log
-#/tmp/btlogs/websocket-chat-server.$$.log
-#/tmp/btrckeysfifo
-#/tmp/btstarted
-#/tmp/btvoicefifo
-#
-#/tmp/cfg_tv_sn
-#/tmp/cred.dat
-#/tmp/gdbus-daemon
-#/tmp/restap_ready
-#/tmp/voice/
-#/var/tmp

@@ -15,9 +15,3 @@ allow unconfined_process selinuxfs_file : file ~{ioctl create setattr lock relab
 allow unconfined_process selinuxfs_file : dir  ~{ioctl write create setattr lock relabelfrom relabelto append unlink rename execute quotaon execmod add_name remove_name reparent rmdir};
 allow unconfined_process selinuxfs_file : security  ~{setenforce};
 allow unconfined_process selinuxfs_file : filesystem  ~{relabelfrom relabelto};
-
-#lw for bluetooth
-allow unconfined_process su:dir search;
-allow unconfined_process su:file read;
-#lw not allowed# allow unconfined_process bluetooth_data_file:file { read write };
-

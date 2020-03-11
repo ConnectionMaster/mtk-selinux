@@ -46,7 +46,6 @@ allow httpd basic_device:chr_file { read write getattr ioctl append };
 allow httpd shm_device : dir {read search getattr};
 
 allow httpd { semi_root_process privileged_domain }:fd use;
-allow httpd semi_root_process:unix_stream_socket connectto;
 
 allow httpd airplay_data_file:file { read getattr }; #/dev/shm/shm_tmp/index2.html
 allow httpd shm_device:file { read getattr };
@@ -72,16 +71,13 @@ allow httpd system_lib_file:file { read execute getattr };
 allow httpd system_lib_file:lnk_file {read getattr};
 
 allow httpd third_file:file { read getattr };
+allow httpd third_file:dir { search read getattr };
 allow httpd third_file:lnk_file { read getattr };
 
 allow httpd tmp_file:dir { read getattr search write add_name remove_name };
 allow httpd tmp_file:file { read getattr write create execute unlink ioctl setattr append };
 allow httpd tmp_file:lnk_file { read getattr };
 allow httpd tmp_file:sock_file { write unlink };
-
-#lw Added this because audit2allow said to. Without this line,
-#lw /application/scpl/init_scpl.sh cannot create /tmp/scpl_root.
-allow httpd shm_device:dir search;
 
 #socket from outer world
 allow httpd unconfined_type:association { recvfrom sendto };
@@ -106,8 +102,8 @@ allow httpd self:dir { read getattr search };
 allow httpd self:file { read getattr };
 allow httpd self:fifo_file { read getattr write };
 
-allow httpd self:unix_stream_socket { create connect connectto write getattr shutdown read accept setopt bind ioctl listen };
-allow httpd self:unix_dgram_socket { create ioctl };
+allow httpd self:process { signal sigchld };
+allow httpd self:unix_stream_socket { create connect connectto write getattr shutdown read accept setopt bind listen ioctl };
 
 allow httpd bin_exec:file { read execute getattr execute_no_trans };
 allow httpd bin_exec:dir  { read getattr search };
@@ -118,8 +114,10 @@ allow httpd system_data_file:file { read getattr };
 allow httpd file_inode:dir { open getattr search write add_name };
 allow httpd file_inode:file { read getattr write create};
 
+allow httpd tmp_file:dir { write add_name remove_name };
+allow httpd tmp_file:file { write create execute unlink ioctl setattr };
 allow httpd amazon_file:dir { search getattr read};
-allow httpd amazon_file:file {open getattr entrypoint read};
+allow httpd amazon_file:file {open getattr read};
 allow httpd playready_file:dir { search getattr read};
 allow httpd third_exec:dir {read search getattr};
 allow httpd tmpfs:dir { read search getattr };
@@ -140,7 +138,7 @@ allow httpd config_file:dir getattr;
 allow httpd airplay_data_file:dir { read search getattr }; #/cache/airplay/...
 allow httpd airplay_data_file:lnk_file {read getattr};
 allow httpd airplay_file:dir { open getattr read search };
-allow httpd airplay_file:file {open getattr entrypoint read};
+allow httpd airplay_file:file {open getattr read};
 allow httpd airplay_file:lnk_file {read getattr};
 
 allow httpd appcache_data_file:lnk_file getattr;
@@ -153,25 +151,20 @@ allow httpd pts_device:chr_file { read write };
 allow httpd uli_data_file:dir { open getattr read search add_name create rename setattr };
 allow httpd uli_data_file:file {getattr open read append lock};
 
-#lw bluetooth
+# bluetooth
 allow httpd certificate_file:dir search;
 allow httpd system_data_file:lnk_file read;
 
-allow httpd bluetooth_data_file:dir { open getattr read search add_name create rename setattr };
-allow httpd bluetooth_data_file:file { getattr open read append lock };
+# for loading bluetooth libraries
 allow httpd bluetooth_file:dir { getattr search };
-allow httpd bluetooth_file:file { getattr open read lock };
-allow httpd bluetooth_exec:dir { getattr search };
-allow httpd bluetooth_exec:file{ open read entrypoint getattr execute ioctl };
-allow httpd bluetooth_exec:lnk_file read;
+allow httpd bluetooth_file:file { getattr open read lock execute };
+allow httpd bluetooth_file:lnk_file read;
+# for /var/run/dbus/system_bus_socket; used to talk to bluetooth
+allow httpd bluetooth_data_file:dir { getattr search };
+allow httpd bluetooth_data_file:sock_file write;
 allow httpd bluetooth:unix_stream_socket connectto;
 
-allow httpd vzsdk_exec:dir { getattr search };
-allow httpd vzsdk_exec:file{ open read entrypoint getattr execute ioctl };
-
-allow httpd tmpfs:sock_file { read write getattr };
-
-allow httpd unconfined_process:unix_stream_socket connectto;
-
-
+# for loading libraries
+allow httpd vzsdk_file:dir { getattr search };
+allow httpd vzsdk_file:file { getattr open read lock execute };
 

@@ -11,8 +11,16 @@ domain_auto_trans(privileged_domain, bluetooth_exec, bluetooth);
 ###domain bluetooth
 type bluetooth, domain_type;
 
+# for /tmp/
 file_type_auto_trans(bluetooth, tmp_file, bluetooth_data_file);
+
+# for /var/run/dbus/
+file_type_auto_trans(bluetooth, tmpfs, bluetooth_data_file);
+
+# for /data
 file_type_auto_trans(bluetooth, system_data_file, bluetooth_data_file);
+
+#file_type_auto_trans(bluetooth, device, bluetooth_device);
 
 #-----------------------------------------------------------
 allow bluetooth application_file:dir { read search getattr };
@@ -20,20 +28,34 @@ allow bluetooth application_file:dir { read search getattr };
 allow bluetooth backup_data_file:dir { read search getattr };
 
 allow bluetooth basic_device:chr_file { read getattr write ioctl };
+allow bluetooth basic_file:dir { getattr search };
 
-allow bluetooth bluetooth_data_file:dir { write remove_name add_name };
-allow bluetooth bluetooth_data_file:file { read write create unlink rename };
-allow bluetooth bluetooth_exec:dir { getattr search };
+allow bluetooth bin_file:dir search;
+allow bluetooth bin_exec:file { read execute getattr execute_no_trans };
+allow bluetooth bin_exec:dir  { read getattr search };
+allow bluetooth bin_exec:lnk_file { read getattr };
+
+allow bluetooth bluetooth_data_file:dir { open getattr read search write add_name create rename setattr };
+allow bluetooth bluetooth_data_file:file { getattr open read append write lock setattr };
+allow bluetooth bluetooth_device:chr_file { read write getattr ioctl relabelto setattr };
+allow bluetooth bluetooth_exec:dir { getattr search read };
 allow bluetooth bluetooth_exec:file { ioctl execute_no_trans };
 allow bluetooth bluetooth_exec:lnk_file { read getattr };
 allow bluetooth bluetooth_file:dir { read search getattr };
-allow bluetooth bluetooth_file:file { read getattr };
+allow bluetooth bluetooth_file:file { read getattr execute };
 allow bluetooth bluetooth_file:lnk_file { read getattr };
 
 allow bluetooth cache_data_file:dir { read search getattr };
 
+# /cast_root/dev/socket/logdw -- btLogWrapper logging?
+allow bluetooth cast_init:unix_dgram_socket sendto;
+
+# /sys/kernel/debug/tracing/ # for insmod?
+allow bluetooth debugfs:dir search;
+
+# /cast_root/dev/uhid
+allow bluetooth device:chr_file { getattr };
 allow bluetooth device:dir { read search getattr };
-allow bluetooth device:chr_file { read write getattr ioctl };
 
 allow bluetooth etc_conf_file:file { read getattr };
 allow bluetooth etc_conf_file:lnk_file { read getattr };
@@ -50,9 +72,28 @@ allow bluetooth httpd:file read;
 
 allow bluetooth miomap_device:chr_file { read write ioctl };
 
+allow bluetooth pts_device:chr_file { read write getattr };
+
 allow bluetooth rootfs:dir { read search getattr };
-allow bluetooth rootfs:file { read getattr execute execute_no_trans };
+allow bluetooth rootfs:file { read getattr };
 allow bluetooth rootfs:lnk_file { read getattr };
+
+allow bluetooth self:capability { net_admin sys_resource net_bind_service sys_module };
+allow bluetooth self:dir { search getattr };
+# for /tmp/btvoicefifo pipe file
+allow bluetooth self:fifo_file { read write getattr ioctl };
+allow bluetooth self:file { read getattr };
+allow bluetooth self:netlink_kobject_uevent_socket { read create bind setopt };
+allow bluetooth self:netlink_route_socket { write bind create getattr nlmsg_read read };
+allow bluetooth self:process { fork setrlimit signal sigchld };
+allow bluetooth self:socket { create bind read write setopt getopt listen accept getattr connect };
+allow bluetooth self:system module_load;
+allow bluetooth self:tcp_socket { create write read setopt connect };
+allow bluetooth self:udp_socket { read create getattr write connect };
+allow bluetooth self:unix_dgram_socket { create connect write };
+allow bluetooth self:unix_stream_socket { getopt setopt getattr read write ioctl shutdown accept create connect connectto bind listen };
+
+allow bluetooth selinuxfs_file:filesystem { getattr };
 
 allow bluetooth semi_root_process:binder { transfer call };
 allow bluetooth semi_root_process:dir { search getattr };
@@ -64,49 +105,49 @@ allow bluetooth semutex_device:chr_file { read write ioctl };
 allow bluetooth shm_device:dir { read search getattr write remove_name add_name };
 allow bluetooth shm_device:file { read write create unlink getattr };
 
-allow bluetooth sysfs:dir { read search getattr };
-allow bluetooth sysfs:file read;
+# for /cast_root/dev/socket/logdw (logcat socket)
+allow bluetooth socket_device:dir { read search getattr };
+allow bluetooth socket_device:sock_file write;
+
+# for /sys/module/firmware_class/parameters/path
+allow bluetooth sysfs:dir { read search getattr write };
+allow bluetooth sysfs:file { read write };
 allow bluetooth sysfs:filesystem getattr;
 allow bluetooth sysfs:lnk_file { read getattr };
 
-allow bluetooth system_data_file:dir  { read search getattr remove_name };
-allow bluetooth system_data_file:file { read write getattr unlink };
+allow bluetooth system_data_file:dir  { read search getattr };
+allow bluetooth system_data_file:file { read getattr };
 allow bluetooth system_data_file:lnk_file read;
+
+# for /proc/meminfo
+allow bluetooth system_file:dir { read getattr search };
+allow bluetooth system_file:file { read getattr };
+
 allow bluetooth system_lib_file:dir { read search getattr };
 allow bluetooth system_lib_file:file { read getattr execute };
 allow bluetooth system_lib_file:lnk_file read;
 
 allow bluetooth third_file:dir { read search getattr };
 
-allow bluetooth tmp_file:dir remove_name;
-allow bluetooth tmp_file:file { read getattr write setattr append };
+allow bluetooth tmp_file:file { read getattr };
 allow bluetooth tmp_file:lnk_file read;
-allow bluetooth tmp_file:sock_file write;
 
-allow bluetooth tmpfs:dir { read search getattr write add_name remove_name };
-allow bluetooth tmpfs:file { write create getattr unlink };
-allow bluetooth tmpfs:sock_file { read write getattr unlink create setattr };
+allow bluetooth tmpfs:dir { read search getattr };
+allow bluetooth tmpfs:file { getattr };
 
-allow bluetooth self:capability { setuid net_admin sys_resource setgid net_bind_service };
-allow bluetooth self:dir { search getattr };
-allow bluetooth self:file { read getattr };
-allow bluetooth self:netlink_route_socket { write bind create getattr nlmsg_read read };
-allow bluetooth self:process { fork setrlimit signal sigchld };
-allow bluetooth self:socket { create bind read write setopt getopt listen accept getattr connect };
-allow bluetooth self:tcp_socket { create write read setopt connect };
-allow bluetooth self:udp_socket { read create getattr write connect };
-allow bluetooth self:unix_dgram_socket { create connect };
-allow bluetooth self:unix_stream_socket { getopt setopt getattr read write ioctl shutdown accept create connect connectto bind listen };
-
-#lw for /proc/meminfo
-allow bluetooth system_file:file { read getattr };
-
-#lw for 127.0.0.1:57280 <==> 127.0.0.1:7346
+# for 127.0.0.1:57280 <==> 127.0.0.1:7346
 allow bluetooth unconfined_type:association { recvfrom sendto };
 allow bluetooth unconfined_process:fd { use };
 allow bluetooth unconfined_process:system { module_request };
 allow bluetooth unconfined_type:tcp_socket name_connect;
 
-allow bluetooth usr_data_file:dir { getattr search };
-allow bluetooth usr_data_file:file { read getattr };
+# /usr/share/zoneinfo/
+allow bluetooth usr_data_file:dir search;
+
+#lw -- questionable --------------
+# dbus-daemon uses these
+allow bluetooth self:capability { setuid setgid };
+
+# allow until SELinux context of /cast_root/dev/uhid, hidraw[01] fixed
+allow bluetooth device:chr_file { read write ioctl setattr };
 
