@@ -35,14 +35,14 @@ allow bluetooth bin_exec:file { read execute getattr execute_no_trans };
 allow bluetooth bin_exec:dir  { read getattr search };
 allow bluetooth bin_exec:lnk_file { read getattr };
 
-allow bluetooth bluetooth_data_file:dir { open getattr read search write add_name create rename setattr };
-allow bluetooth bluetooth_data_file:file { getattr open read append write lock setattr };
+allow bluetooth bluetooth_data_file:dir { open getattr read search write add_name create execute rename setattr remove_name };
+allow bluetooth bluetooth_data_file:file { getattr open read append write create setattr rename unlink };
 allow bluetooth bluetooth_device:chr_file { read write getattr ioctl relabelto setattr };
 allow bluetooth bluetooth_exec:dir { getattr search read };
 allow bluetooth bluetooth_exec:file { ioctl execute_no_trans };
 allow bluetooth bluetooth_exec:lnk_file { read getattr };
-allow bluetooth bluetooth_file:dir { read search getattr };
-allow bluetooth bluetooth_file:file { read getattr execute };
+allow bluetooth bluetooth_file:dir { read search getattr write add_name };
+allow bluetooth bluetooth_file:file { read getattr execute create write append };
 allow bluetooth bluetooth_file:lnk_file { read getattr };
 
 allow bluetooth cache_data_file:dir { read search getattr };
@@ -60,7 +60,7 @@ allow bluetooth device:dir { read search getattr };
 allow bluetooth etc_conf_file:file { read getattr };
 allow bluetooth etc_conf_file:lnk_file { read getattr };
 
-allow bluetooth event_device:chr_file { read write getattr ioctl };
+allow bluetooth event_device:chr_file { read write getattr setattr ioctl };
 
 allow bluetooth file_inode:dir { read search getattr };
 allow bluetooth file_inode:file { read getattr };
@@ -145,9 +145,9 @@ allow bluetooth unconfined_type:tcp_socket name_connect;
 allow bluetooth usr_data_file:dir search;
 
 #lw -- questionable --------------
-# dbus-daemon uses these
-allow bluetooth self:capability { setuid setgid };
 
 # allow until SELinux context of /cast_root/dev/uhid, hidraw[01] fixed
 allow bluetooth device:chr_file { read write ioctl setattr };
 
+# for mtk_launcher
+allow bluetooth basic_bin_file:dir search;

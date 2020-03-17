@@ -168,3 +168,7 @@ allow httpd bluetooth:unix_stream_socket connectto;
 allow httpd vzsdk_file:dir { getattr search };
 allow httpd vzsdk_file:file { getattr open read lock execute };
 
+# for communicating with bluetooth via /var/run/dbus/system_bus_socket
+allow httpd tmpfs:sock_file { write };
+allow httpd dtv_svc:unix_stream_socket connectto;
+
