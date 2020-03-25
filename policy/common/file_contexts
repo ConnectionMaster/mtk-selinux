@@ -243,7 +243,6 @@
 /cache/apps(/.*)?                              user_u:object_r:httpd_data_file
 /cache/uli(/.*)?                               user_u:object_r:uli_data_file
 /cache/amazon_iot(/.*)?                        user_u:object_r:httpd_data_file
-/cache/airplay(/.*)?                           user_u:object_r:airplay_data_file
 
 ####config
 /config(/.*)?                                  user_u:object_r:config_file
@@ -343,6 +342,14 @@
 
 /data/app/scfs(/.*)?                                                user_u:object_r:httpd_file
 /data/app/storage/scpl(/.*)?                                        user_u:object_r:httpd_data_file
+####3rd_rw folder
+/data/3rd_rw                                           user_u:object_r:third_rw_data_file
+/data/3rd_rw/web_server(/.*)?                          user_u:object_r:httpd_data_file
+/data/3rd_rw/lighttpd(/.*)?                            user_u:object_r:httpd_data_file
+/data/3rd_rw/rest_server(/.*)?                         user_u:object_r:httpd_data_file
+/data/3rd_rw/sc-data(/.*)?                             user_u:object_r:httpd_data_file
+/data/3rd_rw/apps(/.*)?                                user_u:object_r:httpd_data_file
+/data/3rd_rw/airplay(/.*)?                           user_u:object_r:airplay_data_file
 
 # vzsdk
 /application/vzsdk/bin(/.*)?                user_u:object_r:vzsdk_exec

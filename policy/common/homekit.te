@@ -67,8 +67,8 @@ allow homekit browser_ctrl:fd use;
 allow homekit browser_ctrl:fifo_file { write read getattr }; #/var/run/mdnsd
 allow homekit browser_ctrl:unix_stream_socket { read write connectto };
 
-allow homekit cache_data_file:dir { read search getattr };
-allow homekit cache_data_file:lnk_file { read getattr };
+allow homekit third_rw_data_file:dir { read search getattr };
+allow homekit third_rw_data_file:lnk_file { read getattr };
 
 allow homekit config_file:dir { read search getattr };
 
@@ -94,7 +94,7 @@ allow homekit third_exec:dir { read search getattr };
 
 allow homekit third_rw_data_file:lnk_file { read getattr };
 
-allow homekit tmp_file:dir { read write getattr search add_name };
+allow homekit tmp_file:dir { read write getattr search add_name remove_name };
 allow homekit tmp_file:fifo_file { read write };
 allow homekit tmp_file:file { read write getattr create };
 allow homekit tmp_file:lnk_file { read getattr };
@@ -107,6 +107,10 @@ allow homekit tmpfs:sock_file { write getattr };
 file_type_auto_trans(homekit, tmpfs, homekit_data_file);
 
 allow homekit unconfined_process:fd use;
+
+allow homekit rootfs:file { read getattr };
+allow homekit bin_file : dir { read search getattr };
+allow homekit bin_file : lnk_file { read getattr };
 
 #socket from outer space
 allow homekit unconfined_type:association { recvfrom sendto };

@@ -93,6 +93,10 @@ allow airplay third_file:dir { read search getattr};
 
 allow airplay third_lib_file:dir { read search getattr };
 
+allow airplay homekit_data_file :sock_file { read write getattr }; 
+allow airplay homekit:unix_stream_socket { connectto };
+
+
 #should move to /data in the future
 allow airplay tmp_file:dir { write remove_name search add_name };
 allow airplay tmp_file:file { execute read lock create write getattr unlink };
@@ -114,8 +118,8 @@ allow airplay unconfined_type:association { recvfrom sendto };
 allow airplay unconfined_type:tcp_socket { name_bind name_connect node_bind };
 allow airplay unconfined_type:udp_socket { name_bind node_bind };
 
-allow airplay cache_data_file:dir { read search getattr }; # need to access /cache/airplay
-allow airplay cache_data_file:lnk_file { read getattr };
+allow airplay third_rw_data_file:dir { read search getattr }; # need to access /data/3rd_rw/airplay
+allow airplay third_rw_data_file:lnk_file { read getattr };
 
 #process getting browser_ctrl pid
 allow airplay tmpfs:dir { read search getattr }; #/var/run

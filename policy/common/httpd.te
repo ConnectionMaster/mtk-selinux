@@ -79,6 +79,10 @@ allow httpd tmp_file:file { read getattr write create execute unlink ioctl setat
 allow httpd tmp_file:lnk_file { read getattr };
 allow httpd tmp_file:sock_file { write unlink };
 
+#lw Added this because audit2allow said to. Without this line,
+#lw /application/scpl/init_scpl.sh cannot create /tmp/scpl_root.
+allow httpd shm_device:dir search;
+
 #socket from outer world
 allow httpd unconfined_type:association { recvfrom sendto };
 allow httpd unconfined_type:tcp_socket { name_bind name_connect node_bind };
@@ -167,8 +171,4 @@ allow httpd bluetooth:unix_stream_socket connectto;
 # for loading libraries
 allow httpd vzsdk_file:dir { getattr search };
 allow httpd vzsdk_file:file { getattr open read lock execute };
-
-# for communicating with bluetooth via /var/run/dbus/system_bus_socket
-allow httpd tmpfs:sock_file { write };
-allow httpd dtv_svc:unix_stream_socket connectto;
 

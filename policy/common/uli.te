@@ -23,8 +23,8 @@ allow uli uli_file : lnk_file {getattr read};
 allow uli uli_data_file : dir { open getattr read search write add_name create execute rename setattr };
 allow uli uli_data_file : file {getattr open read append write lock};
 
-allow uli factory_data_file : dir { open getattr read search write add_name create execute rename setattr };
-allow uli factory_data_file : file {getattr open read append write lock create };
+allow uli factory_data_file : dir { open getattr read search write add_name create execute rename setattr remove_name };
+allow uli factory_data_file : file {getattr open read append write lock create unlink };
 
 ###access uli exec file
 allow uli uli_exec : dir {open execute getattr read search};
@@ -44,8 +44,8 @@ allow uli certificate_file : file {getattr open read append write lock};
 file_type_auto_trans(uli, certificate_file, uli_data_file);
 
 ####write ESNID data file
-allow uli netflix_data_file : dir { open getattr read search write add_name create execute rename setattr };
-allow uli netflix_data_file : file {getattr open read append write lock create setattr};
+allow uli netflix_data_file : dir { open getattr read search write add_name create execute rename setattr remove_name };
+allow uli netflix_data_file : file {getattr open read append write lock create setattr unlink };
 
 ####write airplay prov key inside cache airplay
 allow uli airplay_data_file : dir { open getattr read search write add_name create execute rename setattr };
@@ -55,8 +55,8 @@ allow uli tee_supplicant_data_file : dir { open getattr read search write add_na
 allow uli tee_supplicant_data_file : file {getattr open read append write lock create};
 
 ####write amazon_iot data file
-allow uli httpd_data_file : dir { open getattr read search write add_name create execute rename setattr };
-allow uli httpd_data_file : file {getattr open read append write lock create setattr};
+allow uli httpd_data_file : dir { open getattr read search write add_name create execute rename setattr remove_name };
+allow uli httpd_data_file : file {getattr open read append write lock create setattr unlink };
 
 ###access cache dir
 allow uli cache_data_file: dir { open getattr read search };
