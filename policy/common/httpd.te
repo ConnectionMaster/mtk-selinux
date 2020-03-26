@@ -79,10 +79,6 @@ allow httpd tmp_file:file { read getattr write create execute unlink ioctl setat
 allow httpd tmp_file:lnk_file { read getattr };
 allow httpd tmp_file:sock_file { write unlink };
 
-#lw Added this because audit2allow said to. Without this line,
-#lw /application/scpl/init_scpl.sh cannot create /tmp/scpl_root.
-allow httpd shm_device:dir search;
-
 #socket from outer world
 allow httpd unconfined_type:association { recvfrom sendto };
 allow httpd unconfined_type:tcp_socket { name_bind name_connect node_bind };
@@ -104,9 +100,10 @@ allow httpd self:netlink_route_socket { write bind create getattr read nlmsg_rea
 allow httpd self:udp_socket { write read create connect getattr setopt bind ioctl };
 allow httpd self:dir { read getattr search };
 allow httpd self:file { read getattr };
-allow httpd self:fifo_file { read getattr write };
+allow httpd self:fifo_file { read getattr write ioctl };
 
 allow httpd self:process { signal sigchld };
+allow httpd self:unix_dgram_socket { create connect ioctl read write sendto };
 allow httpd self:unix_stream_socket { create connect connectto write getattr shutdown read accept setopt bind listen ioctl };
 
 allow httpd bin_exec:file { read execute getattr execute_no_trans };
@@ -161,14 +158,32 @@ allow httpd system_data_file:lnk_file read;
 
 # for loading bluetooth libraries
 allow httpd bluetooth_file:dir { getattr search };
-allow httpd bluetooth_file:file { getattr open read lock execute };
+allow httpd bluetooth_file:file { getattr open read lock execute map };
 allow httpd bluetooth_file:lnk_file read;
 # for /var/run/dbus/system_bus_socket; used to talk to bluetooth
 allow httpd bluetooth_data_file:dir { getattr search };
+allow httpd bluetooth_data_file:lnk_file read;
 allow httpd bluetooth_data_file:sock_file write;
 allow httpd bluetooth:unix_stream_socket connectto;
 
 # for loading libraries
 allow httpd vzsdk_file:dir { getattr search };
 allow httpd vzsdk_file:file { getattr open read lock execute };
+
+# for communicating with bluetooth via /var/run/dbus/system_bus_socket
+allow httpd tmpfs:sock_file { write };
+allow httpd dtv_svc:unix_stream_socket connectto;
+
+#lw -----------------------
+# 
+allow httpd vzsdk_exec:dir { open execute getattr read search };
+allow httpd vzsdk_exec:file { open read entrypoint getattr execute ioctl execute_no_trans };
+
+# /cast_root/dev/socket
+allow httpd socket_device:dir { read search getattr };
+allow httpd socket_device:sock_file write;
+
+# /cast_root/dev/socket/logdw
+allow httpd cast_init:unix_dgram_socket sendto;
+
 

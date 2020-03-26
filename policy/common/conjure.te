@@ -107,7 +107,7 @@ allow conjure utopia_data_file:dir search;
 allow conjure utopia_data_file:file { read write ioctl };
 
 allow conjure httpd_data_file:dir { read search getattr };
-allow conjure httpd_data_file:file { read getattr };
+allow conjure httpd_data_file:file { read getattr map };
 
 allow conjure file_inode:dir { read search getattr };
 allow conjure file_inode:file { read getattr };
@@ -117,4 +117,6 @@ allow conjure fusion_data_file:file { read write setattr };
 allow conjure debugfs:dir search;
 
 allow conjure bin_exec:file { read execute };
+
+#lw ---
 

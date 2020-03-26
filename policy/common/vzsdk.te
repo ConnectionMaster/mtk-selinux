@@ -16,6 +16,36 @@ type vzsdk, domain_type;
 file_type_auto_trans(vzsdk, tmp_file, vzsdk_data_file);
 #-----------------------------------------------------------
 
+# /sys/fs/selinux/null
+allow vzsdk basic_device:chr_file { read write };
+
+# /cast_root/dev/socket/logdw
+allow vzsdk cast_init:unix_dgram_socket sendto;
+
+# /cast_root/dev
+allow vzsdk device:dir search;
+
+# /dev/pts/0
+allow vzsdk pts_device:chr_file { read write };
+
+# /dev/dm-0
+allow vzsdk rootfs:dir { read getattr search };
+allow vzsdk rootfs:file { read getattr };
+allow vzsdk rootfs:lnk_file { read getattr };
+
+allow vzsdk self:fifo_file read;
+allow vzsdk self:process fork;
+allow vzsdk self:unix_dgram_socket { create connect write };
+
+# /cast_root/dev/socket
+allow vzsdk socket_device:dir { read search getattr };
+allow vzsdk socket_device:sock_file write;
+
+# /lib/libc.so.6, /lib/ld-2.21.so
+allow vzsdk system_lib_file:dir { search getattr };
+allow vzsdk system_lib_file:file { read execute getattr };
+allow vzsdk system_lib_file:lnk_file read;
+
 ###access vzsdk own file
 allow vzsdk vzsdk_file:dir { open getattr execute read search };
 allow vzsdk vzsdk_file:file {open getattr execute execute_no_trans entrypoint read ioctl};
