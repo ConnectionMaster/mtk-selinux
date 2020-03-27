@@ -1,0 +1,5 @@
+allow bluetooth basic_device:chr_file map;
+allow bluetooth bluetooth_device:chr_file map;
+allow bluetooth event_device:chr_file map;
+allow bluetooth miomap_device:chr_file map;
+allow bluetooth semutex_device:chr_file map;

@@ -36,7 +36,7 @@ allow bluetooth bin_exec:dir  { read getattr search };
 allow bluetooth bin_exec:lnk_file { read getattr };
 
 allow bluetooth bluetooth_data_file:dir { open getattr read search write add_name create execute rename setattr remove_name };
-allow bluetooth bluetooth_data_file:file { getattr open read append write create setattr rename unlink };
+allow bluetooth bluetooth_data_file:file { getattr open read append write lock create setattr rename unlink };
 allow bluetooth bluetooth_device:chr_file { read write getattr ioctl relabelto setattr };
 allow bluetooth bluetooth_exec:dir { getattr search read };
 allow bluetooth bluetooth_exec:file { ioctl execute_no_trans map };

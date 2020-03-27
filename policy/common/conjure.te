@@ -118,5 +118,3 @@ allow conjure debugfs:dir search;
 
 allow conjure bin_exec:file { read execute };
 
-#lw ---
-

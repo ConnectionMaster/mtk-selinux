@@ -91,7 +91,7 @@ allow cobalt cobalt             : file                 {read getattr};
 allow cobalt cobalt             : netlink_route_socket {create read write nlmsg_read bind getattr};
 allow cobalt cobalt             : unix_dgram_socket    {create ioctl connect};
 allow cobalt cobalt             : unix_stream_socket   {create connect getattr};
-allow cobalt cobalt             : udp_socket           {create accept connect read write getattr};
+allow cobalt cobalt             : udp_socket           {create accept connect read write getattr bind setopt};
 allow cobalt cobalt             : tcp_socket           {create accept setopt connect read getattr write};
 allow cobalt cobalt             : fifo_file            {read write};
 
@@ -140,6 +140,7 @@ allow cobalt etc_conf_file:lnk_file { read getattr };
 #tcp socket outside of the system
 allow cobalt unconfined_type    : association                    {sendto recvfrom};
 allow cobalt unconfined_type    : tcp_socket                     {name_connect};
+allow cobalt unconfined_type    : udp_socket                     {node_bind};
 
 allow cobalt selinuxfs_file:filesystem {getattr};
 
