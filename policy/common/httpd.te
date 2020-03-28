@@ -187,3 +187,6 @@ allow httpd socket_device:sock_file write;
 allow httpd cast_init:unix_dgram_socket sendto;
 
 
+#lw ----- new ---------------------
+allow httpd bluetooth_data_file:fifo_file { getattr read write ioctl };
+
