@@ -7,6 +7,8 @@ type bluetooth_data_file, file_type, private_data_file_type;
 ###exec type, need domain transition
 type bluetooth_exec, file_type;
 domain_auto_trans(privileged_domain, bluetooth_exec, bluetooth);
+#lw for vzlogwrapper
+#domain_auto_trans(bluetooth, vzsdk_exec, vzsdk);
 
 ###domain bluetooth
 type bluetooth, domain_type;
@@ -35,7 +37,7 @@ allow bluetooth bin_exec:file { read execute getattr execute_no_trans map };
 allow bluetooth bin_exec:dir  { read getattr search };
 allow bluetooth bin_exec:lnk_file { read getattr };
 
-allow bluetooth bluetooth_data_file:dir { open getattr read search write add_name create execute rename setattr remove_name };
+allow bluetooth bluetooth_data_file:dir { open getattr read search write add_name create rename setattr remove_name };
 allow bluetooth bluetooth_data_file:file { getattr open read append write lock create setattr rename unlink };
 allow bluetooth bluetooth_device:chr_file { read write getattr ioctl relabelto setattr };
 allow bluetooth bluetooth_exec:dir { getattr search read };
@@ -79,7 +81,8 @@ allow bluetooth rootfs:file { read getattr execute execute_no_trans ioctl };
 allow bluetooth rootfs:lnk_file { read getattr };
 
 
-allow bluetooth self:capability { net_admin sys_resource net_bind_service sys_module dac_read_search dac_override net_raw sys_ptrace };
+#lw allow bluetooth self:capability { net_admin sys_resource net_bind_service sys_module dac_read_search dac_override net_raw sys_ptrace };
+allow bluetooth self:capability { net_admin sys_resource net_bind_service sys_module net_raw sys_ptrace };
 allow bluetooth self:dir { search getattr };
 # for /tmp/btvoicefifo pipe file
 allow bluetooth self:fifo_file { read write getattr ioctl };
@@ -157,3 +160,9 @@ allow bluetooth device:chr_file { read write ioctl setattr };
 # for mtk_launcher
 allow bluetooth basic_bin_file:dir search;
 
+# for vzlogwrapper -----
+#allow bluetooth third_rw_data_file:lnk_file read;
+allow bluetooth vzsdk_exec:dir { read search getattr execute };
+allow bluetooth vzsdk_exec:file { read execute getattr execute_no_trans };
+allow bluetooth vzservices_exec:dir { read search getattr execute };
+allow bluetooth vzservices_exec:file { read execute getattr execute_no_trans };

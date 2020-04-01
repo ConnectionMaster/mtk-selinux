@@ -15,6 +15,9 @@ type httpd, domain_type;
 
 file_type_auto_trans(httpd, tmp_file, httpd_data_file);
 
+#lw domain_auto_trans(httpd, vzsdk_exec, vzsdk);
+#lw domain_auto_trans(httpd, vzservices_exec, vzservices);
+
 #-----------------------------------------------------------
 
 ###access 3rd dir
@@ -169,6 +172,8 @@ allow httpd bluetooth:unix_stream_socket connectto;
 # for loading libraries
 allow httpd vzsdk_file:dir { getattr search };
 allow httpd vzsdk_file:file { getattr open read lock execute };
+allow httpd vzservices_file:dir { getattr search };
+allow httpd vzservices_file:file { getattr open read lock execute };
 
 # for communicating with bluetooth via /var/run/dbus/system_bus_socket
 allow httpd tmpfs:sock_file { write };
@@ -177,7 +182,9 @@ allow httpd dtv_svc:unix_stream_socket connectto;
 #lw -----------------------
 # 
 allow httpd vzsdk_exec:dir { open execute getattr read search };
-allow httpd vzsdk_exec:file { open read entrypoint getattr execute ioctl execute_no_trans };
+allow httpd vzsdk_exec:file { open read entrypoint getattr execute ioctl };
+allow httpd vzservices_exec:dir { open execute getattr read search };
+allow httpd vzservices_exec:file { open read entrypoint getattr execute ioctl };
 
 # /cast_root/dev/socket
 allow httpd socket_device:dir { read search getattr };
@@ -189,4 +196,6 @@ allow httpd cast_init:unix_dgram_socket sendto;
 
 #lw ----- new ---------------------
 allow httpd bluetooth_data_file:fifo_file { getattr read write ioctl };
+
+allow httpd vzservices_exec:file execute_no_trans;
 

@@ -357,6 +357,14 @@
 /data/debug/vzsdk/bin(/.*)?                 user_u:object_r:vzsdk_exec
 /data/debug/vzsdk/lib(/.*)?                 user_u:object_r:vzsdk_file
 
+# vzservices
+/application/vzservices(/.*)?               user_u:object_r:vzservices_file
+/application/vzservices/bin(/.*)?           user_u:object_r:vzservices_exec
+/application/vzservices/lib(/.*)?           user_u:object_r:vzservices_file
+/data/debug/vzservices(/.*)?                user_u:object_r:vzservices_file
+/data/debug/vzservices/bin(/.*)?            user_u:object_r:vzservices_exec
+/data/debug/vzservices/lib(/.*)?            user_u:object_r:vzservices_file
+
 # bluetooth
 /application/bluetooth(/.*)?                    user_u:object_r:bluetooth_file
 /application/bluetooth/.*\.sh                   user_u:object_r:bluetooth_exec
