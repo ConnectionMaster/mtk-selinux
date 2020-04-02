@@ -10,6 +10,9 @@ type vzservices_data_file, file_type;
 type vzservices_exec, file_type;
 domain_auto_trans(privileged_domain, vzservices_exec, vzservices);
 
+###vzlogwrapper type, for vzlogwrapper
+type vzlogwrapper, file_type;
+
 ###domain vzservices
 type vzservices, domain_type;
 
@@ -60,3 +63,5 @@ allow vzservices vzservices_data_file:lnk_file { getattr open read write read };
 allow vzservices vzservices_exec:dir {open execute getattr read search};
 allow vzservices vzservices_exec:file{open read entrypoint getattr execute ioctl execute_no_trans};
 
+###access vzlogwrapper
+allow vzservices vzlogwrapper:file{open read entrypoint getattr execute ioctl execute_no_trans};

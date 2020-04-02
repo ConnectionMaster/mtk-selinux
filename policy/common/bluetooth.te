@@ -7,8 +7,6 @@ type bluetooth_data_file, file_type, private_data_file_type;
 ###exec type, need domain transition
 type bluetooth_exec, file_type;
 domain_auto_trans(privileged_domain, bluetooth_exec, bluetooth);
-#lw for vzlogwrapper
-#domain_auto_trans(bluetooth, vzsdk_exec, vzsdk);
 
 ###domain bluetooth
 type bluetooth, domain_type;
@@ -159,6 +157,9 @@ allow bluetooth basic_bin_file:dir search;
 # for vzlogwrapper -----
 #allow bluetooth third_rw_data_file:lnk_file read;
 allow bluetooth vzsdk_exec:dir { read search getattr execute };
-allow bluetooth vzsdk_exec:file { read execute getattr execute_no_trans };
+allow bluetooth vzsdk_exec:file { read execute getattr };
 allow bluetooth vzservices_exec:dir { read search getattr execute };
-allow bluetooth vzservices_exec:file { read execute getattr execute_no_trans };
+allow bluetooth vzservices_exec:file { read execute getattr };
+
+# vzlogwrapper
+allow bluetooth vzlogwrapper:file { open read entrypoint getattr ioctl execute execute_no_trans };

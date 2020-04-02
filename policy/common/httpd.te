@@ -15,9 +15,6 @@ type httpd, domain_type;
 
 file_type_auto_trans(httpd, tmp_file, httpd_data_file);
 
-#lw domain_auto_trans(httpd, vzsdk_exec, vzsdk);
-#lw domain_auto_trans(httpd, vzservices_exec, vzservices);
-
 #-----------------------------------------------------------
 
 ###access 3rd dir
@@ -193,9 +190,8 @@ allow httpd socket_device:sock_file write;
 # /cast_root/dev/socket/logdw
 allow httpd cast_init:unix_dgram_socket sendto;
 
-
-#lw ----- new ---------------------
 allow httpd bluetooth_data_file:fifo_file { getattr read write ioctl };
 
-allow httpd vzservices_exec:file execute_no_trans;
+# vzlogwrapper
+allow httpd vzlogwrapper:file { open read entrypoint getattr ioctl execute execute_no_trans };
 

@@ -361,9 +361,11 @@
 # vzservices
 /application/vzservices(/.*)?               user_u:object_r:vzservices_file
 /application/vzservices/bin(/.*)?           user_u:object_r:vzservices_exec
+/application/vzservices/bin/vzlogwrapper    user_u:object_r:vzlogwrapper
 /application/vzservices/lib(/.*)?           user_u:object_r:vzservices_file
 /data/debug/vzservices(/.*)?                user_u:object_r:vzservices_file
 /data/debug/vzservices/bin(/.*)?            user_u:object_r:vzservices_exec
+/data/debug/vzservices/bin/vzlogwrapper     user_u:object_r:vzlogwrapper
 /data/debug/vzservices/lib(/.*)?            user_u:object_r:vzservices_file
 
 # bluetooth
