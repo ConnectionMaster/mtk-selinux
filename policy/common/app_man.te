@@ -8,3 +8,11 @@ mtkAccessAllRules(app_man, private_data_file_type, no_file_rw);
 mtkAccessAllRules(app_man, domain_type);
 
 domain_auto_trans(privileged_domain, app_man_exec, app_man);
+
+allow app_man netflix_data_file : dir { read search getattr };
+allow app_man netflix_public_data_file : dir {create_dir_perms};
+allow app_man netflix_public_data_file : file {create_file_perms};
+allow app_man {
+  netflix_public_data_file
+  netflix_data_file
+} : lnk_file { read getattr };

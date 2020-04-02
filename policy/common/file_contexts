@@ -231,6 +231,7 @@
 /cache(/.*)?                                   user_u:object_r:cache_data_file
 /cache/amazon(/.*)?                            user_u:object_r:amazon_data_file
 /cache/Netflix_env(/.*)?                       user_u:object_r:netflix_data_file
+/cache/Netflix_env/data(/.*)?                  user_u:object_r:netflix_public_data_file
 /cache/dialserver(/.*)?                        user_u:object_r:dialserver_data_file
 /cache/netflix(/.*)?                           user_u:object_r:netflix_data_file
 /cache/drm/playready(/.*)?                     user_u:object_r:playready_data_file

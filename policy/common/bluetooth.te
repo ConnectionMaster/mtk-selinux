@@ -80,8 +80,6 @@ allow bluetooth rootfs:dir { read search getattr };
 allow bluetooth rootfs:file { read getattr execute execute_no_trans ioctl };
 allow bluetooth rootfs:lnk_file { read getattr };
 
-
-#lw allow bluetooth self:capability { net_admin sys_resource net_bind_service sys_module dac_read_search dac_override net_raw sys_ptrace };
 allow bluetooth self:capability { net_admin sys_resource net_bind_service sys_module net_raw sys_ptrace };
 allow bluetooth self:dir { search getattr };
 # for /tmp/btvoicefifo pipe file
@@ -96,7 +94,6 @@ allow bluetooth self:tcp_socket { create write read setopt connect };
 allow bluetooth self:udp_socket { read create getattr write connect };
 allow bluetooth self:unix_dgram_socket { create connect write };
 allow bluetooth self:unix_stream_socket { getopt setopt getattr read write ioctl shutdown accept create connect connectto bind listen };
-
 
 allow bluetooth selinuxfs_file:filesystem { getattr };
 
@@ -121,7 +118,6 @@ allow bluetooth sysfs:dir { read search getattr write add_name };
 allow bluetooth sysfs:file { create read write };
 allow bluetooth sysfs:filesystem getattr;
 allow bluetooth sysfs:lnk_file { read getattr };
-
 
 allow bluetooth system_data_file:dir  { read search getattr };
 allow bluetooth system_data_file:file { read getattr };

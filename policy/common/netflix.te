@@ -5,6 +5,7 @@ auditallow privileged_domain netflix_file:file { execute execute_no_trans };
 
 ###rw file type, for data and cache
 type netflix_data_file, file_type, private_data_file_type;
+type netflix_public_data_file, file_type;
 
 ###exec type, need domain transition
 type netflix_exec, file_type;
@@ -36,8 +37,8 @@ allow netflix netflix_file : file {open getattr read};
 allow netflix netflix_file : lnk_file {getattr read};
 
 ###access netflix data file
-allow netflix netflix_data_file : dir { open getattr read search write add_name create execute rename setattr };
-allow netflix netflix_data_file : file {getattr open read append write lock};
+allow netflix { netflix_data_file netflix_public_data_file } : dir { open getattr read search write add_name remove_name create execute rename setattr };
+allow netflix { netflix_data_file netflix_public_data_file } : file {getattr open read create append write unlink lock};
 
 ###access netflix exec file
 allow netflix netflix_exec : dir {open execute getattr read search};
