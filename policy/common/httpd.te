@@ -81,6 +81,7 @@ allow httpd tmp_file:sock_file { write unlink };
 
 #socket from outer world
 allow httpd unconfined_type:association { recvfrom sendto };
+allow httpd unconfined_type:dir search;
 allow httpd unconfined_type:tcp_socket { name_bind name_connect node_bind };
 allow httpd unconfined_type:udp_socket { name_bind node_bind };
 
@@ -170,7 +171,7 @@ allow httpd bluetooth:unix_stream_socket connectto;
 allow httpd vzsdk_file:dir { getattr search };
 allow httpd vzsdk_file:file { getattr open read lock execute };
 allow httpd vzservices_file:dir { getattr search };
-allow httpd vzservices_file:file { getattr open read lock execute };
+allow httpd vzservices_file:file { getattr open read lock execute map };
 
 # for communicating with bluetooth via /var/run/dbus/system_bus_socket
 allow httpd tmpfs:sock_file { write };
@@ -181,7 +182,7 @@ allow httpd dtv_svc:unix_stream_socket connectto;
 allow httpd vzsdk_exec:dir { open execute getattr read search };
 allow httpd vzsdk_exec:file { open read entrypoint getattr execute ioctl };
 allow httpd vzservices_exec:dir { open execute getattr read search };
-allow httpd vzservices_exec:file { open read entrypoint getattr execute ioctl };
+allow httpd vzservices_exec:file { open read entrypoint getattr execute ioctl map };
 
 # /cast_root/dev/socket
 allow httpd socket_device:dir { read search getattr };
@@ -193,5 +194,5 @@ allow httpd cast_init:unix_dgram_socket sendto;
 allow httpd bluetooth_data_file:fifo_file { getattr read write ioctl };
 
 # vzlogwrapper
-allow httpd vzlogwrapper:file { open read entrypoint getattr ioctl execute execute_no_trans };
+allow httpd vzlogwrapper:file { open read entrypoint getattr ioctl execute execute_no_trans map };
 

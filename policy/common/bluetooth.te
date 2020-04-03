@@ -130,6 +130,7 @@ allow bluetooth system_lib_file:file { read getattr execute map };
 allow bluetooth system_lib_file:lnk_file read;
 
 allow bluetooth third_file:dir { read search getattr };
+allow bluetooth third_lib_file:dir search;
 
 allow bluetooth tmp_file:file { read getattr };
 allow bluetooth tmp_file:lnk_file read;
@@ -155,7 +156,7 @@ allow bluetooth device:chr_file { read write ioctl setattr };
 allow bluetooth basic_bin_file:dir search;
 
 # for vzlogwrapper -----
-#allow bluetooth third_rw_data_file:lnk_file read;
+allow bluetooth third_rw_data_file:lnk_file read;
 allow bluetooth vzsdk_exec:dir { read search getattr execute };
 allow bluetooth vzsdk_exec:file { read execute getattr };
 allow bluetooth vzservices_exec:dir { read search getattr execute };
@@ -163,3 +164,4 @@ allow bluetooth vzservices_exec:file { read execute getattr };
 
 # vzlogwrapper
 allow bluetooth vzlogwrapper:file { open read entrypoint getattr ioctl execute execute_no_trans };
+
