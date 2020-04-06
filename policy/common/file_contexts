@@ -352,20 +352,14 @@
 /data/3rd_rw/apps(/.*)?                                user_u:object_r:httpd_data_file
 /data/3rd_rw/airplay(/.*)?                           user_u:object_r:airplay_data_file
 
-# vzsdk
-/application/vzsdk/bin(/.*)?                user_u:object_r:vzsdk_exec
-/application/vzsdk/lib(/.*)?                user_u:object_r:vzsdk_file
-/data/debug/vzsdk/bin(/.*)?                 user_u:object_r:vzsdk_exec
-/data/debug/vzsdk/lib(/.*)?                 user_u:object_r:vzsdk_file
-
 # vzservices
 /application/vzservices(/.*)?               user_u:object_r:vzservices_file
 /application/vzservices/bin(/.*)?           user_u:object_r:vzservices_exec
-/application/vzservices/bin/vzlogwrapper    user_u:object_r:vzlogwrapper
+/application/vzservices/bin/vzlogwrapper    user_u:object_r:vz_bin_exec
 /application/vzservices/lib(/.*)?           user_u:object_r:vzservices_file
 /data/debug/vzservices(/.*)?                user_u:object_r:vzservices_file
 /data/debug/vzservices/bin(/.*)?            user_u:object_r:vzservices_exec
-/data/debug/vzservices/bin/vzlogwrapper     user_u:object_r:vzlogwrapper
+/data/debug/vzservices/bin/vzlogwrapper     user_u:object_r:vz_bin_exec
 /data/debug/vzservices/lib(/.*)?            user_u:object_r:vzservices_file
 
 # bluetooth

@@ -27,6 +27,9 @@ allow bluetooth application_file:dir { read search getattr };
 
 allow bluetooth backup_data_file:dir { read search getattr };
 
+# for mtk_launcher
+allow bluetooth basic_bin_file:dir search;
+
 allow bluetooth basic_device:chr_file { read getattr write ioctl };
 allow bluetooth basic_file:dir { getattr search };
 
@@ -66,7 +69,8 @@ allow bluetooth file_inode:dir { read search getattr };
 allow bluetooth file_inode:file { read getattr };
 
 allow bluetooth httpd_data_file:dir { read search getattr };
-allow bluetooth httpd_data_file:file { read getattr };
+allow bluetooth httpd_data_file:fifo_file { read write getattr ioctl };
+allow bluetooth httpd_data_file:file { read getattr write };
 allow bluetooth httpd:dir { search getattr };
 allow bluetooth httpd:file read;
 
@@ -130,7 +134,9 @@ allow bluetooth system_lib_file:file { read getattr execute map };
 allow bluetooth system_lib_file:lnk_file read;
 
 allow bluetooth third_file:dir { read search getattr };
-allow bluetooth third_lib_file:dir search;
+allow bluetooth third_lib_file:dir { read search getattr };
+
+allow bluetooth third_rw_data_file:lnk_file read;
 
 allow bluetooth tmp_file:file { read getattr };
 allow bluetooth tmp_file:lnk_file read;
@@ -147,21 +153,9 @@ allow bluetooth unconfined_type:tcp_socket name_connect;
 # /usr/share/zoneinfo/
 allow bluetooth usr_data_file:dir { search getattr };
 
-#lw -- questionable --------------
-
-# allow until SELinux context of /cast_root/dev/uhid, hidraw[01] fixed
-allow bluetooth device:chr_file { read write ioctl setattr };
-
-# for mtk_launcher
-allow bluetooth basic_bin_file:dir search;
-
 # for vzlogwrapper -----
-allow bluetooth third_rw_data_file:lnk_file read;
-allow bluetooth vzsdk_exec:dir { read search getattr execute };
-allow bluetooth vzsdk_exec:file { read execute getattr };
+allow bluetooth vz_bin_exec:file { open read entrypoint getattr ioctl execute execute_no_trans };
+
 allow bluetooth vzservices_exec:dir { read search getattr execute };
 allow bluetooth vzservices_exec:file { read execute getattr };
-
-# vzlogwrapper
-allow bluetooth vzlogwrapper:file { open read entrypoint getattr ioctl execute execute_no_trans };
 

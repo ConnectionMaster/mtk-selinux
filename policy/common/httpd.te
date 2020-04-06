@@ -163,13 +163,12 @@ allow httpd bluetooth_file:file { getattr open read lock execute map };
 allow httpd bluetooth_file:lnk_file read;
 # for /var/run/dbus/system_bus_socket; used to talk to bluetooth
 allow httpd bluetooth_data_file:dir { getattr search };
+allow httpd bluetooth_data_file:fifo_file { getattr read write ioctl };
 allow httpd bluetooth_data_file:lnk_file read;
 allow httpd bluetooth_data_file:sock_file write;
 allow httpd bluetooth:unix_stream_socket connectto;
 
 # for loading libraries
-allow httpd vzsdk_file:dir { getattr search };
-allow httpd vzsdk_file:file { getattr open read lock execute };
 allow httpd vzservices_file:dir { getattr search };
 allow httpd vzservices_file:file { getattr open read lock execute map };
 
@@ -177,10 +176,8 @@ allow httpd vzservices_file:file { getattr open read lock execute map };
 allow httpd tmpfs:sock_file { write };
 allow httpd dtv_svc:unix_stream_socket connectto;
 
-#lw -----------------------
-# 
-allow httpd vzsdk_exec:dir { open execute getattr read search };
-allow httpd vzsdk_exec:file { open read entrypoint getattr execute ioctl };
+# vzlogwrapper
+allow httpd vz_bin_exec:file { open read entrypoint getattr ioctl execute execute_no_trans map };
 allow httpd vzservices_exec:dir { open execute getattr read search };
 allow httpd vzservices_exec:file { open read entrypoint getattr execute ioctl map };
 
@@ -190,9 +187,4 @@ allow httpd socket_device:sock_file write;
 
 # /cast_root/dev/socket/logdw
 allow httpd cast_init:unix_dgram_socket sendto;
-
-allow httpd bluetooth_data_file:fifo_file { getattr read write ioctl };
-
-# vzlogwrapper
-allow httpd vzlogwrapper:file { open read entrypoint getattr ioctl execute execute_no_trans map };
 
