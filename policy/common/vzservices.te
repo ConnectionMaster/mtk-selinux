@@ -56,7 +56,7 @@ allow vzservices vzservices_file:lnk_file {read getattr open execute};
 
 ###access vzservices data file
 allow vzservices vzservices_data_file:dir { open getattr read search write add_name create execute rename setattr };
-allow vzservices vzservices_data_file:file { getattr open read append write lock setattr execute };
+allow vzservices vzservices_data_file:file { getattr open read append write lock setattr };
 allow vzservices vzservices_data_file:lnk_file { getattr open read write read };
 
 ###access vzservices exec file
