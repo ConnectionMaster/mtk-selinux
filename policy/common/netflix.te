@@ -38,7 +38,7 @@ allow netflix netflix_file : lnk_file {getattr read};
 
 ###access netflix data file
 allow netflix { netflix_data_file netflix_public_data_file } : dir { open getattr read search write add_name remove_name create execute rename setattr };
-allow netflix { netflix_data_file netflix_public_data_file } : file {getattr open read create append write unlink lock};
+allow netflix { netflix_data_file netflix_public_data_file } : file {getattr open read create append write unlink lock rename};
 
 ###access netflix exec file
 allow netflix netflix_exec : dir {open execute getattr read search};

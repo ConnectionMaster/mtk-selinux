@@ -34,7 +34,7 @@ allow bluetooth basic_device:chr_file { read getattr write ioctl };
 allow bluetooth basic_file:dir { getattr search };
 
 allow bluetooth bin_file:dir search;
-allow bluetooth bin_exec:file { read execute getattr execute_no_trans map };
+allow bluetooth bin_exec:file { read execute getattr execute_no_trans };
 allow bluetooth bin_exec:dir  { read getattr search };
 allow bluetooth bin_exec:lnk_file { read getattr };
 
@@ -42,10 +42,10 @@ allow bluetooth bluetooth_data_file:dir { open getattr read search write add_nam
 allow bluetooth bluetooth_data_file:file { getattr open read append write lock create setattr rename unlink };
 allow bluetooth bluetooth_device:chr_file { read write getattr ioctl relabelto setattr };
 allow bluetooth bluetooth_exec:dir { getattr search read };
-allow bluetooth bluetooth_exec:file { ioctl execute_no_trans map };
+allow bluetooth bluetooth_exec:file { ioctl execute_no_trans };
 allow bluetooth bluetooth_exec:lnk_file { read getattr };
 allow bluetooth bluetooth_file:dir { read search getattr };
-allow bluetooth bluetooth_file:file { read getattr execute map };
+allow bluetooth bluetooth_file:file { read getattr execute };
 allow bluetooth bluetooth_file:lnk_file { read getattr };
 
 allow bluetooth cache_data_file:dir { read search getattr };
@@ -130,7 +130,7 @@ allow bluetooth system_file:dir { read getattr search };
 allow bluetooth system_file:file { read getattr };
 
 allow bluetooth system_lib_file:dir { read search getattr };
-allow bluetooth system_lib_file:file { read getattr execute map };
+allow bluetooth system_lib_file:file { read getattr execute };
 allow bluetooth system_lib_file:lnk_file read;
 
 allow bluetooth third_file:dir { read search getattr };

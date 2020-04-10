@@ -14,3 +14,4 @@ allow netflix system_lib_file : file map;
 allow netflix basic_lib_file : file map;
 allow netflix tmp_file : file map;
 allow netflix fusion_data_file:file map;
+allow netflix netflix_public_data_file : file { map };

@@ -9,3 +9,7 @@ allow httpd httpd_data_file:file map;
 allow httpd httpd_exec:file map;
 allow httpd httpd_file:file map;
 allow httpd airplay_data_file:file map;
+allow httpd bluetooth_file:file map;
+allow httpd vzservices_file:file map;
+allow httpd vz_bin_exec:file map;
+allow httpd vzservices_exec:file map;

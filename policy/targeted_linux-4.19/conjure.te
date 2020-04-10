@@ -13,3 +13,4 @@ allow conjure tmp_file:file map;
 allow conjure miomap_device:chr_file map;
 allow conjure chrome_file:file map;
 allow conjure binder_device:chr_file map;
+allow conjure httpd_data_file:file map;

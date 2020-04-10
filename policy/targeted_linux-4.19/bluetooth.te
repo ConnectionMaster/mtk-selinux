@@ -3,3 +3,7 @@ allow bluetooth bluetooth_device:chr_file map;
 allow bluetooth event_device:chr_file map;
 allow bluetooth miomap_device:chr_file map;
 allow bluetooth semutex_device:chr_file map;
+allow bluetooth bin_exec:file map;
+allow bluetooth bluetooth_exec:file map;
+allow bluetooth bluetooth_file:file map;
+allow bluetooth system_lib_file:file map;
