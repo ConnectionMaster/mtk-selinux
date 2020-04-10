@@ -14,6 +14,7 @@ domain_auto_trans(privileged_domain, httpd_exec, httpd);
 type httpd, domain_type;
 
 file_type_auto_trans(httpd, tmp_file, httpd_data_file);
+file_type_auto_trans(httpd, tmpfs, httpd_data_file);
 
 #-----------------------------------------------------------
 
@@ -103,7 +104,7 @@ allow httpd self:dir { read getattr search };
 allow httpd self:file { read getattr };
 allow httpd self:fifo_file { read getattr write ioctl };
 
-allow httpd self:process { signal sigchld };
+allow httpd self:process { signal sigchld sigkill };
 allow httpd self:unix_dgram_socket { create connect ioctl read write sendto };
 allow httpd self:unix_stream_socket { create connect connectto write getattr shutdown read accept setopt bind listen ioctl };
 
@@ -187,4 +188,7 @@ allow httpd socket_device:sock_file write;
 
 # /cast_root/dev/socket/logdw
 allow httpd cast_init:unix_dgram_socket sendto;
+
+# for creating, deleting /var/run/*.pid
+allow httpd tmpfs:dir { write remove_name };
 
