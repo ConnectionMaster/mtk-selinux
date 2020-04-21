@@ -57,7 +57,7 @@ allow bluetooth cast_init:unix_dgram_socket sendto;
 allow bluetooth debugfs:dir search;
 
 # /cast_root/dev/uhid
-allow bluetooth device:chr_file { getattr };
+allow bluetooth device:chr_file { getattr setattr };
 allow bluetooth device:dir { read search getattr };
 
 allow bluetooth etc_conf_file:file { read getattr };
@@ -82,14 +82,17 @@ allow bluetooth rootfs:dir { read search getattr };
 allow bluetooth rootfs:file { read getattr execute execute_no_trans ioctl };
 allow bluetooth rootfs:lnk_file { read getattr };
 
-allow bluetooth self:capability { net_admin sys_resource net_bind_service sys_module net_raw sys_ptrace };
+allow bluetooth self:capability { net_admin sys_resource net_bind_service sys_module net_raw sys_ptrace fowner };
+#lw hidraw_test_msbc needs this, but why?
+allow bluetooth self:capability { dac_override dac_read_search };
+
 allow bluetooth self:dir { search getattr };
 # for /tmp/btvoicefifo pipe file
 allow bluetooth self:fifo_file { read write getattr ioctl };
 allow bluetooth self:file { read getattr };
 allow bluetooth self:netlink_kobject_uevent_socket { read create bind setopt };
 allow bluetooth self:netlink_route_socket { write bind create getattr nlmsg_read read };
-allow bluetooth self:process { fork setrlimit signal sigchld };
+allow bluetooth self:process { fork setrlimit signal sigchld sigkill };
 allow bluetooth self:socket { create bind read write setopt getopt listen accept getattr connect ioctl };
 allow bluetooth self:system module_load;
 allow bluetooth self:tcp_socket { create write read setopt connect };
@@ -141,7 +144,7 @@ allow bluetooth third_rw_data_file:lnk_file read;
 allow bluetooth tmp_file:file { read getattr };
 allow bluetooth tmp_file:lnk_file read;
 
-allow bluetooth tmpfs:dir { read search getattr };
+allow bluetooth tmpfs:dir { read search getattr remove_name };
 allow bluetooth tmpfs:file { getattr };
 
 # for 127.0.0.1:57280 <==> 127.0.0.1:7346
