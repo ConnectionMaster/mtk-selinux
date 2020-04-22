@@ -161,4 +161,5 @@ allow bluetooth vz_bin_exec:file { open read entrypoint getattr ioctl execute ex
 
 allow bluetooth vzservices_exec:dir { read search getattr execute };
 allow bluetooth vzservices_exec:file { read execute getattr };
+allow bluetooth vzservices_file:dir { search getattr };
 
