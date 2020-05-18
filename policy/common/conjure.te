@@ -33,6 +33,7 @@ allow conjure cache_data_file:dir { read search getattr };
 allow conjure demo_data_file:dir { read search getattr };
 allow conjure mik_device:dir { read search getattr };
 allow conjure tmpfs:dir { read search getattr };
+allow conjure { airplay_data_file airplay_public_data_file }:file { read getattr };
 allow conjure netflix_data_file:dir { read search getattr };
 allow conjure netflix:dir read;
 allow conjure unconfined_process:dir { read search getattr };

@@ -88,7 +88,7 @@ allow wpa_supplicant system_lib_file:file { read execute getattr }; #ld
 allow wpa_supplicant system_lib_file:lnk_file { read getattr };
 
 #stuff under proc
-allow wpa_supplicant wpa_supplicant:capability { net_admin net_raw chown fsetid };
+allow wpa_supplicant wpa_supplicant:capability { net_admin net_bind_service net_raw chown fsetid };
 allow wpa_supplicant wpa_supplicant:dir { read search getattr };
 allow wpa_supplicant wpa_supplicant:netlink_generic_socket *;
 allow wpa_supplicant wpa_supplicant:netlink_route_socket *;
@@ -96,6 +96,7 @@ allow wpa_supplicant wpa_supplicant:packet_socket *;
 allow wpa_supplicant wpa_supplicant:udp_socket *;
 allow wpa_supplicant wpa_supplicant:unix_dgram_socket *;
 allow wpa_supplicant wpa_supplicant:unix_stream_socket *;
+allow wpa_supplicant wpa_supplicant:rawip_socket { create setopt };
 
 #fd opened by either process may need this allow rule
 allow wpa_supplicant {semi_root_process privileged_domain dtv_svc}:fd use;
@@ -106,6 +107,7 @@ allow wpa_supplicant domain_type:unix_dgram_socket { read write sendto};
 allow wpa_supplicant domain_type:unix_stream_socket { read write };
 allow wpa_supplicant domain_type:tcp_socket { read write };
 allow wpa_supplicant domain_type:udp_socket { read write };
+allow wpa_supplicant unconfined_type:udp_socket { name_bind node_bind };
 allow wpa_supplicant domain_type:rawip_socket { read write };
 
 allow wpa_supplicant tmpfs:dir { create add_name setattr remove_name};
@@ -114,7 +116,7 @@ allow wpa_supplicant tmpfs:sock_file { create setattr write};
 file_type_auto_trans(wpa_supplicant,tmpfs, wpa_supplicant_data_file);
 
 allow wpa_supplicant tmp_file:fifo_file { read write };
-allow wpa_supplicant tmp_file:file { read write getattr };
+allow wpa_supplicant tmp_file:file { read write getattr unlink link append };
 allow wpa_supplicant tmp_file:dir { read write search getattr create add_name remove_name };
 allow wpa_supplicant tmp_file:lnk_file { read getattr };
 file_type_auto_trans(wpa_supplicant, tmp_file, wpa_supplicant_data_file);

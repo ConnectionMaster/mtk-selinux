@@ -5,6 +5,7 @@ auditallow unconfined_process airplay_file:file { execute execute_no_trans };
 
 ###rw file type, for data and cache
 type airplay_data_file, file_type, private_data_file_type;
+type airplay_public_data_file, file_type;
 
 ###exec type, need domain transition
 type airplay_exec, file_type;
@@ -20,9 +21,9 @@ allow airplay airplay_file : file {open getattr execute execute_no_trans entrypo
 allow airplay airplay_file : lnk_file {read getattr};
 
 ###access airplay data file
-allow airplay airplay_data_file : dir { open getattr read search write add_name create execute rename setattr };
-allow airplay airplay_data_file : file {getattr open read append write lock execute}; #airplay will map the memory and execute code on the memory, execute permission needed
-allow airplay airplay_data_file : lnk_file {read getattr};
+allow airplay { airplay_data_file airplay_public_data_file } : dir { open getattr read search write add_name create execute rename setattr };
+allow airplay { airplay_data_file airplay_public_data_file } : file {getattr open read append write lock create execute}; #airplay will map the memory and execute code on the memory, execute permission needed
+allow airplay { airplay_data_file airplay_public_data_file } : lnk_file {read getattr};
 
 ###access airplay exec file
 allow airplay airplay_exec : dir {open execute getattr read search};
@@ -103,7 +104,7 @@ allow airplay tmp_file:file { execute read lock create write getattr unlink };
 allow airplay tmp_file:lnk_file { read getattr };
 allow airplay tmp_file:sock_file { write create };
 allow airplay tmp_file:fifo_file { read write getattr };
-file_type_auto_trans(airplay, tmp_file, airplay_data_file);
+file_type_auto_trans(airplay, tmp_file, airplay_public_data_file);
 
 allow airplay unconfined_process:fd use;
 

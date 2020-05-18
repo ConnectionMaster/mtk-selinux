@@ -48,8 +48,8 @@ allow uli netflix_data_file : dir { open getattr read search write add_name crea
 allow uli netflix_data_file : file {getattr open read append write lock create setattr unlink };
 
 ####write airplay prov key inside cache airplay
-allow uli airplay_data_file : dir { open getattr read search write add_name create execute rename setattr };
-allow uli airplay_data_file : file {getattr open read append write lock create setattr};
+allow uli { airplay_data_file airplay_public_data_file } : dir { open getattr read search write add_name create execute rename setattr };
+allow uli { airplay_data_file airplay_public_data_file } : file {getattr open read append write lock create setattr};
 
 allow uli tee_supplicant_data_file : dir { open getattr read search write add_name create execute rename setattr };
 allow uli tee_supplicant_data_file : file {getattr open read append write lock create};

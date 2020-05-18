@@ -22,7 +22,7 @@ allow homekit homekit_file : lnk_file {read getattr};
 
 ###access homekit data file
 allow homekit homekit_data_file : dir { open getattr read search write add_name create execute rename setattr };
-allow homekit homekit_data_file : file {getattr open read append write lock execute}; #homekit will map the memory and execute code on the memory, execute permission needed
+allow homekit homekit_data_file : file {getattr open read append write create lock execute}; #homekit will map the memory and execute code on the memory, execute permission needed
 allow homekit homekit_data_file : lnk_file {read getattr};
 
 ###access homekit exec file
@@ -45,9 +45,9 @@ allow homekit tee_device:chr_file { read write ioctl getattr }; #/dev/tee
 
 allow homekit airplay:unix_stream_socket connectto;
 
-allow homekit airplay_data_file:dir { read search getattr }; #/cache/airplay/...
-allow homekit airplay_data_file:file { read write getattr }; #/cache/airplay/...
-allow homekit airplay_data_file:sock_file write;
+allow homekit { airplay_data_file airplay_public_data_file }:dir { read search getattr }; #/cache/airplay/...
+allow homekit { airplay_data_file airplay_public_data_file }:file { read write getattr }; #/cache/airplay/...
+allow homekit { airplay_data_file airplay_public_data_file }:sock_file write;
 
 allow homekit app_man:fd use;
 allow homekit app_man:fifo_file { read write getattr }; #/tmp/fifo_am_write

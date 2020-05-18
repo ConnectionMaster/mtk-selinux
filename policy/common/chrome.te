@@ -95,6 +95,7 @@ allow chrome pts_device:chr_file { read write getattr };
 allow chrome cmapool_device:chr_file { read write ioctl };
 allow chrome tee_device:chr_file { read write ioctl };
 allow chrome binder_device:chr_file { read write ioctl };
+allow chrome ion_device:chr_file { read write ioctl };
 
 allow chrome semi_root_process:binder { transfer call };
 

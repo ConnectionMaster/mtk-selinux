@@ -68,6 +68,7 @@
 #lw for bluetooth
 /(cast_root/)?dev/uhid                          user_u:object_r:bluetooth_device
 /(cast_root/)?dev/hidraw.*                      user_u:object_r:bluetooth_device
+/(cast_root/)?dev/ion                           user_u:object_r:ion_device
 
 ####data
 /data(/.*)?                        user_u:object_r:system_data_file

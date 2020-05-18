@@ -61,3 +61,5 @@ type socket_device, file_type;
 type pts_device, file_type;
 
 type bluetooth_device, file_type;
+
+type ion_device, file_type;
