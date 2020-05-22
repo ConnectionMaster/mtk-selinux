@@ -117,5 +117,9 @@ allow conjure fusion_data_file:file { read write setattr };
 
 allow conjure debugfs:dir search;
 
+allow conjure certificate_file:dir search;
+allow conjure certificate_file:file read;
+allow conjure unconfined_process:system module_request;
+
 allow conjure bin_exec:file { read execute };
 
