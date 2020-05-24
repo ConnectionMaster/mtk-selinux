@@ -58,6 +58,10 @@ allow uli tee_supplicant_data_file : file {getattr open read append write lock c
 allow uli httpd_data_file : dir { open getattr read search write add_name create execute rename setattr remove_name };
 allow uli httpd_data_file : file {getattr open read append write lock create setattr unlink };
 
+####write tvclient data file
+allow uli conjure_data_file : dir { open getattr read search write add_name create execute rename setattr remove_name };
+allow uli conjure_data_file : file {getattr open read append write lock create setattr unlink };
+
 ###access cache dir
 allow uli cache_data_file: dir { open getattr read search };
 

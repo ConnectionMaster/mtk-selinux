@@ -10,3 +10,4 @@ mtkAccessPartialRules(dtv_svc, domain_type);
 domain_auto_trans(privileged_domain, dtv_svc_exec, dtv_svc);
 
 allow dtv_svc netflix_data_file:file { read getattr };
+allow dtv_svc chrome_data_file:file { read getattr };

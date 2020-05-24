@@ -165,6 +165,7 @@
 /certificate/drmp(/.*)?            user_u:object_r:uli_data_file
 /certificate/cast_cert(/.*)?       user_u:object_r:factory_data_file
 /certificate/amazon_iot(/.*)?      user_u:object_r:httpd_data_file
+/certificate/tvclient(/.*)?        user_u:object_r:conjure_data_file
 
 ####Customer
 /Customer(/.*)?                    user_u:object_r:customer_data_file

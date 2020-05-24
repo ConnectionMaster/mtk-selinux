@@ -113,3 +113,4 @@ allow chrome wpa_supplicant_file:dir { search getattr };
 allow chrome fusion_data_file:file { read write setattr };
 
 allow chrome debugfs:dir search;
+allow chrome self:capability { setuid sys_chroot sys_admin setgid };
