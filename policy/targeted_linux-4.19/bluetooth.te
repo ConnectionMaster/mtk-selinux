@@ -8,3 +8,5 @@ allow bluetooth bluetooth_exec:file map;
 allow bluetooth bluetooth_file:file map;
 allow bluetooth system_lib_file:file map;
 allow bluetooth vz_bin_exec:file map;
+allow bluetooth basic_bin_exec:file map;
+

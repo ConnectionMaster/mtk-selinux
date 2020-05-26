@@ -28,6 +28,7 @@ allow bluetooth application_file:dir { read search getattr };
 allow bluetooth backup_data_file:dir { read search getattr };
 
 # for mtk_launcher
+allow bluetooth basic_bin_exec:file { read execute getattr execute_no_trans };
 allow bluetooth basic_bin_file:dir search;
 
 allow bluetooth basic_device:chr_file { read getattr write ioctl };
@@ -42,7 +43,7 @@ allow bluetooth bluetooth_data_file:dir { open getattr read search write add_nam
 allow bluetooth bluetooth_data_file:file { getattr open read append write lock create setattr rename unlink };
 allow bluetooth bluetooth_device:chr_file { read write getattr ioctl relabelto setattr };
 allow bluetooth bluetooth_exec:dir { getattr search read };
-allow bluetooth bluetooth_exec:file { ioctl execute_no_trans };
+allow bluetooth bluetooth_exec:file { ioctl execute_no_trans setattr };
 allow bluetooth bluetooth_exec:lnk_file { read getattr };
 allow bluetooth bluetooth_file:dir { read search getattr };
 allow bluetooth bluetooth_file:file { read getattr execute };
@@ -50,7 +51,7 @@ allow bluetooth bluetooth_file:lnk_file { read getattr };
 
 allow bluetooth cache_data_file:dir { read search getattr };
 
-# /cast_root/dev/socket/logdw -- btLogWrapper logging?
+# /cast_root/dev/socket/logdw vzlogwrapper
 allow bluetooth cast_init:unix_dgram_socket sendto;
 
 # /sys/kernel/debug/tracing/ # for insmod?
@@ -82,9 +83,9 @@ allow bluetooth rootfs:dir { read search getattr };
 allow bluetooth rootfs:file { read getattr execute execute_no_trans ioctl };
 allow bluetooth rootfs:lnk_file { read getattr };
 
-allow bluetooth self:capability { net_admin sys_resource net_bind_service sys_module net_raw sys_ptrace fowner };
-#lw hidraw_test_msbc needs this, but why?
-allow bluetooth self:capability { dac_override dac_read_search };
+allow bluetooth self:capability { net_admin sys_resource net_bind_service sys_module net_raw sys_ptrace fowner setuid setgid kill };
+#lw hidraw_test_msbc needs this, leave in until BT as user bluetooth enabled
+allow bluetooth self:capability { dac_read_search dac_override };
 
 allow bluetooth self:dir { search getattr };
 # for /tmp/btvoicefifo pipe file
@@ -156,10 +157,9 @@ allow bluetooth unconfined_type:tcp_socket name_connect;
 # /usr/share/zoneinfo/
 allow bluetooth usr_data_file:dir { search getattr };
 
-# for vzlogwrapper -----
+# for vzlogwrapper
 allow bluetooth vz_bin_exec:file { open read entrypoint getattr ioctl execute execute_no_trans };
 
 allow bluetooth vzservices_exec:dir { read search getattr execute };
 allow bluetooth vzservices_exec:file { read execute getattr };
 allow bluetooth vzservices_file:dir { search getattr };
-
