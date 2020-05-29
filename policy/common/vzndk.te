@@ -1,0 +1,11 @@
+###rx file type, mostly for library
+type vzndk_file, file_type;
+
+###rw file type, for data and cache
+type vzndk_data_file, file_type, private_data_file_type;
+
+###vzndk_bin_exec type, for vzlogwrapper
+type vzndk_bin_exec, file_type;
+
+###domain vzndk
+type vzndk, domain_type;

@@ -1,0 +1,229 @@
+###rx file type, mostly for library
+type appletv_file, file_type;
+domain_auto_trans(privileged_domain, appletv_file, appletv);
+auditallow privileged_domain appletv_file:file {execute execute_no_trans};
+
+###app_man to appletv; not needed if appletv_ctrl is in appletv domain
+domain_auto_trans(app_man, appletv_file, appletv);
+auditallow app_man appletv_file:file {execute execute_no_trans};
+
+###Make appletv_ctrl in appletv domain.
+domain_auto_trans(app_man, vzndk_bin_exec, appletv);
+auditallow app_man vzndk_file:file {execute execute_no_trans};
+
+###rw file type, for data and cache
+type appletv_data_file, file_type, private_data_file_type;
+
+###exec type, need domain transition
+type appletv_exec, file_type;
+domain_auto_trans(privileged_domain, appletv_exec, appletv);
+
+###domain appletv
+type appletv, domain_type;
+mtkSetupTERules(appletv); # allow self all
+
+file_type_auto_trans(appletv, tmp_file, appletv_data_file);
+file_type_auto_trans(appletv, system_data_file, appletv_data_file);
+file_type_auto_trans(appletv, third_rw_data_file, appletv_data_file);
+
+#-----------------------------------------------------------
+allow privileged_domain selinuxfs_file:filesystem getattr;
+
+allow appletv rootfs:dir {read search getattr};
+allow appletv rootfs:file {read getattr execute execute_no_trans};
+allow appletv rootfs:lnk_file {read getattr};
+
+allow appletv sysfs:dir {read search getattr};
+allow appletv sysfs:file read;
+allow appletv sysfs:lnk_file {read getattr};
+allow appletv sysfs:filesystem getattr;
+
+allow appletv device:dir {read search getattr};
+allow appletv device:chr_file {read write ioctl};
+
+allow appletv unconfined_process:fd use;
+allow appletv unconfined_process:file read;
+allow appletv unconfined_process:dir {read search getattr};
+allow appletv unconfined_process:process sigchld;
+allow appletv unconfined_type:association {recvfrom sendto};
+allow appletv unconfined_type:tcp_socket {name_connect name_bind node_bind};
+allow appletv unconfined_type:udp_socket {name_bind node_bind};
+allow appletv unconfined_process:system module_request;
+allow appletv unconfined_type:dir getattr;
+allow appletv unconfined_type:file {read getattr};
+
+allow appletv application_file:dir {read search getattr};
+allow appletv application_file:file {read getattr execute};
+
+allow appletv backup_data_file:dir {read search getattr};
+
+allow appletv cache_data_file:dir {read search getattr};
+
+allow appletv demo_data_file:dir {read search getattr};
+
+allow appletv tmpfs:dir {read search getattr};
+
+allow appletv system_file:dir search;
+allow appletv system_file:file {read getattr};
+allow appletv system_data_file:dir  {read search getattr};
+allow appletv system_data_file:lnk_file read;
+allow appletv system_lib_file:dir {read search getattr};
+allow appletv system_lib_file:file {read getattr execute};
+allow appletv system_lib_file:lnk_file read;
+
+allow appletv etc_conf_file:file {read getattr};
+allow appletv etc_conf_file:lnk_file {read getattr};
+
+allow appletv tmp_file:dir remove_name;
+allow appletv tmp_file:file {ioctl read getattr write setattr append};
+allow appletv tmp_file:sock_file write;
+allow appletv tmp_file:fifo_file {ioctl read write};
+allow appletv tmp_file:lnk_file read;
+
+allow appletv cast_init:fd use;
+allow appletv cast_init:unix_dgram_socket sendto;
+allow appletv cast_init:file read;
+allow appletv cast_init:dir search;
+
+allow appletv conjure_file:dir {read search getattr};
+allow appletv conjure_file:file {read getattr execute};
+allow appletv conjure_file:lnk_file read;
+allow appletv conjure:dir search;
+allow appletv conjure:file read;
+
+allow appletv chrome_file:dir {read search getattr};
+allow appletv chrome_file:file {read  getattr};
+allow appletv chrome_file:lnk_file {read getattr};
+allow appletv chrome_data_file:dir {open getattr read search};
+allow appletv chrome_data_file:file {getattr open read};
+allow appletv chrome_data_file:lnk_file read;
+allow appletv chrome:dir search;
+allow appletv chrome:file read;
+
+allow appletv appletv_exec:file {ioctl execute_no_trans};
+allow appletv appletv_exec:lnk_file {read getattr};
+allow appletv appletv_file:dir {read search getattr};
+allow appletv appletv_file:file ioctl;
+allow appletv appletv_file:lnk_file {read getattr};
+allow appletv appletv_data_file:dir {write remove_name add_name};
+allow appletv appletv_data_file:file {read write create unlink rename};
+
+allow appletv shm_device:dir {read search getattr write remove_name add_name};
+allow appletv shm_device:file {read write create unlink getattr};
+allow appletv mik_device:dir {read search getattr};
+allow appletv mik_device:chr_file {read write ioctl};
+allow appletv vndbinder_device:chr_file read;
+allow appletv socket_device:dir {read search getattr};
+allow appletv socket_device:sock_file write;
+allow appletv pts_device:chr_file {ioctl read write getattr};
+allow appletv pts_device:dir search;
+allow appletv event_device:chr_file {read write getattr ioctl};
+allow appletv basic_device:chr_file {read getattr write ioctl append};
+allow appletv semutex_device:chr_file {read write ioctl};
+allow appletv cb_device:chr_file {read write ioctl};
+allow appletv miomap_device:chr_file {read write ioctl};
+allow appletv mma_device:chr_file {ioctl read write};
+allow appletv mtal_device:chr_file {read write ioctl};
+allow appletv fb_device:chr_file {read write ioctl};
+allow appletv fusion_device:chr_file {read write ioctl};
+allow appletv mali_device:chr_file {read write getattr ioctl};
+allow appletv binder_device:chr_file {read write ioctl};
+
+allow appletv utopia_data_file:dir search;
+allow appletv utopia_data_file:file {read write ioctl};
+
+allow appletv httpd_data_file:dir {read search getattr};
+allow appletv httpd_data_file:file {read getattr};
+allow appletv httpd:dir search;
+allow appletv httpd:file read;
+
+allow appletv file_inode:dir {read search getattr};
+allow appletv file_inode:file {read getattr};
+
+allow appletv fusion_data_file:file {read write setattr};
+
+allow appletv debugfs:dir search;
+
+#allow appletv certificate_file:dir search;
+#allow appletv certificate_file:file read;
+
+allow appletv bin_exec:file {read execute getattr execute_no_trans};
+allow appletv bin_exec:lnk_file read;
+allow appletv bin_exec:dir {read getattr search};
+allow appletv bin_file:dir {read getattr search};
+
+allow appletv tee_supplicant:dir search;
+allow appletv tee_supplicant:file read;
+allow appletv tee_device:chr_file {read write ioctl};
+
+allow appletv vzndk_bin_exec:file {ioctl read getattr execute execute_no_trans} ;
+allow appletv vzndk_data_file:dir {read search getattr};
+allow appletv vzndk_data_file:file {read getattr execute_no_trans};
+allow appletv vzndk_data_file:lnk_file read;
+allow appletv vzndk_file:dir {read search getattr};
+allow appletv vzndk_file:file {read getattr execute execute_no_trans};
+allow appletv vzndk_file:lnk_file read;
+
+allow appletv app_man:dir search;
+allow appletv app_man:file read;
+allow appletv app_man:fd use;
+allow appletv app_man:fifo_file {ioctl read write};
+allow appletv app_man:msg send;
+allow appletv app_man:msgq {write unix_write unix_read associate};
+allow appletv app_man:netlink_kobject_uevent_socket {ioctl read write};
+allow appletv app_man:binder {transfer call};
+
+allow appletv dtv_svc:dir search;
+allow appletv dtv_svc:file read;
+allow appletv dtv_svc:unix_stream_socket connectto;
+
+allow appletv browser_ctrl:dir search;
+allow appletv browser_ctrl:file read;
+
+allow appletv dialserver:dir search;
+allow appletv dialserver:file read;
+
+allow appletv netflix:dir search;
+allow appletv netflix:file read;
+
+allow appletv tts:dir search;
+allow appletv tts:file read;
+
+allow appletv uli:dir search;
+allow appletv uli:file read;
+
+allow appletv wpa_supplicant:dir search;
+allow appletv wpa_supplicant:file read;
+
+allow appletv airplay:dir search;
+allow appletv airplay:file read;
+
+allow appletv homekit:dir search;
+allow appletv homekit:file read;
+
+allow appletv su:dir search;
+allow appletv su:file read;
+
+allow appletv udhcpc:file read;
+allow appletv udhcpc:dir search;
+
+allow appletv amazon_file:dir {search getattr read};
+allow appletv amazon_file:file {open getattr read};
+
+allow appletv basic_file:dir {getattr search};
+allow appletv basic_lib_file:file {read getattr execute};
+
+allow appletv playready_file:dir {read search getattr};
+allow appletv selinuxfs_file:filesystem getattr;
+
+allow appletv third_lib_file:dir {getattr search};
+allow appletv third_rw_data_file:lnk_file read;
+allow appletv third_file:dir {read search getattr};
+
+allow appletv self:capability {sys_nice setuid sys_chroot sys_resource setgid};
+
+allow appletv semi_root_process:dir search;
+allow appletv semi_root_process:file read;
+allow appletv semi_root_process:msg {send receive};
+allow appletv semi_root_process:msgq {write read unix_read unix_write associate};
+allow appletv semi_root_process:binder {transfer call};
