@@ -7,10 +7,6 @@ auditallow privileged_domain appletv_file:file {execute execute_no_trans};
 domain_auto_trans(app_man, appletv_file, appletv);
 auditallow app_man appletv_file:file {execute execute_no_trans};
 
-###Make appletv_ctrl in appletv domain.
-domain_auto_trans(app_man, vzndk_bin_exec, appletv);
-auditallow app_man vzndk_file:file {execute execute_no_trans};
-
 ###rw file type, for data and cache
 type appletv_data_file, file_type, private_data_file_type;
 
@@ -211,8 +207,6 @@ allow appletv selinuxfs_file:filesystem getattr;
 allow appletv third_lib_file:dir {getattr search};
 allow appletv third_rw_data_file:lnk_file read;
 allow appletv third_file:dir {read search getattr};
-
-allow appletv self:capability {sys_nice setuid sys_chroot sys_resource setgid};
 
 allow appletv semi_root_process:dir search;
 allow appletv semi_root_process:file read;
