@@ -140,8 +140,6 @@ allow appletv httpd:file read;
 allow appletv file_inode:dir {read search getattr};
 allow appletv file_inode:file {read getattr};
 
-allow appletv fusion_data_file:file {read write setattr};
-
 allow appletv debugfs:dir search;
 
 #allow appletv certificate_file:dir search;
@@ -183,9 +181,6 @@ allow appletv browser_ctrl:file read;
 allow appletv dialserver:dir search;
 allow appletv dialserver:file read;
 
-allow appletv netflix:dir search;
-allow appletv netflix:file read;
-
 allow appletv tts:dir search;
 allow appletv tts:file read;
 
@@ -206,9 +201,6 @@ allow appletv su:file read;
 
 allow appletv udhcpc:file read;
 allow appletv udhcpc:dir search;
-
-allow appletv amazon_file:dir {search getattr read};
-allow appletv amazon_file:file {open getattr read};
 
 allow appletv basic_file:dir {getattr search};
 allow appletv basic_lib_file:file {read getattr execute};
