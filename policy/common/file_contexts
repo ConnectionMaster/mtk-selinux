@@ -330,15 +330,15 @@
 /backup/.*/homekit/post-install\.sh   user_u:object_r:homekit_exec
 
 ####cast_world app
-/(data/app|backup)/(chromium|conjure_(a|b))(/.*)?                   user_u:object_r:conjure_file
-/(data/app|backup)/(chromium|conjure_(a|b))/_chromium_shell         user_u:object_r:conjure_exec
-/(data/app|backup)/(chromium|conjure_(a|b))/chrome-sandbox          user_u:object_r:conjure_exec
-/(data/app|backup)/(chromium|conjure_(a|b))/chromium_ctrl_svc       user_u:object_r:conjure_exec
-/(data/app|backup)/(chromium|conjure_(a|b))/chromium_shell          user_u:object_r:conjure_exec
-/(data/app|backup)/(chromium|conjure_(a|b))/conjure                 user_u:object_r:conjure_exec
-/(data/app|backup)/(chromium|conjure_(a|b))/dumpstate               user_u:object_r:conjure_exec
-/(data/app|backup)/(chromium|conjure_(a|b))/fling                   user_u:object_r:conjure_exec
-/(data/app|backup)/(chromium|conjure_(a|b))/.*\.sh                  user_u:object_r:conjure_exec
+/(data/app|backup)/(chromium|conjure|conjure_(a|b))(/.*)?                   user_u:object_r:conjure_file
+/(data/app|backup)/(chromium|conjure|conjure_(a|b))/_chromium_shell         user_u:object_r:conjure_exec
+/(data/app|backup)/(chromium|conjure|conjure_(a|b))/chrome-sandbox          user_u:object_r:conjure_exec
+/(data/app|backup)/(chromium|conjure|conjure_(a|b))/chromium_ctrl_svc       user_u:object_r:conjure_exec
+/(data/app|backup)/(chromium|conjure|conjure_(a|b))/chromium_shell          user_u:object_r:conjure_exec
+/(data/app|backup)/(chromium|conjure|conjure_(a|b))/conjure                 user_u:object_r:conjure_exec
+/(data/app|backup)/(chromium|conjure|conjure_(a|b))/dumpstate               user_u:object_r:conjure_exec
+/(data/app|backup)/(chromium|conjure|conjure_(a|b))/fling                   user_u:object_r:conjure_exec
+/(data/app|backup)/(chromium|conjure|conjure_(a|b))/.*\.sh                  user_u:object_r:conjure_exec
 /(data/app|backup)/scpl(/.*)?                                       user_u:object_r:httpd_file
 /(data/app|backup)/scpl/bin(/.*)?                                   user_u:object_r:httpd_exec
 /(data/app|backup)/scpl/.*\.sh                                      user_u:object_r:httpd_exec

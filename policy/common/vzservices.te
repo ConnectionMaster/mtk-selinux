@@ -20,11 +20,32 @@ file_type_auto_trans(vzservices, tmp_file, vzservices_data_file);
 file_type_auto_trans(vzservices, tmpfs, vzservices_data_file);
 #-----------------------------------------------------------
 
+allow vzservices backup_data_file:dir { search write remove_name };
+
 # /sys/fs/selinux/null
 allow vzservices basic_device:chr_file { read write };
 
+# /bin/rm
+allow vzservices bin_exec:dir search;
+allow vzservices bin_exec:file { read execute execute_no_trans getattr };
+allow vzservices bin_exec:lnk_file read;
+allow vzservices bin_file:dir search;
+
+# bluetooth
+allow vzservices bluetooth_exec:dir { getattr read search write remove_name rmdir };
+allow vzservices bluetooth_exec:file { read getattr unlink };
+allow vzservices bluetooth_exec:lnk_file unlink;
+allow vzservices bluetooth_file:dir { getattr read search write remove_name rmdir };
+allow vzservices bluetooth_file:file { read getattr unlink };
+allow vzservices bluetooth_file:lnk_file { read getattr unlink };
 # /cast_root/dev/socket/logdw
 allow vzservices cast_init:unix_dgram_socket sendto;
+# conjure
+allow vzservices conjure_exec:file { read getattr unlink };
+allow vzservices conjure_exec:lnk_file unlink;
+allow vzservices conjure_file:dir { getattr read search write remove_name rmdir };
+allow vzservices conjure_file:file { read getattr unlink };
+allow vzservices conjure_file:lnk_file { read getattr unlink };
 
 # /cast_root/dev
 allow vzservices device:dir search;
@@ -37,13 +58,21 @@ allow vzservices rootfs:dir { read getattr search };
 allow vzservices rootfs:file { read getattr };
 allow vzservices rootfs:lnk_file { read getattr };
 
-allow vzservices self:fifo_file read;
-allow vzservices self:process fork;
+allow vzservices self:dir search;
+allow vzservices self:fifo_file { read write getattr };
+allow vzservices self:process { fork signal sigchld };
 allow vzservices self:unix_dgram_socket { create connect write };
 
 # /cast_root/dev/socket
 allow vzservices socket_device:dir { read search getattr };
 allow vzservices socket_device:sock_file write;
+allow vzservices system_data_file:dir { search getattr };
+# to remove bluetooth, bluetooth_[ab], conjure, conjure_[ab] from /data/app
+allow vzservices system_data_file:dir { remove_name write };
+allow vzservices system_data_file:lnk_file { read getattr };
+
+allow vzservices system_file:dir search;
+allow vzservices system_file:file { read getattr };
 
 # /lib/libc.so.6, /lib/ld-2.21.so
 allow vzservices system_lib_file:dir { search getattr };
