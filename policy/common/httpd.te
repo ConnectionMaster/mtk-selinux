@@ -189,6 +189,19 @@ allow httpd socket_device:sock_file write;
 # /cast_root/dev/socket/logdw
 allow httpd cast_init:unix_dgram_socket sendto;
 
+# Communication with install manager
+allow httpd bin_exec:file entrypoint;
+allow httpd unconfined_process:dir {getattr search};
+allow httpd unconfined_process:file read;
+allow httpd unconfined_process:lnk_file read;
+allow httpd semi_root_process:dir { getattr search };
+allow httpd semi_root_process:file read;
+allow httpd semi_root_process:lnk_file read;
+allow httpd vzservices:dir {getattr search};
+allow httpd vzservices:file read;
+allow httpd vzservices:lnk_file read;
+allow httpd vzservices:msgq {create getattr unix_read unix_write read write associate enqueue};
+allow httpd config_file:dir search;
+
 # for creating, deleting /var/run/*.pid
 allow httpd tmpfs:dir { write remove_name };
-

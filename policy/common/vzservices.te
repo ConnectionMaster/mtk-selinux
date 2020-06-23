@@ -17,6 +17,7 @@ type vz_bin_exec, file_type;
 type vzservices, domain_type;
 
 file_type_auto_trans(vzservices, tmp_file, vzservices_data_file);
+file_type_auto_trans(vzservices, tmpfs, vzservices_data_file);
 #-----------------------------------------------------------
 
 # /sys/fs/selinux/null
@@ -65,3 +66,84 @@ allow vzservices vzservices_exec:file{open read entrypoint getattr execute ioctl
 
 ###access vzlogwrapper
 allow vzservices vz_bin_exec:file{open read entrypoint getattr execute ioctl execute_no_trans};
+
+###access install_manager
+allow vzservices httpd:msgq {create getattr unix_read unix_write read write associate enqueue};
+allow vzservices self:msgq {create getattr unix_read unix_write read write associate enqueue};
+allow vzservices self:dir search;
+allow vzservices self:file read;
+allow vzservices self:lnk_file read;
+allow vzservices shm_device:dir search;
+allow vzservices system_data_file:dir search;
+allow vzservices self:msg *;
+allow vzservices tmp_file:lnk_file read;
+
+###IM versions
+allow vzservices httpd_data_file:fifo_file read;
+allow vzservices airplay_file:lnk_file read;
+allow vzservices demo_data_file:dir search;
+allow vzservices system_data_file:lnk_file read;
+allow vzservices third_rw_data_file:lnk_file read;
+allow vzservices airplay_file:dir search;
+allow vzservices conjure_file:dir search;
+allow vzservices demo_data_file:lnk_file read;
+allow vzservices third_rw_data_file:dir search;
+allow vzservices conjure_file:file read;
+allow vzservices system_data_file:file read;
+
+###IM decryption
+allow vzservices bin_file:dir search;
+allow vzservices bin_exec:lnk_file read;
+allow vzservices bin_exec:dir search;
+allow vzservices bin_exec:file {execute read execute_no_trans getattr};
+allow vzservices self:process sigchld;
+allow vzservices etc_conf_file:file read;
+allow vzservices self:unix_stream_socket create;
+allow vzservices system_file:file read;
+allow vzservices third_file:dir search;
+allow vzservices httpd_data_file:dir {search write add_name remove_name};
+allow vzservices httpd_data_file:file { rename unlink setattr };
+allow vzservices self:fifo_file { write getattr ioctl };
+allow vzservices system_file:file getattr;
+allow vzservices third_exec:dir search;
+allow vzservices basic_device:chr_file {ioctl getattr};
+allow vzservices httpd_data_file:file {getattr read ioctl create write};
+allow vzservices rootfs:file {execute execute_no_trans};
+allow vzservices self:capability { sys_chroot dac_read_search dac_override };
+allow vzservices wpa_supplicant_file:dir search;
+allow vzservices third_exec:file {read getattr};
+allow vzservices application_file:dir search;
+allow vzservices tmp_file:dir remove_name;
+allow vzservices pts_device:chr_file { getattr ioctl };
+
+###IM startup from launch_vz
+allow vzservices unconfined_process:fd { use };
+allow vzservices unconfined_process:msgq { unix_read unix_write associate };
+allow vzservices unconfined_process:system module_request;
+
+###IM staging
+allow vzservices system_data_file:dir { write getattr rmdir read remove_name create add_name };
+allow vzservices system_data_file:file { write create getattr unlink };
+allow vzservices appletv_file:dir { write getattr rmdir read remove_name create add_name relabelto search setattr};
+allow vzservices appletv_file:file { write read create getattr unlink setattr relabelfrom relabelto ioctl };
+allow vzservices appletv_exec:file { read getattr unlink relabelto };
+allow vzservices vzndk_file:dir { write getattr rmdir read remove_name create add_name relabelto search setattr};
+allow vzservices vzndk_file:file { write read create getattr unlink setattr relabelfrom relabelto ioctl };
+allow vzservices vzndk_bin_exec:file { read getattr unlink relabelto };
+allow vzservices vzndk_bin_exec:lnk_file { read relabelto getattr unlink};
+
+###IM installing
+allow vzservices system_data_file:lnk_file { create getattr unlink relabelfrom};
+allow vzservices appletv_file:lnk_file { create relabelto read getattr unlink};
+allow vzservices vzndk_file:lnk_file { create relabelto read getattr unlink relabelfrom};
+
+###IM restorecon
+allow vzservices self:file getattr;
+allow vzservices selinuxfs_file:filesystem getattr;
+allow vzservices sysfs:dir search;
+allow vzservices system_data_file:dir relabelfrom;
+allow vzservices system_data_file:file relabelfrom;
+
+###IM post-install
+allow vzservices self:capability {chown fsetid};
+allow vzservices etc_conf_file:file getattr;
