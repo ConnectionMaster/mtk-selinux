@@ -50,6 +50,7 @@ allow appletv unconfined_type:file {read getattr};
 
 allow appletv application_file:dir {read search getattr};
 allow appletv application_file:file {read getattr execute};
+allow appletv application_file:lnk_file {read getattr};
 
 allow appletv backup_data_file:dir {read search getattr};
 
@@ -155,15 +156,15 @@ allow appletv vzndk_data_file:dir {read search getattr};
 allow appletv vzndk_data_file:file {read getattr execute_no_trans};
 allow appletv vzndk_data_file:lnk_file read;
 allow appletv vzndk_file:dir {read search getattr};
-allow appletv vzndk_file:file {read getattr execute execute_no_trans};
+allow appletv vzndk_file:file {read ioctl getattr execute execute_no_trans};
 allow appletv vzndk_file:lnk_file read;
 
 allow appletv app_man:dir search;
 allow appletv app_man:file read;
 allow appletv app_man:fd use;
 allow appletv app_man:fifo_file {ioctl read write};
-allow appletv app_man:msg send;
-allow appletv app_man:msgq {write unix_write unix_read associate};
+allow appletv app_man:msg {send receive};
+allow appletv app_man:msgq {read write unix_write unix_read associate};
 allow appletv app_man:netlink_kobject_uevent_socket {ioctl read write};
 allow appletv app_man:binder {transfer call};
 
@@ -213,3 +214,11 @@ allow appletv semi_root_process:file read;
 allow appletv semi_root_process:msg {send receive};
 allow appletv semi_root_process:msgq {write read unix_read unix_write associate};
 allow appletv semi_root_process:binder {transfer call};
+
+allow appletv vzservices_file:dir {getattr search};
+allow appletv vzservices_file:file {getattr open read lock execute};
+
+# for loading bluetooth libraries
+allow appletv bluetooth:dir {getattr search};
+allow appletv bluetooth:file {getattr open read lock execute};
+
