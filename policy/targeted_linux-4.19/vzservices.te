@@ -1,0 +1,7 @@
+allow vzservices bin_exec:file map;
+allow vzservices rootfs:file map;
+allow vzservices system_lib_file:file map;
+allow vzservices vz_bin_exec:file map;
+allow vzservices vzservices_exec:file map;
+allow vzservices vzservices_file:file map;
+

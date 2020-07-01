@@ -1,0 +1,15 @@
+allow appletv appletv_exec:file map;
+allow appletv appletv_file:file map;
+allow appletv application_file:file map;
+allow appletv basic_device:chr_file map;
+allow appletv conjure_file:file map;
+allow appletv etc_conf_file:file map;
+allow appletv mali_device:chr_file map;
+allow appletv miomap_device:chr_file map;
+allow appletv rootfs:file map;
+allow appletv semutex_device:chr_file map;
+allow appletv system_lib_file:file map;
+allow appletv tmp_file:file map;
+allow appletv vzndk_bin_exec:file map;
+allow appletv vzndk_file:file map;
+

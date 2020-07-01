@@ -16,6 +16,8 @@ type httpd, domain_type;
 file_type_auto_trans(httpd, tmp_file, httpd_data_file);
 file_type_auto_trans(httpd, tmpfs, httpd_data_file);
 
+file_type_auto_trans(httpd, system_data_file, httpd_data_file);
+
 #-----------------------------------------------------------
 
 ###access 3rd dir
@@ -33,7 +35,7 @@ allow httpd httpd_file:lnk_file {read getattr open execute};
 
 ###access httpd data file
 #we allow httpd_data_file to have execute permission since the process will create tmp_file under /tmp and execute it
-allow httpd httpd_data_file:dir { open getattr read search write add_name create execute rename setattr };
+allow httpd httpd_data_file:dir { open getattr read search write add_name create execute rename setattr remove_name reparent };
 allow httpd httpd_data_file:file { getattr open read append write lock setattr execute };
 allow httpd httpd_data_file:lnk_file { getattr open read write read };
 
@@ -61,7 +63,7 @@ allow httpd basic_lib_file:lnk_file { read getattr };
 allow httpd etc_conf_file:lnk_file { read getattr };
 allow httpd etc_conf_file:file {read getattr };
 
-allow httpd self:process { fork signal sigchld };
+allow httpd self:process { fork signal sigchld getattr };
 allow httpd self:tcp_socket { setopt read bind create accept write getattr connect shutdown getopt listen };
 
 allow httpd rootfs:dir {search getattr read};
@@ -104,6 +106,7 @@ allow httpd self:dir { read getattr search };
 allow httpd self:file { read getattr };
 allow httpd self:fifo_file { read getattr write ioctl };
 
+allow httpd self:lnk_file read;
 allow httpd self:process { signal sigchld sigkill };
 allow httpd self:unix_dgram_socket { create connect ioctl read write sendto };
 allow httpd self:unix_stream_socket { create connect connectto write getattr shutdown read accept setopt bind listen ioctl };
@@ -187,6 +190,7 @@ allow httpd socket_device:dir { read search getattr };
 allow httpd socket_device:sock_file write;
 
 # /cast_root/dev/socket/logdw
+allow httpd cast_init:dir { getattr search };
 allow httpd cast_init:unix_dgram_socket sendto;
 
 # Communication with install manager
@@ -205,3 +209,36 @@ allow httpd config_file:dir search;
 
 # for creating, deleting /var/run/*.pid
 allow httpd tmpfs:dir { write remove_name };
+
+# install_manager on 5695
+allow httpd airplay:dir { getattr search read };
+allow httpd airplay:file read;
+allow httpd airplay:lnk_file read;
+
+allow httpd bluetooth:dir { getattr search read };
+allow httpd bluetooth:file read;
+
+allow httpd conjure:dir { getattr search read };
+allow httpd conjure:file read;
+allow httpd conjure:lnk_file read;
+
+allow httpd homekit:dir { getattr search read };
+allow httpd homekit:file read;
+allow httpd homekit:lnk_file read;
+
+allow httpd uli:dir { getattr search read };
+allow httpd uli:file read;
+allow httpd uli:lnk_file read;
+
+# appletv on 5695 ----------------
+allow httpd appletv:dir { getattr search };
+allow httpd appletv:file read;
+allow httpd appletv:lnk_file read;
+
+allow httpd tee_supplicant:dir { getattr search };
+allow httpd tee_supplicant:file read;
+allow httpd tee_supplicant:lnk_file read;
+
+allow httpd wpa_supplicant:dir { getattr search };
+allow httpd wpa_supplicant:file read;
+allow httpd wpa_supplicant:lnk_file read;

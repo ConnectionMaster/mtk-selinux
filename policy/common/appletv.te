@@ -193,9 +193,6 @@ allow appletv airplay:file read;
 allow appletv homekit:dir search;
 allow appletv homekit:file read;
 
-allow appletv su:dir search;
-allow appletv su:file read;
-
 allow appletv udhcpc:file read;
 allow appletv udhcpc:dir search;
 
@@ -222,3 +219,10 @@ allow appletv vzservices_file:file {getattr open read lock execute};
 allow appletv bluetooth:dir {getattr search};
 allow appletv bluetooth:file {getattr open read lock execute};
 
+# for 5695
+allow appletv cmapool_device:chr_file ioctl;
+allow appletv cmapool_device:chr_file { read write };
+allow appletv netflix:dir search;
+allow appletv netflix:file read;
+allow appletv vzservices:dir { getattr search };
+allow appletv vzservices:file read;

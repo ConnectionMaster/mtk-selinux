@@ -127,7 +127,7 @@ allow vzservices bin_exec:dir search;
 allow vzservices bin_exec:file {execute read execute_no_trans getattr};
 allow vzservices self:process sigchld;
 allow vzservices etc_conf_file:file read;
-allow vzservices self:unix_stream_socket create;
+allow vzservices self:unix_stream_socket { create connect };
 allow vzservices system_file:file read;
 allow vzservices third_file:dir search;
 allow vzservices httpd_data_file:dir {search write add_name remove_name};
@@ -176,3 +176,4 @@ allow vzservices system_data_file:file relabelfrom;
 ###IM post-install
 allow vzservices self:capability {chown fsetid};
 allow vzservices etc_conf_file:file getattr;
+
