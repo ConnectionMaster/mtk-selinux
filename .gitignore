@@ -1,4 +1,8 @@
-patch/
+patch/new
+patch/old
+patch/*.patch
+patch/*.tar.xz
+patch/*.tgz
 policy-*.tgz
 policy.tgz*
 policy/USB/
