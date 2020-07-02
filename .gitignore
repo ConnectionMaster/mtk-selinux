@@ -17,3 +17,6 @@ policy/stage
 policy/su.te
 policy/tarit.sh
 policy/usbit
+build/my-policy
+build/stage
+mtk-selinux.tgz
