@@ -2,6 +2,7 @@ allow appletv appletv_exec:file map;
 allow appletv appletv_file:file map;
 allow appletv application_file:file map;
 allow appletv basic_device:chr_file map;
+allow appletv binder_device:chr_file map;
 allow appletv conjure_file:file map;
 allow appletv etc_conf_file:file map;
 allow appletv mali_device:chr_file map;
