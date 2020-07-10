@@ -1,0 +1,99 @@
+###rx file type, mostly for library
+type vizios_file, file_type;
+
+###exec type, need domain transition
+type vizios_exec, file_type;
+
+domain_auto_trans(privileged_domain, vizios_file, vizios);
+domain_auto_trans(privileged_domain, vizios_exec, vizios);
+domain_auto_trans(unconfined_process, vizios_file, vizios);
+domain_auto_trans(unconfined_process, vizios_exec, vizios);
+auditallow privileged_domain vizios_file:file {execute execute_no_trans};
+auditallow unconfined_process vizios_file:file {execute execute_no_trans};
+
+###rw file type, for data and cache
+type vizios_data_file, file_type, private_data_file_type;
+
+###domain vizios
+type vizios, domain_type;
+
+# for /tmp/
+file_type_auto_trans(vizios, tmp_file, vizios_data_file);
+file_type_auto_trans(vizios, tmpfs, vizios_data_file);
+
+# for /data
+file_type_auto_trans(vizios, system_data_file, vizios_data_file);
+
+#-----------------------------------------------------------
+allow vizios application_file:dir {read search getattr};
+
+allow vizios basic_bin_exec:file {read execute getattr execute_no_trans};
+allow vizios basic_bin_file:dir search;
+
+allow vizios basic_device:chr_file {read getattr write ioctl};
+allow vizios basic_file:dir {getattr search};
+
+allow vizios bin_file:dir search;
+allow vizios bin_exec:file {entrypoint read execute getattr execute_no_trans};
+allow vizios bin_exec:dir  {read getattr search};
+allow vizios bin_exec:lnk_file {read getattr};
+
+allow vizios unconfined_process:dir {getattr search};
+allow vizios unconfined_process:file read;
+allow vizios unconfined_process:lnk_file read;
+
+allow vizios vizios_data_file:dir {open getattr read search write add_name create rename setattr remove_name};
+allow vizios vizios_data_file:file {getattr open read append write lock create setattr rename unlink};
+#allow vizios vizios_device:chr_file {read write getattr ioctl relabelto setattr};
+
+allow vizios vizios_exec:dir {getattr search read};
+allow vizios vizios_exec:file {ioctl execute_no_trans setattr};
+allow vizios vizios_exec:lnk_file {read getattr};
+allow vizios vizios_file:dir {read search getattr};
+allow vizios vizios_file:file {read getattr execute};
+allow vizios vizios_file:lnk_file {read getattr};
+allow vizios device:dir {read search getattr};
+allow vizios device:chr_file {read write ioctl};
+
+allow vizios system_data_file:dir  {read write search getattr};
+allow vizios system_data_file:file {read write getattr};
+allow vizios system_data_file:lnk_file read;
+
+allow vizios system_lib_file:dir {read search getattr};
+allow vizios system_lib_file:file {read getattr execute};
+allow vizios system_lib_file:lnk_file read;
+
+allow vizios cache_data_file:dir {read search getattr};
+
+allow vizios unconfined_process:fd use;
+allow vizios rootfs:dir {read search getattr};
+
+allow vizios rootfs:lnk_file {read getattr};
+
+allow vizios self:msgq {create getattr unix_read unix_write read write associate enqueue};
+allow vizios self:process {fork signal sigchld signull getattr setsched getsched setrlimit sigkill};
+allow vizios self:capability {sys_nice kill};
+allow vizios self:msg {send receive};
+allow vizios self:dir {read search getattr};
+allow vizios self:file {read write getattr};
+allow vizios self:netlink_route_socket {read write bind create getattr nlmsg_read};
+allow vizios self:tcp_socket {read write bind getattr listen create setopt accept};
+allow vizios self:unix_dgram_socket {create connect};
+
+allow vizios sysfs:dir {read search getattr};;
+allow vizios sysfs:file read;
+allow vizios sysfs:lnk_file {read getattr};
+allow vizios sysfs:filesystem getattr;
+
+allow vizios appletv:msgq {read unix_read write unix_write associate};
+allow vizios appletv:msg {send receive};
+allow vizios appletv:process signull;
+
+allow vizios app_man:msg {send receive};
+allow vizios app_man:msgq {write unix_write unix_read associate};
+
+allow vizios unconfined_type:association {recvfrom sendto};
+allow vizios unconfined_type:tcp_socket {name_bind name_connect node_bind};
+
+allow vizios system_file:file {read getattr};
+

@@ -100,7 +100,7 @@ allow appletv chrome:file read;
 allow appletv appletv_exec:file {ioctl execute_no_trans};
 allow appletv appletv_exec:lnk_file {read getattr};
 allow appletv appletv_file:dir {read search getattr};
-allow appletv appletv_file:file ioctl;
+allow appletv appletv_file:file {read write ioctl};
 allow appletv appletv_file:lnk_file {read getattr};
 allow appletv appletv_data_file:dir {write remove_name add_name};
 allow appletv appletv_data_file:file {read write create unlink rename};
@@ -162,7 +162,12 @@ allow appletv vzndk_file:lnk_file read;
 allow appletv app_man:dir search;
 allow appletv app_man:file read;
 allow appletv app_man:fd use;
-allow appletv app_man:fifo_file {ioctl read write};
+allow appletv app_man:fifo_file {getattr ioctl read write};
+
+allow appletv vizios:msgq {unix_read unix_write read write associate};
+allow appletv vizios:msg {send receive};
+allow appletv vizios:tcp_socket {read write name_connect};
+
 allow appletv app_man:msg {send receive};
 allow appletv app_man:msgq {read write unix_write unix_read associate};
 allow appletv app_man:netlink_kobject_uevent_socket {ioctl read write};
@@ -226,3 +231,4 @@ allow appletv netflix:dir search;
 allow appletv netflix:file read;
 allow appletv vzservices:dir { getattr search };
 allow appletv vzservices:file read;
+
