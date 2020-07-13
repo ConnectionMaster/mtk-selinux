@@ -230,15 +230,3 @@ allow httpd uli:dir { getattr search read };
 allow httpd uli:file read;
 allow httpd uli:lnk_file read;
 
-# appletv on 5695 ----------------
-allow httpd appletv:dir { getattr search };
-allow httpd appletv:file read;
-allow httpd appletv:lnk_file read;
-
-allow httpd tee_supplicant:dir { getattr search };
-allow httpd tee_supplicant:file read;
-allow httpd tee_supplicant:lnk_file read;
-
-allow httpd wpa_supplicant:dir { getattr search };
-allow httpd wpa_supplicant:file read;
-allow httpd wpa_supplicant:lnk_file read;

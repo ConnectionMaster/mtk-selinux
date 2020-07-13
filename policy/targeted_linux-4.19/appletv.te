@@ -12,4 +12,5 @@ allow appletv system_lib_file:file map;
 allow appletv tmp_file:file map;
 allow appletv vzndk_bin_exec:file map;
 allow appletv vzndk_file:file map;
+allow appletv binder_device:chr_file map;
 

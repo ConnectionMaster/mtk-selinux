@@ -79,6 +79,7 @@ allow vizios self:file {read write getattr};
 allow vizios self:netlink_route_socket {read write bind create getattr nlmsg_read};
 allow vizios self:tcp_socket {read write bind getattr listen create setopt accept};
 allow vizios self:unix_dgram_socket {create connect};
+allow vizios self:lnk_file read;
 
 allow vizios sysfs:dir {read search getattr};;
 allow vizios sysfs:file read;
@@ -95,5 +96,6 @@ allow vizios app_man:msgq {write unix_write unix_read associate};
 allow vizios unconfined_type:association {recvfrom sendto};
 allow vizios unconfined_type:tcp_socket {name_bind name_connect node_bind};
 
+allow vizios system_file:dir { getattr read search };
 allow vizios system_file:file {read getattr};
 

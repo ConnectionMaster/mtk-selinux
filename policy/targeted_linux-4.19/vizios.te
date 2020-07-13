@@ -1,0 +1,2 @@
+allow vizios vizios_exec:file map;
+
