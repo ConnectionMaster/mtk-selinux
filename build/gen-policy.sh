@@ -39,8 +39,8 @@ popd >/dev/null
 checkpolicy -c 29 -o my-policy ../policy/my-policy.conf \
     || die 1 "checkpolicy failed; can't compile policy"
 
-# create tarball
-#---------------
+# stage policy
+#-------------
 rm -rf ./stage
 
 mkdir -p ./stage/etc/selinux/dummy/contexts/files
@@ -50,5 +50,20 @@ mkdir -p ./stage/etc/selinux/dummy/policy
 cp my-policy ./stage/etc/selinux/dummy/policy/policy
 cp my-policy ./stage/etc/selinux/dummy/policy/policy.29
 
+# create firmware package files
+#------------------------------
+mkdir -p ./stage/policy
+cp ../policy/common/file_contexts ./stage/policy
+grep /application ./stage/policy/file_contexts \
+    | sed 's,(s)?,,' \
+    | sed 's,/application(/.*)?,/application/.*,' \
+    > ./stage/policy/app_ext4_contexts
+sed 's,/application,,g' ./stage/policy/app_ext4_contexts \
+    > ./stage/policy/app_squashfs_contexts
+echo "/        user_u:object_r:application_file" \
+    >> ./stage/policy/app_squashfs_contexts
+
+# create tarball
+#---------------
 tar czf $output_file -C ./stage . || die 1 "Can't create tgz"
 echo ">>> Created $(basename $output_file)"
