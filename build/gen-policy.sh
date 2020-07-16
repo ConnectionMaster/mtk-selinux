@@ -59,9 +59,9 @@ grep /application ./stage/policy/file_contexts \
     | sed 's,/application(/.*)?,/application/.*,' \
     > ./stage/policy/app_ext4_contexts
 sed 's,/application,,g' ./stage/policy/app_ext4_contexts \
-    > ./stage/policy/app_squashfs_contexts
+    > ./stage/policy/app_squash_contexts
 echo "/        user_u:object_r:application_file" \
-    >> ./stage/policy/app_squashfs_contexts
+    >> ./stage/policy/app_squash_contexts
 
 # create tarball
 #---------------
