@@ -1,2 +1,4 @@
+allow vizios bin_exec:file map;
+allow vizios system_lib_file:file map;
 allow vizios vizios_exec:file map;
 
