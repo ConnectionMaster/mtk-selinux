@@ -177,3 +177,12 @@ allow vzservices system_data_file:file relabelfrom;
 allow vzservices self:capability {chown fsetid};
 allow vzservices etc_conf_file:file getattr;
 
+### FactoryReset.sh
+allow vzservices vizios_data_file:dir { getattr read search write remove_name rmdir };
+allow vzservices vizios_data_file:file { read getattr unlink };
+allow vzservices vizios_data_file:lnk_file { read getattr unlink };
+
+allow vzservices httpd_data_file:dir { getattr read search write remove_name rmdir };
+allow vzservices httpd_data_file:file { read getattr unlink };
+allow vzservices httpd_data_file:lnk_file { read getattr unlink };
+
