@@ -4,11 +4,8 @@
 
 FROM ubuntu:16.04
 
-# update apt-get
-RUN apt-get update
-
 # get SELinux policyutils
-RUN apt-get -y install policycoreutils
+RUN apt-get update && apt-get -y install policycoreutils
 
 # make bash a little nicer
 WORKDIR /root

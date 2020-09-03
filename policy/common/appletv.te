@@ -134,7 +134,7 @@ allow appletv httpd_data_file:file {read getattr};
 allow appletv httpd:dir search;
 allow appletv httpd:file read;
 
-allow appletv file_inode:dir {read search getattr};
+allow appletv file_inode:dir {read search getattr write create add_name mounton };
 allow appletv file_inode:file {read getattr};
 
 allow appletv debugfs:dir search;
