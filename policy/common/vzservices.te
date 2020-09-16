@@ -61,6 +61,7 @@ allow vzservices rootfs:lnk_file { read getattr };
 allow vzservices self:dir search;
 allow vzservices self:fifo_file { read write getattr };
 allow vzservices self:process { fork signal sigchld };
+allow vzservices self:shm { create read write unix_read unix_write };
 allow vzservices self:unix_dgram_socket { create connect write };
 
 # /cast_root/dev/socket
@@ -92,12 +93,14 @@ allow vzservices vzservices_data_file:lnk_file { getattr open read write read };
 ###access vzservices exec file
 allow vzservices vzservices_exec:dir {open execute getattr read search};
 allow vzservices vzservices_exec:file{open read entrypoint getattr execute ioctl execute_no_trans};
+allow vzservices vzservices_exec:lnk_file read;
 
 ###access vzlogwrapper
 allow vzservices vz_bin_exec:file{open read entrypoint getattr execute ioctl execute_no_trans};
 
 ###access install_manager
 allow vzservices httpd:msgq {create getattr unix_read unix_write read write associate enqueue};
+allow vzservices httpd:shm { unix_read unix_write };
 allow vzservices self:msgq {create getattr unix_read unix_write read write associate enqueue};
 allow vzservices self:dir search;
 allow vzservices self:file read;
@@ -157,7 +160,7 @@ allow vzservices appletv_file:dir { write getattr rmdir read remove_name create 
 allow vzservices appletv_file:file { write read create getattr unlink setattr relabelfrom relabelto ioctl };
 allow vzservices appletv_exec:file { read getattr unlink relabelto };
 allow vzservices vzndk_file:dir { write getattr rmdir read remove_name create add_name relabelto search setattr};
-allow vzservices vzndk_file:file { write read create getattr unlink setattr relabelfrom relabelto ioctl };
+allow vzservices vzndk_file:file { write read create getattr unlink setattr relabelfrom relabelto ioctl execute };
 allow vzservices vzndk_bin_exec:file { read getattr unlink relabelto };
 allow vzservices vzndk_bin_exec:lnk_file { read relabelto getattr unlink};
 
