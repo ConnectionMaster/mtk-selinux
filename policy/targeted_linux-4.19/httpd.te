@@ -13,3 +13,5 @@ allow httpd bluetooth_file:file map;
 allow httpd vzservices_file:file map;
 allow httpd vz_bin_exec:file map;
 allow httpd vzservices_exec:file map;
+allow httpd vzndk_file:file map;
+

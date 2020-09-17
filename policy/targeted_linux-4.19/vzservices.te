@@ -4,4 +4,5 @@ allow vzservices system_lib_file:file map;
 allow vzservices vz_bin_exec:file map;
 allow vzservices vzservices_exec:file map;
 allow vzservices vzservices_file:file map;
+allow vzservices vzndk_file:file map;
 
