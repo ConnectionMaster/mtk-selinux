@@ -20,6 +20,7 @@ type system_lib_file, file_type;
 
 ###/tmp
 type tmp_file, file_type;
+type castpr25_public_data_file, file_type;
 
 ###/basic
 type basic_file, file_type, semi_root_file;

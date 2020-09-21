@@ -75,6 +75,8 @@ allow conjure chrome_file:lnk_file { read getattr };
 allow conjure chrome_data_file:dir { open getattr read search write add_name create execute rename setattr remove_name };
 allow conjure chrome_data_file:file { getattr open read append write create setattr rename unlink };
 allow conjure chrome_data_file:lnk_file read;
+allow conjure castpr25_public_data_file:dir { open getattr read search write add_name create execute rename setattr remove_name };
+allow conjure castpr25_public_data_file:file { getattr open read append write create setattr rename unlink };
 
 allow conjure conjure_exec:file { ioctl execute_no_trans };
 allow conjure conjure_exec:lnk_file { read getattr };

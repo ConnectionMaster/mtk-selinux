@@ -133,3 +133,16 @@ allow uli third_rw_data_file:lnk_file {read getattr};
 
 allow uli upgrade_data_file : dir { open getattr read search write add_name create execute rename setattr remove_name rmdir };
 allow uli upgrade_data_file : file {getattr open read append write lock create setattr unlink };
+
+###allow vzlogwrapper to wrap mtk_uli
+allow uli basic_bin_file:dir {read search getattr };
+allow uli cast_init:unix_dgram_socket sendto;
+allow uli pts_device:chr_file { read write };
+allow uli self:unix_dgram_socket { create connect write };
+allow uli socket_device:dir {read search getattr };
+allow uli socket_device:sock_file write;
+allow uli uli_exec:file { ioctl execute_no_trans };
+allow uli vz_bin_exec:file { read execute execute_no_trans };
+allow uli vzservices_exec:dir { read search getattr };
+allow uli vzservices_file:dir { read search getattr };
+allow uli unconfined_process:fifo_file { write getattr };

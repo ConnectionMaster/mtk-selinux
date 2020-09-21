@@ -76,6 +76,8 @@ allow chrome chrome_exec:file execute_no_trans;
 allow chrome chrome_file:dir { read search getattr };
 allow chrome chrome_data_file:dir { open getattr read search write add_name create execute rename setattr remove_name };
 allow chrome chrome_data_file:file { getattr open read append write create setattr rename unlink };
+allow chrome castpr25_public_data_file:dir { open getattr read search write add_name create execute rename setattr remove_name };
+allow chrome castpr25_public_data_file:file { getattr open read append write create setattr rename unlink };
 
 allow chrome socket_device:dir { read search getattr };
 allow chrome socket_device:sock_file write;

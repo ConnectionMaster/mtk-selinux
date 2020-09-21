@@ -59,6 +59,7 @@
 /(cast_root/)?dev/shm/shm_tmp(/.*)?             user_u:object_r:tmp_file
 /(cast_root/)?dev/shm/shm_tmp/fusion.*          user_u:object_r:fusion_data_file
 /(cast_root/)?dev/shm/shm_tmp/rest_debug.log    user_u:object_r:httpd_data_file
+/(cast_root/)?dev/shm/shm_tmp/cast_pr(/.*)?     user_u:object_r:castpr25_public_data_file
 /(cast_root/)?dev/mmcblk0                       user_u:object_r:tee_blk_device
 /(cast_root/)?dev/mmcblk0rpmb                   user_u:object_r:tee_blk_device
 /(cast_root/)?dev/rtc.*                         user_u:object_r:rtc_device
@@ -206,6 +207,7 @@
 /basic/autorun\.sh                             user_u:object_r:basic_script_file
 /basic/bin(/.*)?                               user_u:object_r:basic_bin_file
 /basic/bin/mtk_launcher                        user_u:object_r:basic_bin_exec
+/basic/bin/launch_mtk_uli\.sh                  user_u:object_r:basic_bin_exec
 /basic/dtv_svc                                 user_u:object_r:dtv_svc_exec
 /basic/bin/mtk_uli                             user_u:object_r:uli_exec
 /basic/uli(/.*)?                               user_u:object_r:uli_file
@@ -265,6 +267,7 @@
 /(cast_root/)?tmp/cobalt(/.*)?                user_u:object_r:cobalt_data_file
 /(cast_root/)?tmp/rest_debug.log              user_u:object_r:httpd_data_file
 /(cast_root/)?tmp/socket(/.*)?                user_u:object_r:chrome_data_file
+/(cast_root/)?tmp/cast_pr(/.*)?               user_u:object_r:castpr25_public_data_file
 
 ####vendor
 /vendor(/.*)?                                  user_u:object_r:rootfs
