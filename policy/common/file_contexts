@@ -373,12 +373,14 @@
 # viziondk
 #Note 1: vzndk_bin_exec are going to be executed in the callers domain. Not in vzndk.
 #Note 2: Add a new context 'vzndk_exec', if any process wants to be executed in vzndk domain.
-/application/viziondk(/.*)?                            user_u:object_r:vzndk_file
-/application/viziondk/storage                          user_u:object_r:vzndk_bin_exec
-/application/viziondk/.*_ctrl                          user_u:object_r:vzndk_bin_exec
-/(data/app|backup)/(viziondk|viziondk_(a|b))(/.*)?     user_u:object_r:vzndk_file
-/(data/app|backup)/(viziondk|viziondk_(a|b))/storage   user_u:object_r:vzndk_bin_exec
-/(data/app|backup)/(viziondk|viziondk_(a|b))/.*_ctrl   user_u:object_r:vzndk_bin_exec
+/application/viziondk(/.*)?                               user_u:object_r:vzndk_file
+/application/viziondk/storage                             user_u:object_r:vzndk_bin_exec
+/application/viziondk/.*_ctrl                             user_u:object_r:vzndk_bin_exec
+/application/viziondk/browser_ctrl                        user_u:object_r:browser_ctrl_exec
+/(data/app|backup)/(viziondk|viziondk_(a|b))(/.*)?        user_u:object_r:vzndk_file
+/(data/app|backup)/(viziondk|viziondk_(a|b))/storage      user_u:object_r:vzndk_bin_exec
+/(data/app|backup)/(viziondk|viziondk_(a|b))/.*_ctrl      user_u:object_r:vzndk_bin_exec
+/(data/app|backup)/(viziondk|viziondk_(a|b))/browser_ctrl user_u:object_r:browser_ctrl_exec
 
 # viziOS
 /data/app/vizios(/.*)?                       user_u:object_r:vizios_file
