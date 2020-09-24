@@ -159,6 +159,10 @@ allow vzservices system_data_file:file { write create getattr unlink };
 allow vzservices appletv_file:dir { write getattr rmdir read remove_name create add_name relabelto search setattr};
 allow vzservices appletv_file:file { write read create getattr unlink setattr relabelfrom relabelto ioctl };
 allow vzservices appletv_exec:file { read getattr unlink relabelto };
+allow vzservices httpd_file:dir { write getattr rmdir read remove_name create add_name relabelto relabelfrom search setattr};
+allow vzservices httpd_file:file { write read create getattr unlink setattr relabelfrom relabelto ioctl };
+allow vzservices httpd_exec:dir { unlink relabelfrom write getattr rmdir read remove_name create add_name relabelto search setattr };
+allow vzservices httpd_exec:file { read getattr unlink relabelfrom relabelto };
 allow vzservices vzndk_file:dir { write getattr rmdir read remove_name create add_name relabelto search setattr};
 allow vzservices vzndk_file:file { write read create getattr unlink setattr relabelfrom relabelto ioctl execute };
 allow vzservices vzndk_bin_exec:file { read getattr unlink relabelto };
@@ -167,6 +171,7 @@ allow vzservices vzndk_bin_exec:lnk_file { read relabelto getattr unlink};
 ###IM installing
 allow vzservices system_data_file:lnk_file { create getattr unlink relabelfrom};
 allow vzservices appletv_file:lnk_file { create relabelto read getattr unlink};
+allow vzservices httpd_file:lnk_file { create relabelto read getattr unlink};
 allow vzservices vzndk_file:lnk_file { create relabelto read getattr unlink relabelfrom};
 
 ###IM restorecon

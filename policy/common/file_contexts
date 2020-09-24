@@ -341,10 +341,10 @@
 /(data/app|backup)/(chromium|conjure|conjure_(a|b))/dumpstate               user_u:object_r:conjure_exec
 /(data/app|backup)/(chromium|conjure|conjure_(a|b))/fling                   user_u:object_r:conjure_exec
 /(data/app|backup)/(chromium|conjure|conjure_(a|b))/.*\.sh                  user_u:object_r:conjure_exec
-/(data/app|backup)/scpl(/.*)?                                       user_u:object_r:httpd_file
-/(data/app|backup)/scpl/bin(/.*)?                                   user_u:object_r:httpd_exec
-/(data/app|backup)/scpl/.*\.sh                                      user_u:object_r:httpd_exec
-/(data/app|backup)/scpl/lighttpd/*\.fcgi                            user_u:object_r:httpd_exec
+/(data/app|backup)/(scpl|scpl_(a|b))(/.*)?                                  user_u:object_r:httpd_file
+/(data/app|backup)/(scpl|scpl_(a|b))/bin(/.*)?                              user_u:object_r:httpd_exec
+/(data/app|backup)/(scpl|scpl_(a|b))/.*\.sh                                 user_u:object_r:httpd_exec
+/(data/app|backup)/(scpl|scpl_(a|b))/lighttpd/*\.fcgi                       user_u:object_r:httpd_exec
 
 ####Appletv
 /(data/app|backup)/(appletv|appletv_(a|b))(/.*)?                           user_u:object_r:appletv_file
