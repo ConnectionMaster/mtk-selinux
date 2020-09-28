@@ -102,7 +102,6 @@ allow httpd sysfs:dir { read getattr search };
 allow httpd sysfs:file { read getattr };
 allow httpd self:netlink_route_socket { write bind create getattr read nlmsg_read };
 allow httpd self:udp_socket { write read create connect getattr setopt bind ioctl };
-allow httpd self:capability sys_ptrace;
 allow httpd self:dir { read getattr search };
 allow httpd self:file { read getattr };
 allow httpd self:fifo_file { read getattr write ioctl };
