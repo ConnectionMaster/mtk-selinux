@@ -412,3 +412,18 @@
 /(data/app|backup)/(bluetooth_(a|b))/libexec(/.*)?           user_u:object_r:bluetooth_exec
 /(data/app|backup)/(bluetooth_(a|b))/scripts(/.*)?           user_u:object_r:bluetooth_exec
 
+# logger
+/application(s)?/LoggingClient(/.*)?                      user_u:object_r:logger_file
+/application(s)?/LoggingClient/.*\.sh                     user_u:object_r:logger_exec
+/application(s)?/LoggingClient/S3LoggingClient            user_u:object_r:logger_exec
+/application(s)?/LoggingClient/lib(/.*)?                  user_u:object_r:logger_file
+/cast_root/application(s)?/LoggingClient(/.*)?            user_u:object_r:logger_file
+/cast_root/application(s)?/LoggingClient/.*\.sh           user_u:object_r:logger_exec
+/cast_root/application(s)?/LoggingClient/S3LoggingClient  user_u:object_r:logger_exec
+/cast_root/application(s)?/LoggingClient/lib(/.*)?        user_u:object_r:logger_file
+/(data/app|backup)/logger(/.*)?                           user_u:object_r:logger_file
+/(data/app|backup)/(logger_(a|b))(/.*)?                   user_u:object_r:logger_file
+/(data/app|backup)/(logger_(a|b))/.*\.sh                  user_u:object_r:logger_exec
+/(data/app|backup)/(logger_(a|b))/S3LoggingClient         user_u:object_r:logger_exec
+/(data/app|backup)/(logger_(a|b))/lib(/.*)?               user_u:object_r:logger_file
+

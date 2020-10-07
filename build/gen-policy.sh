@@ -55,6 +55,7 @@ cp my-policy ./stage/etc/selinux/dummy/policy/policy.29
 mkdir -p ./stage/policy
 cp ../policy/common/file_contexts ./stage/policy
 grep /application ./stage/policy/file_contexts \
+    | grep -v /cast_root \
     | sed 's,(s)?,,' \
     | sed 's,/application(/.*)?,/application/.*,' \
     > ./stage/policy/app_ext4_contexts

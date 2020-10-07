@@ -1,0 +1,15 @@
+###rx file type, mostly for library
+type logger_file, file_type;
+
+###rw file type, for data and cache
+type logger_data_file, file_type, private_data_file_type;
+
+###logger_bin_exec type, for S3LoggingClient
+type logger_exec, file_type;
+
+###domain logger
+type logger, domain_type;
+
+file_type_auto_trans(logger, tmp_file, logger_data_file);
+file_type_auto_trans(logger, tmpfs, logger_data_file);
+
