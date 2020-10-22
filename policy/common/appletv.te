@@ -10,6 +10,9 @@ auditallow app_man appletv_file:file {execute execute_no_trans};
 ###rw file type, for data and cache
 type appletv_data_file, file_type, private_data_file_type;
 
+###rw public file type, for /data/app/appletv/tmp mount point
+type appletv_public_data_file, file_type;
+
 ###exec type, need domain transition
 type appletv_exec, file_type;
 domain_auto_trans(privileged_domain, appletv_exec, appletv);

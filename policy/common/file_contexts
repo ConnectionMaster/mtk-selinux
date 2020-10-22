@@ -66,7 +66,6 @@
 /(cast_root/)?dev/ashmem                        user_u:object_r:ashmem_device
 /(cast_root/)?dev/cli                           user_u:object_r:cli_device
 /cast_root/dev/socket(/.*)?                     user_u:object_r:socket_device
-#lw for bluetooth
 /(cast_root/)?dev/uhid                          user_u:object_r:bluetooth_device
 /(cast_root/)?dev/hidraw.*                      user_u:object_r:bluetooth_device
 /(cast_root/)?dev/ion                           user_u:object_r:ion_device
@@ -351,6 +350,7 @@
 ####Appletv
 /(data/app|backup)/(appletv|appletv_(a|b))(/.*)?                           user_u:object_r:appletv_file
 /(data/app|backup)/(appletv|appletv_(a|b))/appletv(/.*)?                   user_u:object_r:appletv_file
+/(data/app|backup)/(appletv|appletv_(a|b))/tmp                             user_u:object_r:appletv_public_data_file
 /(data/app|backup)/(appletv|appletv_(a|b))/appletv/appletv                 user_u:object_r:appletv_exec
 /(data/app|backup)/(appletv|appletv_(a|b))/appletv/.*\.sh                  user_u:object_r:appletv_exec
 

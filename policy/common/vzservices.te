@@ -41,8 +41,8 @@ allow vzservices bluetooth_file:lnk_file { read getattr unlink };
 # /cast_root/dev/socket/logdw
 allow vzservices cast_init:unix_dgram_socket sendto;
 # conjure
-allow vzservices conjure_exec:file { read getattr unlink };
-allow vzservices conjure_exec:lnk_file unlink;
+allow vzservices conjure_exec:file { read getattr unlink relabelto ioctl setattr };
+allow vzservices conjure_exec:lnk_file { unlink relabelto };
 allow vzservices conjure_file:dir { getattr read search write remove_name rmdir };
 allow vzservices conjure_file:file { read getattr unlink };
 allow vzservices conjure_file:lnk_file { read getattr unlink };
@@ -156,9 +156,10 @@ allow vzservices unconfined_process:system module_request;
 ###IM staging
 allow vzservices system_data_file:dir { write getattr rmdir read remove_name create add_name };
 allow vzservices system_data_file:file { write create getattr unlink };
-allow vzservices appletv_file:dir { write getattr rmdir read remove_name create add_name relabelto search setattr};
+allow vzservices appletv_file:dir { write getattr rmdir read remove_name create add_name relabelto relabelfrom search setattr};
 allow vzservices appletv_file:file { write read create getattr unlink setattr relabelfrom relabelto ioctl };
-allow vzservices appletv_exec:file { read getattr unlink relabelto };
+allow vzservices appletv_exec:file { read getattr unlink relabelto setattr };
+allow vzservices appletv_public_data_file:dir { write getattr rmdir read remove_name create add_name relabelto relabelfrom search setattr};
 allow vzservices httpd_file:dir { write getattr rmdir read remove_name create add_name relabelto relabelfrom search setattr};
 allow vzservices httpd_file:file { write read create getattr unlink setattr relabelfrom relabelto ioctl };
 allow vzservices httpd_exec:dir { unlink relabelfrom write getattr rmdir read remove_name create add_name relabelto search setattr };
@@ -202,4 +203,15 @@ allow vzservices vizios_data_file:lnk_file { read getattr unlink };
 allow vzservices httpd_data_file:dir { getattr read search write remove_name rmdir };
 allow vzservices httpd_data_file:file { read getattr unlink };
 allow vzservices httpd_data_file:lnk_file { read getattr unlink };
+
+# logcat.sh
+allow vzservices tmp_file:file { getattr read };
+allow vzservices unconfined_process:fifo_file write;
+allow vzservices cast_init:unix_stream_socket connectto;
+allow vzservices self:unix_stream_socket { read write };
+allow vzservices etc_conf_file:lnk_file read;
+allow vzservices chrome_data_file:dir { read getattr search };
+allow vzservices chrome_data_file:lnk_file { read getattr };
+# pipe output to grep
+allow vzservices su:fifo_file write;
 
