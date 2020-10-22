@@ -308,7 +308,7 @@
 /cast_root/system/chrome/dumpstate             user_u:object_r:chrome_exec
 /cast_root/system/chrome/process_manager       user_u:object_r:cast_init_exec
 /cast_root/system/chrome/update_engine         user_u:object_r:chrome_exec
-/cast_root/system/etc/service/conjure          user_u:object_r:conjure_exec
+/cast_root/system/etc/service/conjure.sh       user_u:object_r:conjure_exec
 
 ####conjure
 /application/chromium(/.*)?                    user_u:object_r:conjure_file
