@@ -81,11 +81,13 @@
 /data/vudu(/.*)?                   user_u:object_r:vudu_data_file
 /data/dhcp_server                  user_u:object_r:udhcpc_data_file
 /data/uli(/.*)?                    user_u:object_r:uli_data_file
-/data/app/airplay                       user_u:object_r:airplay_file
+/(data/app|backup)/airplay(/.*)?          user_u:object_r:airplay_file
 /data/app/.*/airplay(/.*)?              user_u:object_r:airplay_file
 /data/app/.*/airplay/airplayutil        user_u:object_r:airplay_exec
 /data/app/.*/airplay/airplaydemo        user_u:object_r:airplay_exec
 /data/app/.*/airplay/post-install\.sh   user_u:object_r:airplay_exec
+/(data/app|backup)/semaphore(/.*)?          user_u:object_r:airplay_file
+/(data/app|backup)/(semaphore_(a|b))(/.*)?  user_u:object_r:airplay_file
 /data/app/homekit                       user_u:object_r:homekit_file
 /data/app/.*/homekit(/.*)?              user_u:object_r:homekit_file
 /data/app/.*/homekit/HAPAS_Tv           user_u:object_r:homekit_exec
