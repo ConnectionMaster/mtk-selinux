@@ -394,7 +394,7 @@
 /application/vizios/storaged                 user_u:object_r:vizios_exec
 
 #Storaged application specific directory. Should move it under /data/storage
-/data/appletv((/.*)*)?                       user_u:object_r:vizios_data_file
+/data/storage((/.*)*)?                       user_u:object_r:vizios_data_file
 
 # bluetooth
 /application/bluetooth(/.*)?                    user_u:object_r:bluetooth_file

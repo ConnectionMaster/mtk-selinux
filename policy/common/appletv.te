@@ -119,6 +119,7 @@ allow appletv pts_device:chr_file {ioctl read write getattr};
 allow appletv pts_device:dir search;
 allow appletv event_device:chr_file {read write getattr ioctl};
 allow appletv basic_device:chr_file {read getattr write ioctl append};
+allow appletv basic_device:fd {use};
 allow appletv semutex_device:chr_file {read write ioctl};
 allow appletv cb_device:chr_file {read write ioctl};
 allow appletv miomap_device:chr_file {read write ioctl};
@@ -137,8 +138,9 @@ allow appletv httpd_data_file:file {read getattr};
 allow appletv httpd:dir search;
 allow appletv httpd:file read;
 
-allow appletv file_inode:dir {read search getattr write create add_name mounton };
+allow appletv file_inode:dir {read search getattr write create add_name };
 allow appletv file_inode:file {read getattr};
+allow appletv socket_inode:file write;
 
 allow appletv debugfs:dir search;
 
@@ -175,6 +177,7 @@ allow appletv app_man:msg {send receive};
 allow appletv app_man:msgq {read write unix_write unix_read associate};
 allow appletv app_man:netlink_kobject_uevent_socket {ioctl read write};
 allow appletv app_man:binder {transfer call};
+allow appletv app_man:unix_dgram_socket {ioctl read write};
 
 allow appletv dtv_svc:dir search;
 allow appletv dtv_svc:file read;
@@ -219,6 +222,8 @@ allow appletv semi_root_process:file read;
 allow appletv semi_root_process:msg {send receive};
 allow appletv semi_root_process:msgq {write read unix_read unix_write associate};
 allow appletv semi_root_process:binder {transfer call};
+allow appletv semi_root_process:fd use;
+allow appletv semi_root_process:process {fork signal sigchld signull getattr setsched getsched setrlimit sigkill};
 
 allow appletv vzservices_file:dir {getattr search};
 allow appletv vzservices_file:file {getattr open read lock execute};
@@ -234,4 +239,8 @@ allow appletv netflix:dir search;
 allow appletv netflix:file read;
 allow appletv vzservices:dir { getattr search };
 allow appletv vzservices:file read;
+
+allow appletv logger_file:dir { getattr search };
+allow appletv logger_file:file { execute getattr read };
+allow appletv logger_file:lnk_file read;
 

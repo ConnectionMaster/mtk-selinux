@@ -31,6 +31,7 @@ allow vizios basic_bin_exec:file {read execute getattr execute_no_trans};
 allow vizios basic_bin_file:dir search;
 
 allow vizios basic_device:chr_file {read getattr write ioctl};
+allow vizios basic_device:fd {use};
 allow vizios basic_file:dir {getattr search};
 
 allow vizios bin_file:dir search;
@@ -42,7 +43,7 @@ allow vizios unconfined_process:dir {getattr search};
 allow vizios unconfined_process:file read;
 allow vizios unconfined_process:lnk_file read;
 
-allow vizios vizios_data_file:dir {open getattr read search write add_name create rename setattr remove_name};
+allow vizios vizios_data_file:dir {open getattr read search write add_name create rename setattr remove_name mounton};
 allow vizios vizios_data_file:file {getattr open read append write lock create setattr rename unlink};
 #allow vizios vizios_device:chr_file {read write getattr ioctl relabelto setattr};
 
@@ -55,7 +56,11 @@ allow vizios vizios_file:lnk_file {read getattr};
 allow vizios device:dir {read search getattr};
 allow vizios device:chr_file {read write ioctl};
 
-allow vizios system_data_file:dir  {read write search getattr};
+allow vizios pts_device:chr_file {ioctl read write getattr};
+allow vizios pts_device:dir search;
+allow vizios socket_inode:file write;
+
+allow vizios system_data_file:dir  {read write search getattr setattr};
 allow vizios system_data_file:file {read write getattr};
 allow vizios system_data_file:lnk_file read;
 
@@ -72,7 +77,7 @@ allow vizios rootfs:lnk_file {read getattr};
 
 allow vizios self:msgq {create getattr unix_read unix_write read write associate enqueue};
 allow vizios self:process {fork signal sigchld signull getattr setsched getsched setrlimit sigkill};
-allow vizios self:capability {sys_nice kill};
+allow vizios self:capability {sys_nice kill sys_chroot setgid setuid chown};
 allow vizios self:msg {send receive};
 allow vizios self:dir {read search getattr};
 allow vizios self:file {read write getattr};
@@ -86,9 +91,15 @@ allow vizios sysfs:file read;
 allow vizios sysfs:lnk_file {read getattr};
 allow vizios sysfs:filesystem getattr;
 
+allow vizios appletv:dir getattr;
 allow vizios appletv:msgq {read unix_read write unix_write associate};
 allow vizios appletv:msg {send receive};
 allow vizios appletv:process signull;
+
+allow vizios semi_root_process:msgq {create getattr unix_read unix_write read write associate enqueue};
+allow vizios semi_root_process:msg {send receive};
+allow vizios semi_root_process:process {fork signal sigchld signull getattr setsched getsched setrlimit sigkill};
+allow vizios semi_root_process:fd use;
 
 allow vizios app_man:msg {send receive};
 allow vizios app_man:msgq {write unix_write unix_read associate};

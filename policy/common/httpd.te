@@ -243,3 +243,11 @@ allow httpd uli:dir { getattr search read };
 allow httpd uli:file read;
 allow httpd uli:lnk_file read;
 
+# appletv
+allow httpd app_man:dir { getattr search read };
+allow httpd app_man:file read;
+allow httpd app_man:lnk_file read;
+allow httpd appletv:dir { getattr search };
+allow httpd appletv:file read;
+allow httpd appletv:lnk_file read;
+

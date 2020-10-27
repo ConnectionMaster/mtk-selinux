@@ -9,3 +9,7 @@ mtkAccessPartialRules(semi_root_process, domain_type)
 
 allow semi_root_process su_exec :file ~{w_file_perms};
 allow semi_root_process su_exec :lnk_file ~{w_file_perms};
+
+#allow logcat.sh on console
+allow semi_root_process su:fifo_file write;
+

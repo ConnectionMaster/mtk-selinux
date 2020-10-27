@@ -9,3 +9,7 @@ mtkAccessPartialRules(browser_ctrl, domain_type);
 allow browser_ctrl conjure_data_file:file read;
 
 domain_auto_trans(privileged_domain, browser_ctrl_exec, browser_ctrl);
+
+#for airplayPersistedUserSettings.plist, sharedKeyStore.keychain
+allow browser_ctrl airplay_data_file:file { read write };
+
