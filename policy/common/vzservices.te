@@ -171,12 +171,14 @@ allow vzservices vzndk_bin_exec:lnk_file { read relabelto getattr unlink};
 allow vzservices conjure_file:dir { write getattr rmdir read remove_name create add_name relabelto search setattr};
 allow vzservices conjure_file:file { write read create getattr unlink setattr relabelfrom relabelto ioctl };
 allow vzservices conjure_file:lnk_file { create relabelto read getattr unlink relabelfrom};
-allow vzservices airplay_file:dir { write getattr rmdir read remove_name create add_name relabelto search setattr};
+allow vzservices airplay_file:dir { write getattr rmdir read remove_name create add_name relabelfrom relabelto search setattr};
 allow vzservices airplay_file:file { write read create getattr unlink setattr relabelfrom relabelto ioctl };
-allow vzservices airplay_file:lnk_file { create relabelto read getattr unlink relabelfrom};
-allow vzservices homekit_file:dir { write getattr rmdir read remove_name create add_name relabelto search setattr};
+allow vzservices airplay_file:lnk_file { create relabelto read getattr unlink relabelfrom relabelto };
+allow vzservices airplay_exec:file { write read create getattr unlink setattr relabelfrom relabelto ioctl };
+allow vzservices homekit_file:dir { write getattr rmdir read remove_name create add_name relabelfrom relabelto search setattr};
 allow vzservices homekit_file:file { write read create getattr unlink setattr relabelfrom relabelto ioctl };
-allow vzservices homekit_file:lnk_file { create relabelto read getattr unlink relabelfrom};
+allow vzservices homekit_file:lnk_file { create relabelto read getattr unlink relabelfrom relabelto };
+allow vzservices homekit_exec:file { write read create getattr unlink setattr relabelfrom relabelto ioctl };
 
 ###IM installing
 allow vzservices system_data_file:lnk_file { create getattr unlink relabelfrom};
