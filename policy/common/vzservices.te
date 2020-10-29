@@ -166,7 +166,7 @@ allow vzservices httpd_exec:dir { unlink relabelfrom write getattr rmdir read re
 allow vzservices httpd_exec:file { read getattr unlink relabelfrom relabelto };
 allow vzservices vzndk_file:dir { write getattr rmdir read remove_name create add_name relabelto search setattr};
 allow vzservices vzndk_file:file { write read create getattr unlink setattr relabelfrom relabelto ioctl execute };
-allow vzservices vzndk_bin_exec:file { read getattr unlink relabelto };
+allow vzservices vzndk_bin_exec:file { write read create getattr unlink setattr relabelfrom relabelto ioctl };
 allow vzservices vzndk_bin_exec:lnk_file { read relabelto getattr unlink};
 allow vzservices conjure_file:dir { write getattr rmdir read remove_name create add_name relabelto search setattr};
 allow vzservices conjure_file:file { write read create getattr unlink setattr relabelfrom relabelto ioctl };
