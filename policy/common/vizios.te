@@ -110,3 +110,8 @@ allow vizios unconfined_type:tcp_socket {name_bind name_connect node_bind};
 allow vizios system_file:dir { getattr read search };
 allow vizios system_file:file {read getattr};
 
+# storaged, appletv
+allow vizios self:capability sys_admin;
+allow vizios appletv:shm { destroy read unix_read unix_write write };
+allow vizios self:shm { create read unix_read unix_write write };
+

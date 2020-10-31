@@ -172,6 +172,7 @@ allow appletv app_man:fifo_file {getattr ioctl read write};
 allow appletv vizios:msgq {unix_read unix_write read write associate};
 allow appletv vizios:msg {send receive};
 allow appletv vizios:tcp_socket {read write name_connect};
+allow appletv vizios:shm { destroy read unix_read unix_write write };
 
 allow appletv app_man:msg {send receive};
 allow appletv app_man:msgq {read write unix_write unix_read associate};
@@ -243,4 +244,5 @@ allow appletv vzservices:file read;
 allow appletv logger_file:dir { getattr search };
 allow appletv logger_file:file { execute getattr read };
 allow appletv logger_file:lnk_file read;
+
 
