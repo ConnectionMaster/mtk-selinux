@@ -22,7 +22,7 @@ allow conjure rootfs:file { read getattr execute execute_no_trans };
 allow conjure rootfs:lnk_file { read getattr };
 
 allow conjure sysfs:dir { read search getattr };
-allow conjure sysfs:file read;
+allow conjure sysfs:file { read getattr };
 allow conjure sysfs:lnk_file { read getattr };
 allow conjure sysfs:filesystem getattr;
 
@@ -31,6 +31,7 @@ allow conjure application_file:dir { read search getattr };
 allow conjure backup_data_file:dir { read search getattr };
 allow conjure cache_data_file:dir { read search getattr };
 allow conjure demo_data_file:dir { read search getattr };
+allow conjure demo_data_file:file { read getattr };
 allow conjure mik_device:dir { read search getattr };
 allow conjure tmpfs:dir { read search getattr };
 allow conjure { airplay_data_file airplay_public_data_file }:file { read getattr };
@@ -103,6 +104,10 @@ allow conjure mali_device:chr_file { read write getattr ioctl };
 allow conjure pts_device:chr_file { read write getattr };
 allow conjure tee_device:chr_file { read write ioctl };
 allow conjure binder_device:chr_file { read write ioctl };
+allow conjure ion_device:chr_file { read ioctl };
+allow conjure snd_device:chr_file { read write ioctl };
+allow conjure snd_device:dir search;
+allow conjure video_device:chr_file { read write getattr ioctl };
 
 allow conjure semi_root_process:binder { transfer call };
 

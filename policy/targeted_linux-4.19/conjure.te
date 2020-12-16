@@ -14,3 +14,6 @@ allow conjure miomap_device:chr_file map;
 allow conjure chrome_file:file map;
 allow conjure binder_device:chr_file map;
 allow conjure httpd_data_file:file map;
+allow conjure demo_data_file:file map;
+allow conjure snd_device:chr_file map;
+allow conjure video_device:chr_file map;

@@ -63,3 +63,5 @@ type pts_device, file_type;
 type bluetooth_device, file_type;
 
 type ion_device, file_type;
+
+type video_device, file_type;
